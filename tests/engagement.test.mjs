@@ -63,7 +63,9 @@ test('Etapas, XP, squads e quizzes usam evidências reais e preservam a governan
       const quiz=(await request(people.admin,'/api/admin/quizzes',{method:'POST',body:{title:'Sprint revogação QA',description:'Teste de acesso.',tracks:['digital','pap'],audience:['seller'],status:'published',durationSeconds:30,questionIds:['digital_01','pap_01']}})).data;
       const attempt=(await request(people.outsider,'/api/quizzes/'+quiz.id+'/start',{method:'POST',body:{}})).data;
       assert.equal(attempt.questions.length,2);
-      await request(people.admin,'/api/admin/members/'+profile.id,{method:'PATCH',body:profile});
+      const revoked=await request(people.admin,'/api/admin/members/'+profile.id,{method:'PATCH',body:profile});
+      assert.equal(revoked.status,200,JSON.stringify(revoked.data));
+      assert.deepEqual(revoked.data.tracks,profile.tracks);
       assert.equal((await request(people.outsider,'/api/quiz-attempts/'+attempt.id)).status,404);
       assert.equal((await request(people.outsider,'/api/quizzes/'+quiz.id+'/start',{method:'POST',body:{}})).status,403);
     });
