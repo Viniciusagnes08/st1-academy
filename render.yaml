@@ -1,0 +1,37 @@
+# Hospedagem gratuita. Os dados ficam no Supabase PostgreSQL, fora do disco local.
+services:
+  - type: web
+    name: st1-academy
+    runtime: node
+    region: virginia
+    plan: free
+    branch: main
+    numInstances: 1
+    autoDeployTrigger: checksPass
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    maxShutdownDelaySeconds: 30
+    envVars:
+      - key: NODE_VERSION
+        value: 24.15.0
+      - key: NODE_ENV
+        value: production
+      - key: ACADEMY_DEPLOYMENT
+        value: production
+      - key: ACADEMY_STORAGE
+        value: postgres
+      - key: DATABASE_URL
+        sync: false
+      - key: ACADEMY_AUTH_SECRET
+        sync: false
+      - key: ACADEMY_TEST_MODE
+        value: '0'
+      - key: ACADEMY_LISTEN_HOST
+        value: 0.0.0.0
+      - key: ACADEMY_TRUST_PROXY
+        value: '1'
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false

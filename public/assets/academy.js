@@ -1,0 +1,233 @@
+(() => {
+  'use strict';
+  const main=document.querySelector('#main');
+  document.body.dataset.motionMode='full';
+  const state={catalog:null,user:null,attempt:null,questionIndex:0,invite:null,inviteToken:new URLSearchParams(location.search).get('convite'),saving:false,accessPanel:null,contentPanel:null,blocked:null,lastRoute:'',engagementPanel:null,profilePanel:null,agendaPanel:null,managementPanel:null};
+  const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const icons={user:'<circle cx="12" cy="8" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/>',users:'<circle cx="8" cy="7" r="3"/><path d="M2 21v-4a6 6 0 0 1 12 0v4M16 4a3 3 0 0 1 0 6M22 21v-4a6 6 0 0 0-4-5"/>',camera:'<path d="M3 7h4l2-3h6l2 3h4v14H3z"/><circle cx="12" cy="13" r="4"/>',heart:'<path d="M20 4c-4-3-8 1-8 1S8 1 4 4c-6 5 2 11 8 16 6-5 14-11 8-16z"/>',target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',spark:'<path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3zM3 2v4M1 4h4"/>',edit:'<path d="m16 3 5 5-12 12H4v-5zM13 6l5 5"/>',volume:'<path d="m11 5-6 4H2v6h3l6 4zM15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/>',arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',back:'<path d="M19 12H5m6-6-6 6 6 6"/>',book:'<path d="M3 4h6a4 4 0 0 1 3 2v15a4 4 0 0 0-3-2H3zM21 4h-6a4 4 0 0 0-3 2v15a4 4 0 0 1 3-2h6z"/>',shield:'<path d="m12 2 8 4v6c0 5-8 10-8 10S4 17 4 12V6z"/><path d="m8 12 3 3 5-6"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/>',list:'<path d="M9 5h12M9 12h12M9 19h12"/><path d="M3 5h1M3 12h1M3 19h1"/>',award:'<circle cx="12" cy="8" r="6"/><path d="m8 13-2 9 6-3 6 3-2-9"/>',download:'<path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/>',lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/>',check:'<path d="m5 12 4 4L19 6"/>',link:'<path d="M14 3h7v7M21 3l-9 9M10 3H3v18h18v-7"/>'};
+  Object.assign(icons,{calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6M17 2v6M3 11h18"/>',plus:'<path d="M12 5v14M5 12h14"/>',bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>'});
+  Object.assign(icons,{mic:'<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/>',smile:'<circle cx="12" cy="12" r="9"/><path d="M8 14s1 3 4 3 4-3 4-3M8 9h1M15 9h1"/>',stop:'<rect x="5" y="5" width="14" height="14" rx="2"/>',close:'<path d="m6 6 12 12M6 18 18 6"/>'});
+  const icon=name=>`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${icons[name]||icons.arrow}</svg>`;
+  const sourceUrl=source=>`#material/st1-${source.file.replace(/\.pdf$/,'')}/pagina/${source.page||1}`;
+  const materialLabel=file=>({'processo-pap.pdf':'Processo comercial PAP','processo-digital.pdf':'Processo comercial Digital'}[file]||'Catálogo de planos e aplicativos');
+  function unavailableError(status){
+    const local=['localhost','127.0.0.1','[::1]'].includes(location.hostname);
+    const error=new Error(local?'A Academy local está indisponível. Abra “Abrir ST1 Academy.cmd” neste computador e tente novamente. Seu login e seu progresso continuam salvos.':'A Academy está temporariamente indisponível. Confira sua conexão e tente novamente. Seu login e seu progresso continuam salvos.');
+    error.unavailable=true;if(status)error.status=status;return error;
+  }
+  async function api(path,{method='GET',body,headers={}}={}){
+    let response;try{response=await fetch(path,{method,headers:{...(body?{'Content-Type':'application/json'}:{}),...headers},...(body?{body:JSON.stringify(body)}:{}),credentials:'same-origin'});}catch{throw unavailableError();}
+    if(response.status>=500)throw unavailableError(response.status);
+    let data;try{data=await response.json();}catch{throw unavailableError();}
+    if(!response.ok){const error=new Error(data.message||'Não foi possível concluir esta ação.');error.status=response.status;error.flowId=data.flowId||null;throw error;}
+    return data;
+  }
+  function toast(message){const box=document.querySelector('#toast');box.textContent=message;box.hidden=false;setTimeout(()=>box.hidden=true,4200);}
+  function showUnavailable(error){commitView(`<div class="wrap library"><div class="empty-panel" role="alert"><h2>Vamos retomar sua conexão.</h2><p>${esc(error.message)}</p><button class="button button-primary" type="button" data-retry-connection>Tentar novamente</button></div></div>`);}
+  async function refreshUser(){state.blocked=null;try{state.user=await api('/api/me');}catch(error){if(error.status===401||error.status===403){state.user=null;if(error.status===403)state.blocked=error.message;}else throw error;}if(state.blocked){state.catalog??={tracks:[],testMode:false};return;}state.catalog=await api('/api/catalog');}
+  const certificateFor=id=>state.user?.certificates.find(c=>c.track_id===id);
+  const trackFor=id=>state.catalog.tracks.find(t=>t.id===id);
+  const trackAllowed=id=>!state.user||state.user.tracks.includes(id);
+  const hasAccess=permission=>state.user?.role==='admin'||!!state.user?.permissions?.includes(permission);
+  function restricted(title,message,login=false){commitView(`<section class="wrap library"><div class="empty-panel"><h2>${esc(title)}</h2><p>${esc(message)}</p>${state.blocked?'<button class="button button-primary" type="button" data-logout>Sair da conta</button>':login?'<button class="button button-primary" type="button" data-login>Entrar na ST1 Academy</button>':'<a class="button button-primary" href="#inicio">Voltar às minhas trilhas</a>'}</div></section>`);}
+  const go=route=>{if(location.hash===`#${route}`)render();else location.hash=route;};
+  Object.assign(icons,{map:'<rect x="3" y="9" width="6" height="6" rx="1"/><path d="M9 12h5M14 5v14M14 5h4M14 19h4"/><circle cx="20" cy="5" r="2"/><circle cx="20" cy="19" r="2"/>',chart:'<path d="M4 21V10h4v11M10 21V3h4v18M16 21v-7h4v7"/>',bolt:'<path d="m13 2-8 12h6l-1 8 9-13h-7z"/>'});
+  function contextualActions(route=location.hash){
+    const [page,id]=route.replace(/^#/,'').split('/'),admin=state.user?.role==='admin',team=admin||(state.user?.role==='supervisor'&&hasAccess('team_results'));
+    let links=[];
+    if(page==='trilhas'&&hasAccess('assessments'))links=[['#desafios','Provas relâmpago','bolt']];
+    else if(page==='conteudos'&&admin)links=[['#publicar/modulos','Módulos de conhecimento','list'],['#publicar','Publicar conteúdo','book']];
+    else if(page==='cadastros'&&!id&&admin)links=[['#publicar/modulos','Módulos de conhecimento','book'],['#gamificacao','Configurar gamificação','award'],['#perfil-regras','Liberações do perfil','users'],['#pedidos-squad','Pedidos de squad','users']];
+    else if(page==='gestao'&&team)links=[['#agenda-participacao','Participação do time','chart'],['#pedidos-squad','Pedidos de squad','users']];
+    else if(page==='squad'){
+      if(team)links.push(['#pedidos-squad','Pedidos de squad','users']);
+      if(admin)links.push(['#squads-gestao','Organizar squads','users']);
+    }else if(page==='perfil'&&admin)links=[['#perfil-regras','Liberações do perfil','users']];
+    if(!links.length)return '';
+    return '<nav class="page-context-actions" aria-label="Ações desta página">'+links.map(([href,label,symbol])=>'<a class="button button-secondary button-small" href="'+href+'">'+icon(symbol)+label+'</a>').join('')+'</nav>';
+  }
+  function commitView(html){
+    closeNavigation(false);state.contentPanel?.disposeReader();state.engagementPanel?.dispose();state.profilePanel?.dispose();main.innerHTML=html;if(!html.includes('data-retry-connection')){const actions=contextualActions(),slot=main.querySelector('[data-page-actions]')||main.querySelector('h1')?.parentElement;if(actions)slot?.insertAdjacentHTML?.('beforeend',actions);}main.focus({preventScroll:true});window.scrollTo({top:0});
+    const role=state.user?.role,label={seller:'Vendedor',supervisor:'Supervisor',admin:'Admin'}[role]||'Participante';
+    document.querySelector('#account-button').textContent=state.user||state.blocked?'Sair da conta':'Entrar';
+    document.querySelector('#profile-name').textContent=state.user?.name||'Sua conta';
+    document.querySelector('#profile-role').textContent=label;document.querySelector('#topbar-role').textContent=label;
+    const avatarElement=document.querySelector('#profile-avatar');avatarElement.innerHTML=state.user?.avatarUrl?'<img src="'+esc(state.user.avatarUrl)+'" alt="">':esc((state.user?.name||'ST1').split(' ').filter(Boolean).slice(0,2).map(word=>word[0]).join('').toUpperCase());
+    document.querySelector('#admin-nav').hidden=!['admin','supervisor'].includes(role)||!hasAccess('team_results');
+    document.querySelector('#admin-nav-label').textContent='Resultados';
+    document.querySelector('#management-nav').hidden=role!=='admin';document.querySelector('#access-nav').hidden=role!=='admin';
+    document.querySelector('#management-navigation').hidden=role!=='admin'&&(role!=='supervisor'||!hasAccess('team_results'));
+    document.querySelector('#conquests-nav').hidden=!hasAccess('conquests');document.querySelector('#materials-nav').hidden=!hasAccess('materials');
+    document.querySelector('#central-footer').hidden=!hasAccess('materials');const mapNav=document.querySelector('#knowledge-map-nav');if(mapNav)mapNav.hidden=!hasAccess('assessments')&&!hasAccess('materials');
+    document.querySelector('#squad-nav').hidden=!hasAccess('community');document.querySelector('#ranking-nav').hidden=!hasAccess('community')||role==='admin'||role==='supervisor'&&hasAccess('team_results');document.querySelector('#community-navigation').hidden=!hasAccess('community');state.engagementPanel?.refreshBell();
+    const page=(location.hash||'#inicio').slice(1).split('/')[0],active=['trilha','prova','resultado','percurso','desafios','desafio','pratica'].includes(page)?'trilhas':page==='material'?'conteudos':['publicar','squads-gestao','gamificacao','perfil-regras'].includes(page)?'cadastros':['agenda-gestao','agenda-programar','agenda-integracao','agenda-participacao'].includes(page)?'agenda':page==='pedidos-squad'?(hasAccess('community')?'squad':'gestao'):page;
+    document.querySelector('#page-context').textContent=({cadastros:'Cadastros',agenda:'Minha agenda','agenda-gestao':'Programação do time','agenda-programar':'Programar compromisso','agenda-participacao':'Participação do time','agenda-integracao':'Conexão Google',inicio:'Início',trilhas:'Minhas trilhas',dashboard:'Dashboard',conteudos:'Conteúdos',publicar:'Publicar conteúdo',material:'Material de estudo',percurso:'Meu percurso',desafios:'Provas relâmpago',desafio:'Meu desafio',pratica:'Prática e evolução',conhecimento:'Mapa de conhecimento',squad:'Meu squad',perfil:'Meu perfil',pessoas:'Conheça seu time','perfil-regras':'Liberações do perfil','pedidos-squad':'Pedidos de squad',notificacoes:'Notificações',gamificacao:'Gamificação','squads-gestao':'Gestão de squads',conquistas:'Minhas conquistas',gestao:'Resultados',acessos:'Acessos',trilha:'Minha trilha',prova:'Avaliação',resultado:'Resultado da avaliação'})[page]||'Início';
+    document.querySelectorAll('[data-nav]').forEach(a=>{const selected=a.dataset.nav===(active==='pessoas'?'perfil':active);a.classList.toggle('active',selected);if(selected){a.setAttribute('aria-current','page');const drawer=a.closest('.sidebar-drawer');if(drawer)drawer.open=true;}else a.removeAttribute('aria-current');});
+  }
+  function home(onlyTracks=false){
+    const earned=state.user?.certificates.length||0;
+    const cards=state.catalog.tracks.map((track,index)=>{
+      const cert=certificateFor(track.id),allowed=trackAllowed(track.id),open=state.user?.attempts.find(a=>a.track_id===track.id&&a.status==='open');
+      return `<article class="track-card channel-${track.id}"><div class="track-top"><div><span class="overline">TRILHA ${String(index+1).padStart(2,'0')}</span><h3>${esc(track.name)}</h3></div><img src="/assets/badges/${track.id}.svg" alt="Insígnia ${esc(track.badge)}" width="95" height="112"></div><div class="track-body"><p>${esc(track.description)}</p><div class="track-meta"><span>${icon('list')} ${track.questionCount} perguntas</span><span>${icon('clock')} ~${track.estimatedMinutes} min</span></div><span class="track-status ${cert?'passed':''}">${cert?'Trilha conquistada · '+cert.score+'%':open?'Avaliação em andamento':allowed?'Insígnia: '+esc(track.badge):'O gestor ainda não liberou esta trilha'}</span>${hasAccess('assessments')?`<a class="game-text-link" href="#percurso/${track.id}">Avançar com o Starzinho ${icon('arrow')}</a>`:''}<div class="track-action"><a class="button" href="#trilha/${track.id}">${cert?'Ver trilha':open?'Continuar trilha':hasAccess('assessments')?'Começar trilha':'Ver trilha'} ${icon('arrow')}</a></div></div></article>`;
+    }).join('');
+    commitView(`${onlyTracks?`<section class="page-top"><div class="wrap"><span class="overline muted">SEU DESENVOLVIMENTO COMERCIAL</span><h1>Minhas trilhas.</h1><p>Escolha seu canal, estude os materiais e avance na sua certificação.</p></div></section>`:`<section class="hero"><div class="wrap"><div class="hero-grid"><div class="hero-copy"><span class="overline">CAPACITAÇÃO QUE VIRA RESULTADO</span><h1>Do catálogo à venda.<br><span>Prove que você domina.</span></h1><p>Conheça a oferta, resolva situações reais e conquiste a certificação do seu canal. Cada trilha tem uma prova, uma insígnia e um certificado próprios.</p><div class="hero-actions"><a class="button button-primary" href="#trilhas">Explorar trilhas ${icon('arrow')}</a>${hasAccess('materials')?`<a class="button button-outline-light" href="#conteudos">Explorar conteúdos ${icon('book')}</a>`:''}</div><div class="hero-method"><span><strong>01</strong> ESTUDE</span><span><strong>02</strong> APLIQUE NA PROVA</span><span><strong>03</strong> CONQUISTE</span></div></div><aside class="passport" aria-label="Seu progresso nas certificações"><div class="passport-head">${icon('award')}<div><div class="passport-title">Passaporte comercial</div><span class="passport-caption">DOMÍNIO COMPROVADO POR TRILHA</span></div></div><div class="passport-number"><strong>${String(earned).padStart(2,'0')}</strong><span>/ ${String(state.catalog.tracks.length).padStart(2,'0')} conquistas</span></div><div class="passport-slots">${state.catalog.tracks.map((t,i)=>`<span class="${certificateFor(t.id)?'unlocked':''}" aria-label="${esc(t.name)}: ${certificateFor(t.id)?'conquistada':'a conquistar'}">${certificateFor(t.id)?icon('check'):String(i+1).padStart(2,'0')}</span>`).join('')}</div><p>${state.user?'Seu progresso é salvo na sua conta. Você pode continuar de onde parou.':'Entre com seu convite pessoal para registrar o resultado e receber suas conquistas.'}</p></aside></div></div></section>`}<section class="library" id="trilhas"><div class="wrap"><div class="section-title"><div><span class="overline muted">CADA CANAL. UMA CONQUISTA.</span><h2>Escolha sua próxima trilha.</h2></div><p>Use os catálogos e os processos aprovados. A prova testa o que você decide na venda.</p></div><div class="track-grid">${cards||'<div class="empty-panel"><h3>Nenhuma trilha liberada.</h3><p>O Admin precisa selecionar as trilhas da sua conta na área de Acessos.</p></div>'}</div><div class="criteria-strip">${icon('shield')}<div><strong>Aprovação exige conhecimento e conduta correta.</strong><p>São ${state.catalog.minimumPercent}% de acertos: pelo menos 16 das 20 perguntas. Todas as regras críticas também precisam estar corretas. Uma nota alta não compensa uma promessa errada ao cliente.</p></div></div></div></section>`);
+  }
+  async function detail(id){
+    const track=trackFor(id);if(!track)return restricted('Trilha não liberada.','O Admin define quais trilhas aparecem para sua conta.');
+    if(!state.user)return restricted('Entre para acessar a trilha.','Use seu convite pessoal ou entre na sua conta para ver o conteúdo liberado pelo Admin.',true);
+    const certificate=certificateFor(id),allowed=trackAllowed(id)&&hasAccess('assessments'),open=state.user?.attempts.find(a=>a.track_id===id&&a.status==='open');
+    let lessons=hasAccess('materials')?await (await contentPanel()).publishedLessons(id):'';
+    if(location.hash!=='#trilha/'+id)return;
+    const topics=track.id==='pme'?'Planos e adicionais, condições do contrato e aplicativos.':'Pacotes, aplicativos e decisões de venda, conforme os materiais desta trilha.';
+    commitView(`<section class="page-top"><div class="wrap"><div class="breadcrumbs"><a href="#trilhas">Trilhas</a><span>/</span><span>${esc(track.name)}</span></div><span class="overline muted">TRILHA DE CERTIFICAÇÃO</span><h1>Domine o canal ${esc(track.name)}.</h1><p>${esc(track.description)} Estude o material e mostre que sabe o que apresentar, o que confirmar e como conduzir a venda.</p></div></section><div class="wrap detail-content"><section><div class="section-title"><div><span class="overline muted">SEU PONTO DE PARTIDA</span><h2>${hasAccess('materials')?'O que estudar.':'Sua trilha.'}</h2></div></div><div class="lesson-list">${hasAccess('materials')?lessons:'<div class="empty-panel"><h3>Materiais não liberados.</h3><p>O Admin controla a liberação dos materiais de estudo para sua conta.</p></div>'}</div><div class="warning-box"><strong>O que cai na avaliação</strong>${topics} As questões trazem situações práticas e alternativas que mudam de ordem a cada tentativa.${['digital','elite','indoor'].includes(id)?'<br><strong>Regra crítica: 2.000 Mega só pode ser vendido no condomínio DAHMAS.</strong>':''}</div></section><aside class="assessment-panel channel-${id}"><img src="/assets/badges/${id}.svg" width="106" height="124" alt="${esc(track.badge)}"><h2>${esc(track.badge)}</h2><p>Conquiste esta insígnia e o certificado da trilha.</p><ul class="rules-list"><li>20 perguntas de escolha única.</li><li>Pelo menos 16 respostas corretas.</li><li>Acerto em todas as ${track.criticalCount} regras críticas.</li><li>Respostas salvas ao avançar. Sem limite de tempo.</li></ul>${allowed?`<button type="button" class="button button-primary" data-start="${id}">${certificate?'Refazer para praticar':open?'Continuar avaliação':'Fazer avaliação'} ${icon('arrow')}</button>`:'<p>A prova desta trilha ainda não foi liberada para sua conta.</p>'}${certificate?`<a href="/api/certificates/${certificate.id}/pdf" class="button button-outline-light">Baixar certificado ${icon('download')}</a>`:''}</aside></div>`);
+  }
+  function exam(){
+    const attempt=state.attempt,track=trackFor(attempt.trackId),q=attempt.questions[state.questionIndex],last=state.questionIndex===attempt.questions.length-1;
+    if(attempt.status==='complete')return resultPage(attempt);
+    commitView(`<div class="wrap exam-shell"><div class="exam-topline"><h1>${esc(track.name)} · Avaliação</h1><a href="#trilha/${track.id}">${icon('back')} Sair e continuar depois</a></div><div class="exam-progress"><progress value="${Object.keys(attempt.answers).length}" max="${attempt.questions.length}" aria-label="Perguntas respondidas"></progress><span>${state.questionIndex+1} de ${attempt.questions.length}</span></div><div class="exam-error" id="exam-error" role="alert" hidden></div><article class="question-card"><div class="question-label"><span>${esc(q.topic)}</span><span>PERGUNTA ${String(state.questionIndex+1).padStart(2,'0')}</span>${q.critical?'<span class="critical-label">Regra crítica · acerto obrigatório</span>':''}</div><h2 id="question-title">${esc(q.stem)}</h2><fieldset class="answers" aria-labelledby="question-title"><legend class="sr-only">Escolha uma resposta</legend>${q.options.map((option,index)=>`<label class="answer-option"><input type="radio" name="answer" value="${esc(option.id)}" ${attempt.answers[q.id]===option.id?'checked':''}><span class="option-letter" aria-hidden="true">${String.fromCharCode(65+index)}</span><span>${esc(option.text)}</span></label>`).join('')}</fieldset><div class="question-actions"><button class="button button-secondary" type="button" data-exam-back ${state.questionIndex===0?'disabled':''}>${icon('back')} Anterior</button><button class="button button-primary" type="button" data-exam-next ${attempt.answers[q.id]?'':'disabled'}>${last?'Concluir avaliação':'Próxima pergunta'} ${icon('arrow')}</button></div></article><div class="question-index" aria-label="Ir para uma pergunta">${attempt.questions.map((item,index)=>`<button type="button" data-question="${index}" class="${attempt.answers[item.id]?'answered ':''}${index===state.questionIndex?'current':''}" aria-label="Pergunta ${index+1}${attempt.answers[item.id]?', respondida':''}" ${index===state.questionIndex?'aria-current="step"':''}>${index+1}</button>`).join('')}</div><p class="saved-note">Suas respostas são salvas ao avançar. A correção aparece depois da conclusão.</p></div>`);
+  }
+  async function saveProgress(){
+    if(state.saving)return false;
+    state.saving=true;
+    document.querySelectorAll('[data-exam-next],[data-exam-back],[data-question]').forEach(button=>button.disabled=true);
+    try{const result=await api(`/api/attempts/${state.attempt.id}`,{method:'PUT',body:{answers:state.attempt.answers,revision:state.attempt.revision}});state.attempt.revision=result.revision;return true;}catch(error){const box=document.querySelector('#exam-error');if(box){box.textContent=error.message;box.hidden=false;}else toast(error.message);return false;}finally{state.saving=false;document.querySelectorAll('[data-exam-next],[data-exam-back],[data-question]').forEach(button=>button.disabled=false);}
+  }
+  function resultPage(attempt){
+    const result=attempt.result,track=trackFor(attempt.trackId),criticalTotal=attempt.questions.filter(q=>q.critical).length;
+    const title=result.approved?'Trilha conquistada.':result.score>=80?'Uma regra precisa de revisão.':'Revise. Tente de novo.';
+    const description=result.approved?`Você conquistou ${track.badge}. Seu resultado ficou registrado e o certificado está disponível na sua conta.`:result.failedCritical?`Você acertou ${result.correct} das ${result.total} perguntas, mas errou ${result.failedCritical} regra${result.failedCritical===1?' crítica':'s críticas'}. Revise os pontos abaixo antes de tentar novamente.`:`Você precisa de pelo menos 16 acertos em 20. Veja a explicação das respostas e volte aos materiais para uma nova tentativa.`;
+    const reviews=result.details.map(detail=>`<details class="review-question ${detail.correct?'passed-question':''}" ${detail.critical&&!detail.correct?'open':''}><summary><span class="review-tag">${detail.correct?'Resposta correta':detail.critical?'Revisar regra crítica':'Revisar este ponto'}</span>${esc(detail.stem)}</summary><div class="review-answer"><div>Sua resposta: ${esc(detail.chosen)}</div><div class="expected-answer">Resposta correta: ${esc(detail.expected)}</div><p>${esc(detail.explanation)}</p>${hasAccess('materials')?`<a href="${sourceUrl(detail.source)}" target="_blank" rel="noopener">Rever no material · página ${detail.source.page} ${icon('link')}</a>`:''}</div></details>`).join('');
+    commitView(`<section class="result-hero"><div class="wrap result-grid"><div><span class="overline">${result.approved?'CERTIFICAÇÃO / '+esc(track.name.toUpperCase()):'DEVOLUTIVA / '+esc(track.name.toUpperCase())}</span><h1>${title}</h1><p>${esc(description)}</p><div class="result-actions">${result.certificate&&hasAccess('conquests')?`<a href="/api/certificates/${result.certificate.id}/pdf" class="button button-primary">Baixar certificado ${icon('download')}</a><a href="#conquistas" class="button button-outline-light">Minhas conquistas ${icon('award')}</a>`:`<a href="#trilha/${track.id}" class="button button-primary">Rever a trilha ${icon('book')}</a><button class="button button-outline-light" type="button" data-start="${track.id}">Tentar novamente ${icon('arrow')}</button>`}</div></div><img src="/assets/badges/${track.id}.svg" alt="${result.approved?esc(track.badge):'Insígnia da trilha a conquistar'}" width="165" height="197"></div></section><section class="wrap result-body"><div class="result-stats"><div class="result-stat"><span>Nota da avaliação</span><strong>${result.score}%</strong><small>Mínimo: 80%</small></div><div class="result-stat"><span>Respostas corretas</span><strong>${result.correct}/${result.total}</strong><small>Questões práticas de venda</small></div><div class="result-stat"><span>Regras críticas</span><strong>${criticalTotal-result.failedCritical}/${criticalTotal}</strong><small>Todas precisam estar corretas</small></div></div><h2>Entenda suas respostas.</h2><p>Use a explicação para reforçar o conhecimento. Cada resposta leva ao ponto certo do material.</p>${reviews}</section>`);
+  }
+  function conquests(){
+    if(!state.user){commitView(`<section class="page-top"><div class="wrap"><span class="overline muted">SEU PASSAPORTE COMERCIAL</span><h1>Suas conquistas, no seu nome.</h1><p>As insígnias e os certificados ficam vinculados à sua conta da ST1 Academy.</p></div></section><section class="wrap library"><div class="empty-panel"><h2>Entre para ver seu progresso.</h2><p>A aprovação exige 80% de acertos e todas as regras críticas corretas. Seu gestor fornece o convite de primeiro acesso.</p><button class="button button-primary" type="button" data-login>Entrar na ST1 Academy ${icon('arrow')}</button></div></section>`);return;}
+    if(!hasAccess('conquests'))return restricted('Conquistas não liberadas.','O Admin ainda não liberou esta área para sua conta.');
+    const cards=state.catalog.tracks.map(track=>{const cert=certificateFor(track.id);return `<article class="conquest-card ${cert?'':'locked'}"><img src="/assets/badges/${track.id}.svg" alt="${esc(track.badge)}" width="134" height="158"><h2>${esc(track.badge)}</h2><p>${cert?`Trilha conquistada · ${cert.score}% de acertos<br>${new Date(cert.issued_at).toLocaleDateString('pt-BR',{timeZone:'America/Fortaleza'})}`:'Conquiste esta insígnia aprovando na avaliação da trilha.'}</p>${cert?`<a class="button button-dark" href="/api/certificates/${cert.id}/pdf">Baixar certificado ${icon('download')}</a>${hasAccess('community')?`<button type="button" class="button button-secondary" data-share-cert="${cert.id}">Compartilhar no squad ${icon('arrow')}</button>`:''}<a class="button button-secondary" href="/assets/badges/${track.id}.svg" download>Salvar insígnia ${icon('award')}</a>`:`<span class="locked-text">${icon('lock')} Ainda não conquistada</span><a class="button button-secondary" href="#trilha/${track.id}">Ver trilha ${icon('arrow')}</a>`}</article>`;}).join('');
+    commitView(`<section class="page-top"><div class="wrap"><span class="overline muted">PASSAPORTE COMERCIAL</span><h1>Minhas conquistas.</h1><p>${esc(state.user.name)}, você conquistou ${state.user.certificates.length} de ${state.catalog.tracks.length} trilhas liberadas. Cada aprovação representa domínio do conteúdo e das regras de venda daquele canal.</p></div></section><section class="wrap conquests-grid">${cards}</section>${state.user.recognitions?.length?`<section class="wrap manage-additional-conquests"><span class="overline muted">CADA AVANÇO TEM SEU VALOR</span><h2>Reconhecimentos da Academy.</h2><div class="conquests-grid">${state.user.recognitions.map(r=>`<article class="conquest-card"><img src="${r.artUrl}" alt="${esc(r.title)}"><h3>${esc(r.title)}</h3><p>${new Date(r.issuedAt).toLocaleDateString('pt-BR')} · ${r.kind==='certificates'?'Certificado':'Insígnia'}</p>${r.pdfUrl?`<a class="button button-dark" href="${r.pdfUrl}">Baixar certificado ${icon('download')}</a>`:''}<a class="button button-secondary" href="${r.artUrl}" download>Salvar insígnia ${icon('award')}</a></article>`).join('')}</div></section>`:''}`);
+  }
+  async function adminPage(){
+    const supervisor=state.user?.role==='supervisor';
+    if(!['admin','supervisor'].includes(state.user?.role)||!hasAccess('team_results'))return restricted('Acompanhamento não liberado.','O painel da equipe é liberado pelo Admin para os supervisores responsáveis.',!state.user);
+    const base=supervisor?'/api/team':'/api/admin',report=await api(`${base}/report`);
+    const rows=report.attempts.map(attempt=>`<tr><td>${esc(attempt.name)}<small>${esc(attempt.email)}</small></td><td>${esc(trackFor(attempt.track_id)?.name||attempt.track_id)}</td><td>${attempt.result?attempt.result.score+'%':'—'}</td><td><span class="status ${attempt.result?(attempt.result.approved?'status-ok':'status-revise'):''}">${attempt.result?(attempt.result.approved?'Aprovado':'Revisar'):'Em andamento'}</span>${attempt.result?.failedCritical?`<small>${attempt.result.failedCritical} regra(s) crítica(s) errada(s)</small>`:''}</td><td>${new Date(attempt.finished_at||attempt.started_at).toLocaleDateString('pt-BR',{timeZone:'America/Fortaleza'})}</td></tr>`).join('');
+    commitView(`<section class="page-top"><div class="wrap"><span class="overline muted">${supervisor?'ACOMPANHAMENTO DA EQUIPE':'GESTÃO DA CAPACITAÇÃO'}</span><h1>${supervisor?'Sua equipe. Seu acompanhamento.':'Quem sabe. Quem precisa de reforço.'}</h1><p>${supervisor?'Acompanhe os vendedores vinculados a você nas trilhas liberadas pelo Admin. Suas próprias provas e conquistas ficam em Minhas trilhas e Minhas conquistas.':'Acompanhe as tentativas, as notas e os pontos críticos de toda a ST1 Academy. Gerencie pessoas e permissões na área de Acessos.'}</p></div></section><div class="wrap admin-layout"><section><div class="admin-summary"><div><strong>${report.users.length}</strong><span>${supervisor?'Vendedores na equipe':'Contas na ST1 Academy'}</span></div><div><strong>${report.attempts.length}</strong><span>Tentativas registradas</span></div><div><strong>${report.certificates}</strong><span>Trilhas conquistadas</span></div></div><div class="section-title"><div><h2>Resultados ${supervisor?'da equipe':''}.</h2></div><a class="button button-secondary button-small" href="${base}/report.csv">Exportar CSV ${icon('download')}</a></div><div class="table-wrap" tabindex="0" role="region" aria-label="Resultados da equipe"><table><thead><tr><th>${supervisor?'Vendedor':'Pessoa'}</th><th>Trilha</th><th>Nota</th><th>Resultado</th><th>Data</th></tr></thead><tbody>${rows||'<tr><td colspan="5">Nenhuma tentativa registrada nesta seleção.</td></tr>'}</tbody></table></div><p class="table-hint">Deslize a tabela para ver todas as colunas.</p>${supervisor?'':`<div class="integration-note"><strong>ST1 Sales: conexão futura.</strong>A ST1 Academy já registra aprovações com referência única. ${report.pendingIntegrations} evento(s) de aprovação aguardam conexão. Nenhuma conquista foi enviada ao ST1 Sales.</div>`}</section><aside class="invite-box"><span class="overline muted">${supervisor?'SUA CAPACITAÇÃO':'CONTROLE DE ACESSOS'}</span><h2>${supervisor?'Você também conquista.':'O acesso certo para cada pessoa.'}</h2><p>${supervisor?'Faça as próprias provas e conquiste suas certificações. A regra é a mesma: 80% de acertos e todas as regras críticas corretas.':'Cadastre Vendedores, Supervisores e Admins. Escolha trilhas, áreas visíveis e equipes. Edite ou bloqueie o acesso quando precisar.'}</p><a class="button button-primary full-width" href="${supervisor?'#inicio':'#acessos'}">${supervisor?'Fazer minhas provas':'Gerenciar acessos'} ${icon('arrow')}</a></aside></div>`);
+  }
+  async function accessPage(){
+    if(state.user?.role!=='admin')return restricted('Acessos são gerenciados pelo Admin.','Vendedores e Supervisores usam somente as áreas liberadas para suas contas.',!state.user);
+    if(!state.accessPanel){const {createAccessPanel}=await import('/assets/access.js?v=2.5.0');state.accessPanel=createAccessPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,refreshUser,toast});}
+    await state.accessPanel.render();
+  }
+  async function engagementPanel(){
+    if(!state.engagementPanel){const {createEngagementPanel}=await import('/assets/engagement.js?v=2.5.0');state.engagementPanel??=createEngagementPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast});}
+    return state.engagementPanel;
+  }
+  async function agendaPanel(){
+    if(!state.agendaPanel){const {createAgendaPanel}=await import('/assets/agenda.js?v=2.3.3');const game=await engagementPanel();state.agendaPanel??=createAgendaPanel({api,esc,icon,main,commitView,user:()=>state.user,toast,star:game.star});}
+    return state.agendaPanel;
+  }
+  async function profilePanel(){
+    if(!state.profilePanel){const {createProfilePanel}=await import('/assets/profile.js?v=2.3.3');const game=await engagementPanel();state.profilePanel??=createProfilePanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,toast,onChanged:refreshUser,star:game.star});}
+    return state.profilePanel;
+  }
+  async function contentPanel(){
+    if(!state.contentPanel){const {createContentPanel}=await import('/assets/content.js?v=2.5.0');state.contentPanel??=createContentPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast,sourceUrl,materialLabel,engagement:engagementPanel});}
+    return state.contentPanel;
+  }
+  function closeNavigation(restoreFocus=true){
+    const open=document.body.classList.contains('navigation-open');document.body.classList.remove('navigation-open');document.querySelector('#navigation-backdrop').hidden=true;document.querySelector('#navigation-toggle').setAttribute('aria-expanded','false');document.querySelector('#academy-workspace').inert=false;document.body.style.overflow='';if(open&&restoreFocus)document.querySelector('#navigation-toggle').focus();
+  }
+  function openNavigation(){document.body.classList.add('navigation-open');document.querySelector('#navigation-backdrop').hidden=false;document.querySelector('#navigation-toggle').setAttribute('aria-expanded','true');document.querySelector('#academy-workspace').inert=true;document.body.style.overflow='hidden';document.querySelector('#navigation-close').focus();}
+  document.querySelector('#navigation-toggle').addEventListener('click',openNavigation);
+  document.querySelector('#navigation-close').addEventListener('click',()=>closeNavigation());
+  document.querySelector('#navigation-backdrop').addEventListener('click',()=>closeNavigation());
+  document.querySelector('#academy-sidebar').addEventListener('click',event=>{const link=event.target.closest('a');if(link)closeNavigation(link.hash===location.hash);});
+  document.addEventListener('keydown',event=>{
+    if(!document.body.classList.contains('navigation-open'))return;if(event.key==='Escape'){event.preventDefault();closeNavigation();}
+    if(event.key==='Tab'){const candidates=[...document.querySelectorAll('#academy-sidebar a,#academy-sidebar button,#academy-sidebar summary')].filter(e=>!e.hidden&&e.getClientRects().length),first=candidates[0],last=candidates.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}
+  });
+  matchMedia('(min-width:901px)').addEventListener('change',event=>{if(event.matches)closeNavigation(false);});
+  function openAuth(){location.assign('/login?next='+encodeURIComponent(location.pathname+location.hash));}
+  async function startTrack(id){
+    if(!state.user){openAuth();return;}
+    try{state.attempt=await api('/api/attempts',{method:'POST',body:{trackId:id}});state.questionIndex=state.attempt.questions.findIndex(q=>!state.attempt.answers[q.id]);if(state.questionIndex<0)state.questionIndex=0;await refreshUser();go(`prova/${state.attempt.id}`);}catch(error){toast(error.message);}
+  }
+  async function managementPanel(){if(!state.managementPanel){const {createManagementPanel}=await import('/assets/management.js?v=2.3.3');state.managementPanel??=createManagementPanel({api,esc,icon,main,commitView,user:()=>state.user,toast,onChanged:refreshUser});}return state.managementPanel;}
+  async function render(){
+    if(!state.catalog)return;
+    let route=location.hash||'#inicio';if(route==='#main'){history.replaceState({},'',state.lastRoute||'#inicio');main.focus({preventScroll:true});return;}if(route.startsWith('#materiais')){route=route.replace('#materiais','#conteudos');history.replaceState({},'',route);}if(/^#conteudos\/(novo|editar)(\/|$)/.test(route)){route=route.replace('#conteudos','#publicar');history.replaceState({},'',route);}if(!['inicio','trilhas','trilha','conquistas','gestao','acessos','conteudos','dashboard','material','publicar','prova','resultado','percurso','conhecimento','squad','pessoas','squads-gestao','gamificacao','desafios','desafio','pratica','notificacoes','perfil','perfil-regras','pedidos-squad','agenda','agenda-gestao','agenda-programar','agenda-participacao','agenda-integracao','cadastros'].includes(route.slice(1).split('/')[0])){route='#inicio';history.replaceState({},'',route);}const [page,id,contentId,pageNumber,subCategory]=route.slice(1).split('/');
+    try{
+      if(state.lastRoute.startsWith('#prova/')&&route!==state.lastRoute&&state.attempt?.status==='open'&&document.querySelector('.question-card')){if(!await saveProgress()){history.replaceState({},'',state.lastRoute);return;}}
+      await refreshUser();
+      if(route!==(location.hash||'#inicio'))return;state.lastRoute=route;
+      if(state.blocked)return restricted('Seu acesso está bloqueado.',state.blocked);
+      if(!state.user){openAuth();return;}
+      if(page==='trilha')await detail(id);
+      else if(page==='conquistas')conquests();
+      else if(page==='gestao')await (await engagementPanel()).results();
+      else if(page==='percurso')await (await engagementPanel()).trail(id);
+      else if(page==='conhecimento')await (await engagementPanel()).knowledge(id,contentId);
+      else if(page==='squad')await (await (await engagementPanel()).community()).squad(id);
+      else if(page==='notificacoes')await (await engagementPanel()).notifications();
+      else if(page==='desafios')await (await (await engagementPanel()).quiz()).list();
+      else if(page==='desafio')await (await (await engagementPanel()).quiz()).ready(id);
+      else if(page==='pratica')await (await (await engagementPanel()).quiz()).run(id);
+      else if(page==='squads-gestao'){if(state.user.role!=='admin')return restricted('Acesso exclusivo de Admin.','O Admin organiza os squads.');const panel=await (await engagementPanel()).community();if(id)await panel.edit(id==='novo'?null:id);else await panel.manager();}
+      else if(page==='gamificacao'){if(state.user.role!=='admin')return restricted('Acesso exclusivo de Admin.','O Admin configura pontos e desafios.');const panel=await (await engagementPanel()).quiz();if(id==='novo')await panel.edit();else if(id==='editar')await panel.edit(contentId);else await panel.manager();}
+      else if(page==='agenda'){const panel=await agendaPanel();if(id)await panel.detail(id);else await panel.list();}
+      else if(page==='agenda-gestao')await (await agendaPanel()).list(true);
+      else if(page==='agenda-programar')await (await agendaPanel()).edit(id==='novo'?null:id);
+      else if(page==='agenda-participacao')await (await agendaPanel()).participation();
+      else if(page==='agenda-integracao')await (await agendaPanel()).integration();
+      else if(page==='pessoas')await (await profilePanel()).people();
+      else if(page==='perfil'){const panel=await profilePanel();if(id==='editar')await panel.edit(contentId==='boas-vindas');else if(id==='estilo')await panel.customize();else await panel.show(id);}
+      else if(page==='pedidos-squad')await (await profilePanel()).inbox();
+      else if(page==='perfil-regras'){if(state.user.role!=='admin')return restricted('Acesso exclusivo de Admin.','O Admin define as liberações do perfil.');await (await profilePanel()).manager();}
+      else if(page==='cadastros'){const panel=await managementPanel();if(id==='emissoes')await panel.issued();else if(!id)await panel.home();else if(contentId==='novo')await panel.edit(id);else if(contentId==='editar')await panel.edit(id,pageNumber);else if(contentId==='ver')await panel.detail(id,pageNumber);else if(contentId==='emitir')await panel.issue(id,pageNumber);else await panel.list(id,contentId==='lixeira');}
+      else if(page==='acessos')await accessPage();
+      else if(page==='conteudos')await (await contentPanel()).library(id==='categoria'?contentId:pageNumber==='categoria'?subCategory:'all',id==='modulo'?contentId:'all');
+      else if(page==='dashboard')await (await contentPanel()).dashboard();
+      else if(page==='material')await (await contentPanel()).detail(id,contentId==='pagina'?Number(pageNumber):undefined);
+      else if(page==='publicar'){const panel=await contentPanel();if(id==='modulos'){if(contentId)await panel.moduleEdit(contentId==='novo'?undefined:contentId);else await panel.moduleManager();}else if(id==='novo')await panel.edit();else if(id==='editar')await panel.edit(contentId);else await panel.manager();}
+      else if(page==='prova'||page==='resultado'){
+        if(!state.user){conquests();return;}
+        if(!hasAccess('assessments'))return restricted('Provas não liberadas.','O Admin controla quais provas você pode realizar.');
+        if(state.attempt?.id!==id){state.attempt=await api(`/api/attempts/${id}`);state.questionIndex=Math.max(0,state.attempt.questions.findIndex(q=>!state.attempt.answers[q.id]));}
+        if(!trackFor(state.attempt.trackId))return restricted('Trilha não liberada.','Esta trilha não está mais liberada para sua conta.');
+        exam();
+      }else if(page==='trilhas'){home(true);}else{await (await contentPanel()).home();}
+    }catch(error){if(error.unavailable)showUnavailable(error);else commitView(`<div class="wrap library"><div class="empty-panel"><h2>Vamos retomar daqui.</h2><p>${esc(error.message)}</p><a class="button button-primary" href="#inicio">Voltar às trilhas</a></div></div>`);}
+  }
+  main.addEventListener('change',event=>{if(event.target.matches('input[name=answer]')){const q=state.attempt.questions[state.questionIndex];state.attempt.answers[q.id]=event.target.value;document.querySelector('[data-exam-next]').disabled=false;}});
+  main.addEventListener('click',async event=>{
+    const retry=event.target.closest('[data-retry-connection]');if(retry){retry.disabled=true;await init();return;}
+    const start=event.target.closest('[data-start]');if(start){start.disabled=true;await startTrack(start.dataset.start);start.disabled=false;return;}
+    if(event.target.closest('[data-login]'))return openAuth();
+    if(event.target.closest('[data-logout]'))return document.querySelector('#account-button').click();
+    if(event.target.closest('[data-exam-next]')){
+      if(!await saveProgress())return;
+      if(state.questionIndex===state.attempt.questions.length-1){
+        if(Object.keys(state.attempt.answers).length!==state.attempt.questions.length){toast('Responda todas as perguntas antes de concluir.');return;}
+        document.querySelector('#finish-error').hidden=true;document.querySelector('#finish-dialog').showModal();
+      }else{state.questionIndex++;exam();}return;
+    }
+    if(event.target.closest('[data-exam-back]')){if(state.questionIndex>0&&await saveProgress()){state.questionIndex--;exam();}return;}
+    const index=event.target.closest('[data-question]');if(index&&!state.saving){if(await saveProgress()){state.questionIndex=Number(index.dataset.question);exam();}return;}
+    const copy=event.target.closest('[data-copy-invite]');if(copy){try{await navigator.clipboard.writeText(document.querySelector('#generated-invite').value);toast('Convite copiado. Envie somente para este vendedor.');}catch{document.querySelector('#generated-invite').select();toast('Selecione e copie o convite.');}}
+  });
+  document.querySelector('#account-button').addEventListener('click',async()=>{if(state.user||state.blocked){await api('/api/auth/sign-out',{method:'POST',body:{}});location.assign('/login');}else openAuth();});
+  document.querySelector('#finish-close').addEventListener('click',()=>document.querySelector('#finish-dialog').close());
+  document.querySelector('#finish-review').addEventListener('click',()=>document.querySelector('#finish-dialog').close());
+  document.querySelector('#finish-confirm').addEventListener('click',async event=>{
+    const button=event.currentTarget;button.disabled=true;
+    try{const result=await api(`/api/attempts/${state.attempt.id}/finish`,{method:'POST',body:{answers:state.attempt.answers,revision:state.attempt.revision}});state.attempt.result=result;state.attempt.status='complete';document.querySelector('#finish-dialog').close();await refreshUser();go(`resultado/${state.attempt.id}`);}catch(error){const box=document.querySelector('#finish-error');box.textContent=error.message;box.hidden=false;}finally{button.disabled=false;}
+  });
+  addEventListener('hashchange',render);
+  async function init(){
+    try{
+      await refreshUser();
+      if(!state.user&&!state.blocked){openAuth();return;}
+      await render();
+    }catch(error){if(error.unavailable)showUnavailable(error);else main.innerHTML=`<div class="wrap library"><div class="empty-panel"><h2>Vamos retomar seu acesso.</h2><p>${esc(error.message)}</p><a href="/login" class="button button-primary">Voltar ao acesso</a></div></div>`;}
+  }
+  init();
+})();

@@ -1,0 +1,96 @@
+const roleLabels={seller:'Vendedor',supervisor:'Supervisor',admin:'Admin'};
+const permissionLabels={materials:'Materiais de estudo',assessments:'Provas',conquests:'Insígnias e certificados',team_results:'Resultados da equipe',community:'Squads, chat e ranking',strategy:'Área Estratégia (BI) — Pesquisa de Mercado'};
+const defaults=role=>Object.keys(permissionLabels).filter(id=>role==='admin'||id!=='strategy'&&(role!=='seller'||id!=='team_results'));
+
+export function createAccessPanel({api,esc,icon,main,commitView,tracks,user=()=>null,refreshUser,toast}){
+  let directory={users:[],invitations:[]},filter='all',status='all',tab='members',search='',editing=null;
+  const dialog=document.querySelector('#access-dialog'),confirmDialog=document.querySelector('#access-revoke-dialog');
+  const trackNames=ids=>ids.map(id=>tracks().find(t=>t.id===id)?.name||id).join(', ');
+  const listPeople=(role,selected,name)=>{
+    const people=directory.users.filter(u=>u.role===role);
+    return people.length?people.map(person=>`<label><input type="checkbox" name="${name}" value="${esc(person.id)}" ${selected.includes(person.id)?'checked':''}><span>${esc(person.name)}${!person.enabled?'<small>Acesso bloqueado</small>':''}</span></label>`).join(''):`<p class="access-field-note">${role==='seller'?'Os vendedores aparecem aqui depois de ativar a conta.':'Os supervisores aparecem aqui depois de ativar a conta.'}</p>`;
+  };
+  function controls(value,prefix){
+    const isAdmin=value.role==='admin';
+    return `<div class="access-admin-note" ${isAdmin?'':'hidden'}>${icon('shield')}<p><strong>Admin tem acesso completo.</strong>Gerencia pessoas, permissões, equipes e resultados de toda a Academia.</p></div><div ${isAdmin?'hidden':''}><fieldset class="access-fieldset"><legend>O que esta pessoa pode acessar</legend><div class="access-checks">${Object.entries(permissionLabels).filter(([id])=>value.role!=='seller'||id!=='team_results').map(([id,label])=>`<label><input type="checkbox" name="permission" value="${id}" ${value.permissions.includes(id)?'checked':''}> ${label}</label>`).join('')}</div></fieldset><fieldset class="access-fieldset"><legend>Trilhas liberadas</legend><p class="access-field-note">As provas e os materiais seguem esta seleção.</p><div class="access-checks">${tracks().map(t=>`<label><input type="checkbox" name="track" value="${t.id}" ${value.tracks.includes(t.id)?'checked':''}> ${esc(t.name)}</label>`).join('')}</div></fieldset>${value.role==='supervisor'?`<div class="access-supervisor-note">${icon('award')}<p><strong>Supervisor também se capacita.</strong>Faz as próprias provas e conquista suas insígnias e certificados.</p></div><fieldset class="access-fieldset"><legend>Vendedores que acompanha</legend><p class="access-field-note">Vê os resultados destes vendedores nas trilhas liberadas acima.</p><div class="access-people-checks">${listPeople('seller',value.sellerIds||[],'seller')}</div></fieldset>`:value.role==='seller'?`<fieldset class="access-fieldset"><legend>Supervisores deste vendedor</legend><div class="access-people-checks">${listPeople('supervisor',value.supervisorIds||[],'supervisor')}</div></fieldset>`:''}</div>`;
+  }
+  function selection(form){
+    const checked=name=>[...form.querySelectorAll(`input[name="${name}"]:checked`)].map(input=>input.value);
+    const role=form.elements.role.value;
+    return {role,tracks:role==='admin'?tracks().map(t=>t.id):checked('track'),permissions:role==='admin'?defaults(role):checked('permission'),sellerIds:role==='supervisor'?checked('seller'):[],supervisorIds:role==='seller'?checked('supervisor'):[],enabled:form.elements.enabled?form.elements.enabled.checked:true};
+  }
+  function personRow(person,type){
+    const pending=type==='invitation',enabled=pending?person.status==='pending':person.enabled;
+    const status=pending?({pending:'Convite pendente',expired:'Convite vencido',revoked:'Convite revogado'}[person.status]):enabled?'Ativo':'Bloqueado';
+    const supervisors=(person.supervisorIds||[]).map(id=>directory.users.find(u=>u.id===id)?.name).filter(Boolean).join(', ');
+    return `<article class="access-person access-person-v2"><div class="access-person-main"><span class="access-avatar" aria-hidden="true">${esc(person.name.split(' ').filter(Boolean).slice(0,2).map(n=>n[0]).join('').toUpperCase())}</span><div><h3>${esc(person.name)} ${!pending&&person.id===user()?.id?'<span class="access-own">Você</span>':''}</h3><p>${esc(person.email)}</p><div class="access-person-tags"><span class="access-role role-${person.role}">${roleLabels[person.role]}</span><span class="status ${enabled?'status-ok':''}">${status}</span></div></div></div><div class="access-person-scope"><strong>${person.role==='admin'?'Acesso completo':person.tracks.length+' trilha'+(person.tracks.length===1?'':'s')+' liberada'+(person.tracks.length===1?'':'s')}</strong><span>${person.role==='admin'?'Todas as áreas e pessoas':esc(trackNames(person.tracks))||'Nenhuma trilha liberada'}</span>${person.role==='supervisor'?`<small>${(person.sellerIds||[]).length} vendedores na equipe · provas próprias</small>`:supervisors?`<small>Supervisor: ${esc(supervisors)}</small>`:''}</div>${!pending||person.status==='pending'?`<button class="button button-secondary button-small" type="button" data-edit-access="${esc(person.id)}" data-access-type="${type}" aria-label="Editar acesso de ${esc(person.name)}">Editar acesso ${icon('edit')}</button>`:'<span class="access-invite-finished">Convite encerrado</span>'}</article>`;
+  }
+  function renderDirectory(){
+    const matches=person=>(filter==='all'||person.role===filter)&&(status==='all'||(tab==='members'?(status==='active'?person.enabled:!person.enabled):person.status===status))&&`${person.name} ${person.email}`.toLocaleLowerCase('pt-BR').includes(search.toLocaleLowerCase('pt-BR'));
+    const users=directory.users.filter(matches),invitations=directory.invitations.filter(matches);
+    const target=document.querySelector('#access-people-list');if(!target)return;
+    const list=tab==='members'?users:invitations;
+    const metrics=main.querySelectorAll('.access-metrics article strong');Object.keys(roleLabels).forEach((role,index)=>{if(metrics[index])metrics[index].textContent=String(directory.users.filter(p=>p.role===role).length).padStart(2,'0');});if(metrics[3])metrics[3].textContent=String(directory.invitations.filter(i=>i.status==='pending').length).padStart(2,'0');
+    target.innerHTML=`<div class="access-list-title"><div><h2>${tab==='members'?'Pessoas da Academy':'Convites de primeiro acesso'}</h2><p>${tab==='members'?'Escolha uma pessoa para revisar perfil, trilhas e equipe.':'Cada convite é pessoal e permite definir a senha no primeiro acesso.'}</p></div><span>${list.length} ${list.length===1?'registro':'registros'}</span></div><div class="access-people">${list.map(p=>personRow(p,tab==='members'?'member':'invitation')).join('')||`<div class="access-empty-v2">${icon(tab==='members'?'users':'link')}<h3>${search||filter!=='all'||status!=='all'?'Nenhum resultado nesta busca.':tab==='members'?'Seu time começa aqui.':'Nenhum convite nesta seleção.'}</h3><p>${search||filter!=='all'||status!=='all'?'Revise os filtros ou tente outro nome.':'Use Convidar pessoa para preparar um novo acesso.'}</p></div>`}</div>`;
+    document.querySelectorAll('[data-access-tab]').forEach(button=>{const selected=button.dataset.accessTab===tab;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));const count=button.querySelector('span');if(count)count.textContent=button.dataset.accessTab==='members'?directory.users.length:directory.invitations.length;});
+    document.querySelectorAll('[data-access-filter]').forEach(button=>{const selected=button.dataset.accessFilter===filter;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});
+  }
+  function statusOptions(){const field=main.querySelector('#access-status-filter');if(!field)return;field.innerHTML='<option value="all">Todas as situações</option>'+(tab==='members'?'<option value="active">Ativos</option><option value="blocked">Bloqueados</option>':'<option value="pending">Pendentes</option><option value="expired">Vencidos</option><option value="revoked">Revogados</option>');field.value=status;}
+  function inviteMarkup(){return `<dialog class="workspace-drawer" id="access-create-dialog" aria-labelledby="access-create-title"><div class="drawer-heading"><div><span class="overline muted">PRIMEIRO ACESSO</span><h2 id="access-create-title">Convidar pessoa</h2><p>O convite é pessoal e vale por 7 dias.</p></div><button type="button" class="drawer-close" data-close-access-invite aria-label="Fechar convite">×</button></div><div class="drawer-content"><form id="access-invite-form" class="invite-form"><label for="access-new-name">Nome completo</label><input id="access-new-name" name="name" required minlength="3" maxlength="80" autocomplete="off"><label for="access-new-email">E-mail</label><input id="access-new-email" name="email" type="email" required autocomplete="off"><label for="access-new-role">Perfil de acesso</label><select id="access-new-role" name="role">${Object.entries(roleLabels).map(([id,label])=>`<option value="${id}">${label}</option>`).join('')}</select><div id="access-new-controls">${controls({role:'seller',tracks:tracks().map(t=>t.id),permissions:defaults('seller')},'new')}</div><button class="button button-primary full-width" type="submit">Gerar convite ${icon('link')}</button><p class="form-error" id="access-invite-error" role="alert" hidden></p></form><div id="access-invite-result" class="invite-result" hidden></div></div><div class="drawer-footer"><button type="button" class="button button-secondary" data-close-access-invite data-access-invite-finish>Cancelar</button></div></dialog>`;}
+  async function render(){
+    directory=await api('/api/admin/access');if(location.hash!=='#acessos')return;
+    const counts=Object.fromEntries(Object.keys(roleLabels).map(role=>[role,directory.users.filter(u=>u.role===role).length]));
+    commitView(`<section class="page-top access-page-top"><div class="wrap content-heading"><div><span class="overline muted">PESSOAS E PERMISSÕES</span><h1>Gestão de pessoas e acessos.</h1><p>Organize pessoas, trilhas e acompanhamento em um só lugar.</p></div><div class="page-heading-actions"><button type="button" class="button button-primary" data-open-access-invite>Convidar pessoa ${icon('plus')}</button></div></div></section><section class="wrap access-content access-content-v2"><div class="access-metrics">${Object.entries(roleLabels).map(([role,label])=>`<article><span>${role==='seller'?'Vendedores':role==='supervisor'?'Supervisores':'Admins'}</span><strong>${String(counts[role]).padStart(2,'0')}</strong>${icon(role==='admin'?'shield':'users')}</article>`).join('')}<article><span>Convites pendentes</span><strong>${String(directory.invitations.filter(i=>i.status==='pending').length).padStart(2,'0')}</strong>${icon('link')}</article></div><section class="access-directory-v2"><nav class="access-section-tabs" aria-label="Listas de acesso"><button type="button" data-access-tab="members" aria-pressed="${tab==='members'}">Contas <span>${directory.users.length}</span></button><button type="button" data-access-tab="invitations" aria-pressed="${tab==='invitations'}">Convites <span>${directory.invitations.length}</span></button></nav><div class="access-toolbar-v2"><label class="access-search"><span class="sr-only">Buscar pessoa por nome ou e-mail</span>${icon('users')}<input id="access-search" type="search" placeholder="Buscar nome ou e-mail" value="${esc(search)}"></label><label><span>Perfil</span><select id="access-role-filter"><option value="all">Todos os perfis</option>${Object.entries(roleLabels).map(([id,label])=>`<option value="${id}" ${filter===id?'selected':''}>${label}</option>`).join('')}</select></label><label><span>Situação</span><select id="access-status-filter"></select></label></div><div id="access-people-list"></div></section>${inviteMarkup()}</section>`);statusOptions();renderDirectory();
+  }
+  function openEditor(id,type){
+    const person=(type==='member'?directory.users:directory.invitations).find(u=>u.id===id);if(!person)return;
+    editing={id,type};
+    const protectedAdmin=type==='member'&&person.id===user()?.id&&person.role==='admin'&&directory.users.filter(p=>p.role==='admin'&&p.enabled).length===1;
+    document.querySelector('#access-edit-title').textContent=type==='member'?'Editar acesso':'Editar convite';
+    document.querySelector('#access-edit-person').textContent=`${person.name} · ${person.email}`;
+    document.querySelector('#access-edit-body').innerHTML=`<label for="access-edit-role">Perfil de acesso</label><select id="access-edit-role" name="role">${Object.entries(roleLabels).map(([role,label])=>`<option value="${role}" ${person.role===role?'selected':''}>${label}</option>`).join('')}</select><div id="access-edit-controls">${controls(person,'edit')}</div>${type==='member'?`<label class="access-enabled"><input type="checkbox" name="enabled" ${person.enabled?'checked':''}><span><strong>Acesso ativo</strong><small>Desmarque para bloquear a conta. O histórico fica preservado.</small></span></label>`:''}`;
+    if(protectedAdmin){document.querySelector('#access-edit-role').querySelectorAll('option').forEach(o=>o.disabled=o.value!=='admin');const enabled=document.querySelector('#access-edit-body input[name=enabled]');enabled.disabled=true;enabled.closest('label').querySelector('small').textContent='Este é o único Admin ativo. O acesso administrativo permanece liberado.';}
+    document.querySelector('#access-edit-error').hidden=true;document.querySelector('#access-edit-revoke').hidden=type!=='invitation';
+    dialog.showModal();document.querySelector('#access-edit-role').focus();
+  }
+  function roleChange(form,target){
+    const value=selection(form);value.permissions=defaults(value.role);value.sellerIds=[];value.supervisorIds=[];
+    document.querySelector(target).innerHTML=controls(value,'change');
+  }
+  main.addEventListener('input',event=>{if(event.target.id==='access-search'){search=event.target.value;renderDirectory();}});
+  main.addEventListener('change',event=>{if(event.target.id==='access-new-role')roleChange(event.target.form,'#access-new-controls');if(event.target.id==='access-role-filter'){filter=event.target.value;renderDirectory();}if(event.target.id==='access-status-filter'){status=event.target.value;renderDirectory();}});
+  main.addEventListener('click',event=>{
+    const toggle=event.target.closest('[data-access-tab]');if(toggle){tab=toggle.dataset.accessTab;status='all';statusOptions();renderDirectory();return;}
+    const invite=event.target.closest('[data-open-access-invite]');if(invite){const form=main.querySelector('#access-invite-form');form.reset();main.querySelector('#access-new-controls').innerHTML=controls({role:'seller',tracks:tracks().map(t=>t.id),permissions:defaults('seller')},'new');form.hidden=false;main.querySelector('[data-access-invite-finish]').textContent='Cancelar';main.querySelector('#access-invite-result').hidden=true;main.querySelector('#access-invite-error').hidden=true;main.querySelector('#access-create-dialog').showModal();main.querySelector('#access-new-name').focus();return;}
+    if(event.target.closest('[data-close-access-invite]')){main.querySelector('#access-create-dialog').close();main.querySelector('[data-open-access-invite]').focus();return;}
+    const filtered=event.target.closest('[data-access-filter]');if(filtered){filter=filtered.dataset.accessFilter;renderDirectory();return;}
+    const edit=event.target.closest('[data-edit-access]');if(edit)openEditor(edit.dataset.editAccess,edit.dataset.accessType);
+    const copy=event.target.closest('[data-copy-access-invite]');if(copy){navigator.clipboard.writeText(document.querySelector('#access-generated-invite').value).then(()=>toast('Convite copiado. Envie somente para esta pessoa.')).catch(()=>document.querySelector('#access-generated-invite').select());}
+  });
+  main.addEventListener('submit',async event=>{
+    if(event.target.id!=='access-invite-form')return;event.preventDefault();
+    const form=event.target,button=form.querySelector('[type=submit]'),errorBox=document.querySelector('#access-invite-error');button.disabled=true;errorBox.hidden=true;
+    try{
+      const result=await api('/api/admin/invitations',{method:'POST',body:{name:form.elements.name.value,email:form.elements.email.value,...selection(form)}});
+      const target=document.querySelector('#access-invite-result');target.innerHTML=`<p>Convite de ${roleLabels[form.elements.role.value]} gerado para ${esc(form.elements.name.value)}.</p><label for="access-generated-invite">Link pessoal</label><input id="access-generated-invite" readonly value="${esc(result.url)}"><button type="button" class="button button-secondary full-width" data-copy-access-invite>Copiar convite ${icon('link')}</button>`;target.hidden=false;
+      form.hidden=true;main.querySelector('[data-access-invite-finish]').textContent='Concluir';directory=await api('/api/admin/access');tab='invitations';status='all';statusOptions();renderDirectory();
+    }catch(error){errorBox.textContent=error.message;errorBox.hidden=false;}finally{button.disabled=false;}
+  });
+  dialog.addEventListener('change',event=>{if(event.target.id==='access-edit-role')roleChange(event.target.form,'#access-edit-controls');});
+  document.querySelector('#access-edit-close').addEventListener('click',()=>dialog.close());
+  document.querySelector('#access-edit-cancel').addEventListener('click',()=>dialog.close());
+  document.querySelector('#access-edit-form').addEventListener('submit',async event=>{
+    event.preventDefault();const button=document.querySelector('#access-edit-save'),errorBox=document.querySelector('#access-edit-error');button.disabled=true;errorBox.hidden=true;
+    try{
+      await api(`/api/admin/${editing.type==='member'?'members':'invitations'}/${editing.id}`,{method:'PATCH',body:selection(event.target)});
+      await refreshUser();if(user()?.role!=='admin'){dialog.close();location.hash='#inicio';toast('Acesso atualizado.');return;}await render();dialog.close();toast('Acesso atualizado.');
+    }catch(error){errorBox.textContent=error.message;errorBox.hidden=false;}finally{button.disabled=false;}
+  });
+  document.querySelector('#access-edit-revoke').addEventListener('click',()=>{dialog.close();confirmDialog.showModal();});
+  document.querySelector('#access-revoke-cancel').addEventListener('click',()=>{confirmDialog.close();openEditor(editing.id,editing.type);});
+  document.querySelector('#access-revoke-confirm').addEventListener('click',async event=>{
+    const button=event.currentTarget,errorBox=document.querySelector('#access-revoke-error');button.disabled=true;errorBox.hidden=true;
+    try{await api(`/api/admin/invitations/${editing.id}/revoke`,{method:'POST',body:{}});confirmDialog.close();await render();toast('Convite revogado. O link não permite mais ativar a conta.');}catch(error){errorBox.textContent=error.message;errorBox.hidden=false;}finally{button.disabled=false;}
+  });
+  return {render};
+}

@@ -1,0 +1,56 @@
+name: Academy checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+          cache: npm
+      - run: npm ci --omit=dev
+      - run: npm test
+  postgres:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: academyqa
+          POSTGRES_PASSWORD: isolated-ci-only
+          POSTGRES_DB: academyqa
+        ports: [5432:5432]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+          cache: npm
+      - run: npm ci --omit=dev
+      - name: Storage, reconnect and verified migration
+        run: node --test tests/postgres-db.test.mjs tests/postgres-sql.test.mjs
+        env:
+          ACADEMY_PG_TEST_URL: postgresql://academyqa:isolated-ci-only@127.0.0.1:5432/academyqa
+      - name: Existing Academy flows on real PostgreSQL
+        run: >-
+          node --test --test-concurrency=2
+          tests/academy.test.mjs tests/agenda.test.mjs tests/profiles.test.mjs
+          tests/content.test.mjs tests/management.test.mjs tests/learning-flows.test.mjs
+          tests/knowledge-map.test.mjs tests/engagement.test.mjs tests/material-study.test.mjs
+          tests/foundations.test.mjs tests/google-access.test.mjs tests/chat-media.test.mjs
+        env:
+          ACADEMY_STORAGE: postgres
+          DATABASE_URL: postgresql://academyqa:isolated-ci-only@127.0.0.1:5432/academyqa
+          ACADEMY_AUTH_SECRET: isolated-postgres-ci-secret-not-a-real-credential
+          ACADEMY_PG_QA: '1'

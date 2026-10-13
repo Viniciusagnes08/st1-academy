@@ -1,0 +1,535 @@
+[
+  {
+    "id": "st1-catalogo-pap",
+    "file": "catalogo-pap.pdf",
+    "title": "Catálogo PAP",
+    "summary": "Planos e aplicativos para a venda porta a porta.",
+    "category": "produtos",
+    "tracks": [
+      "pap"
+    ],
+    "pages": 15,
+    "sha256": "6d6e626fd7c038ad1cb5e25ce590eda35e6b54ffdd7886ae55447f798c1f85dc",
+    "sections": [
+      {
+        "title": "Capa",
+        "page": 1
+      },
+      {
+        "title": "ST1 500 Mega Residencial",
+        "page": 2
+      },
+      {
+        "title": "ST1 1000 Mega Residencial",
+        "page": 3
+      },
+      {
+        "title": "ST1 1300 Mega Residencial",
+        "page": 4
+      },
+      {
+        "title": "Deezer + Docway · 1300 Mega Residencial",
+        "page": 5
+      },
+      {
+        "title": "ExitLag + Looke · 1300 Mega Residencial",
+        "page": 6
+      },
+      {
+        "title": "SKY+ Standard · 1300 Mega Residencial",
+        "page": 7
+      },
+      {
+        "title": "ST1 1300 Mega Residencial Wi-Fi 7",
+        "page": 8
+      },
+      {
+        "title": "Deezer + Docway · 1300 Mega Residencial Wi-Fi 7",
+        "page": 9
+      },
+      {
+        "title": "ExitLag + Looke · 1300 Mega Residencial Wi-Fi 7",
+        "page": 10
+      },
+      {
+        "title": "SKY+ Standard · 1300 Mega Residencial Wi-Fi 7",
+        "page": 11
+      },
+      {
+        "title": "ST1 Prestige 1600 Mega + 1 Wi-Fi Mesh Indoor",
+        "page": 12
+      },
+      {
+        "title": "Deezer + Docway · Prestige 1600 Mega Indoor",
+        "page": 13
+      },
+      {
+        "title": "ExitLag + Looke · Prestige 1600 Mega Indoor",
+        "page": 14
+      },
+      {
+        "title": "SKY+ Standard + Estuda+ · Prestige 1600 Mega Indoor",
+        "page": 15
+      }
+    ],
+    "dahmas": false,
+    "search": "PAP Residencial Planos e aplicativos para a venda porta a porta. Catálogo PAP Capa Catálogo PAP RESIDENCIAL ST1 500 Mega Residencial ST1 1000 Mega Residencial ST1 1300 Mega Residencial Aplicativos / 1300 Mega Residencial / 1 Deezer Docway Aplicativos / 1300 Mega Residencial / 2 ExitLag Looke Aplicativos / 1300 Mega Residencial / 3 SKY+ Standard ST1 1300 Mega Residencial Wi-Fi 7 Aplicativos / 1300 Mega Residencial Wi-Fi 7 / 1 Deezer Docway Aplicativos / 1300 Mega Residencial Wi-Fi 7 / 2 ExitLag Looke Aplicativos / 1300 Mega Residencial Wi-Fi 7 / 3 SKY+ Standard ST1 Prestige 1600 Mega + 1 Wi-Fi Mesh Indoor Aplicativos / Prestige 1600 Mega Indoor / 1 Deezer Docway Aplicativos / Prestige 1600 Mega Indoor / 2 ExitLag Looke Aplicativos / Prestige 1600 Mega Indoor / 3 SKY+ Standard Estuda+",
+    "cover": "covers/pap.webp",
+    "presentation": {
+      "name": "PAP",
+      "channel": "Residencial",
+      "description": "Porta a porta",
+      "plans": 5,
+      "theme": "pap"
+    }
+  },
+  {
+    "id": "st1-catalogo-digital",
+    "file": "catalogo-digital.pdf",
+    "title": "Catálogo Digital",
+    "summary": "Planos e aplicativos para o atendimento digital.",
+    "category": "produtos",
+    "tracks": [
+      "digital"
+    ],
+    "pages": 23,
+    "sha256": "14b30da55b80c6b57681cf2f83548ccc0253b07a1024cf0be629a925adbe9c05",
+    "sections": [
+      {
+        "title": "Capa",
+        "page": 1
+      },
+      {
+        "title": "ST1 500 Mega Residencial",
+        "page": 2
+      },
+      {
+        "title": "ST1 1000 Mega Residencial",
+        "page": 3
+      },
+      {
+        "title": "ST1 1300 Mega Residencial",
+        "page": 4
+      },
+      {
+        "title": "Deezer + Docway · 1300 Mega Residencial",
+        "page": 5
+      },
+      {
+        "title": "ExitLag + Looke · 1300 Mega Residencial",
+        "page": 6
+      },
+      {
+        "title": "SKY+ Standard · 1300 Mega Residencial",
+        "page": 7
+      },
+      {
+        "title": "ST1 1300 Mega Residencial Wi-Fi 7",
+        "page": 8
+      },
+      {
+        "title": "Deezer + Docway · 1300 Mega Residencial Wi-Fi 7",
+        "page": 9
+      },
+      {
+        "title": "ExitLag + Looke · 1300 Mega Residencial Wi-Fi 7",
+        "page": 10
+      },
+      {
+        "title": "SKY+ Standard · 1300 Mega Residencial Wi-Fi 7",
+        "page": 11
+      },
+      {
+        "title": "ST1 Prestige 1600 Mega + 1 Wi-Fi Mesh Indoor",
+        "page": 12
+      },
+      {
+        "title": "Deezer + Docway · Prestige 1600 Mega Indoor",
+        "page": 13
+      },
+      {
+        "title": "ExitLag + Looke · Prestige 1600 Mega Indoor",
+        "page": 14
+      },
+      {
+        "title": "SKY+ Standard + Estuda+ · Prestige 1600 Mega Indoor",
+        "page": 15
+      },
+      {
+        "title": "ST1 Família 2000 Mega + 2 Wi-Fi Mesh Indoor",
+        "page": 16
+      },
+      {
+        "title": "Antivírus Kaspersky + Deezer · Família 2000 Mega Indoor",
+        "page": 17
+      },
+      {
+        "title": "Docway + ExitLag · Família 2000 Mega Indoor",
+        "page": 18
+      },
+      {
+        "title": "Looke + SKY+ Standard · Família 2000 Mega Indoor",
+        "page": 19
+      },
+      {
+        "title": "Estuda+ + Universal+ · Família 2000 Mega Indoor",
+        "page": 20
+      },
+      {
+        "title": "Disney+ + HBO Max · Família 2000 Mega Indoor",
+        "page": 21
+      },
+      {
+        "title": "Amazon Prime + Globoplay · Família 2000 Mega Indoor",
+        "page": 22
+      },
+      {
+        "title": "Apple TV · Família 2000 Mega Indoor",
+        "page": 23
+      }
+    ],
+    "dahmas": true,
+    "search": "Digital Residencial Planos e aplicativos para o atendimento digital. Catálogo Digital Capa Catálogo DIGITAL RESIDENCIAL ST1 500 Mega Residencial ST1 1000 Mega Residencial ST1 1300 Mega Residencial Aplicativos / 1300 Mega Residencial / 1 Deezer Docway Aplicativos / 1300 Mega Residencial / 2 ExitLag Looke Aplicativos / 1300 Mega Residencial / 3 SKY+ Standard ST1 1300 Mega Residencial Wi-Fi 7 Aplicativos / 1300 Mega Residencial Wi-Fi 7 / 1 Deezer Docway Aplicativos / 1300 Mega Residencial Wi-Fi 7 / 2 ExitLag Looke Aplicativos / 1300 Mega Residencial Wi-Fi 7 / 3 SKY+ Standard ST1 Prestige 1600 Mega + 1 Wi-Fi Mesh Indoor Aplicativos / Prestige 1600 Mega Indoor / 1 Deezer Docway Aplicativos / Prestige 1600 Mega Indoor / 2 ExitLag Looke Aplicativos / Prestige 1600 Mega Indoor / 3 SKY+ Standard Estuda+ ST1 Família 2000 Mega + 2 Wi-Fi Mesh Indoor Aplicativos / Família 2000 Mega Indoor / 1 Antivírus Kaspersky Deezer Aplicativos / Família 2000 Mega Indoor / 2 Docway ExitLag Aplicativos / Família 2000 Mega Indoor / 3 Looke SKY+ Standard Aplicativos / Família 2000 Mega Indoor / 4 Estuda+ Universal+ Aplicativos / Família 2000 Mega Indoor / 5 Disney+ HBO Max Aplicativos / Família 2000 Mega Indoor / 6 Amazon Prime Globoplay Aplicativos / Família 2000 Mega Indoor / 7 Apple TV",
+    "cover": "covers/digital.webp",
+    "presentation": {
+      "name": "Digital",
+      "channel": "Residencial",
+      "description": "Atendimento digital",
+      "plans": 6,
+      "theme": "digital"
+    }
+  },
+  {
+    "id": "st1-catalogo-elite",
+    "file": "catalogo-elite.pdf",
+    "title": "Catálogo PAP Elite",
+    "summary": "Ofertas, equipamentos e aplicativos da linha Elite.",
+    "category": "produtos",
+    "tracks": [
+      "elite"
+    ],
+    "pages": 17,
+    "sha256": "f99a2975501707d78a7ce7baf2884caa3bb6b01b8d782cf58fc49162cddb3dfa",
+    "sections": [
+      {
+        "title": "Capa",
+        "page": 1
+      },
+      {
+        "title": "ST1 1300 Mega Residencial Wi-Fi 7",
+        "page": 2
+      },
+      {
+        "title": "Deezer + Docway · 1300 Mega Residencial Wi-Fi 7",
+        "page": 3
+      },
+      {
+        "title": "ExitLag + Looke · 1300 Mega Residencial Wi-Fi 7",
+        "page": 4
+      },
+      {
+        "title": "SKY+ Standard · 1300 Mega Residencial Wi-Fi 7",
+        "page": 5
+      },
+      {
+        "title": "ST1 Prestige 1600 Mega + 1 Wi-Fi Mesh Indoor",
+        "page": 6
+      },
+      {
+        "title": "Deezer + Docway · Prestige 1600 Mega Indoor",
+        "page": 7
+      },
+      {
+        "title": "ExitLag + Looke · Prestige 1600 Mega Indoor",
+        "page": 8
+      },
+      {
+        "title": "SKY+ Standard + Estuda+ · Prestige 1600 Mega Indoor",
+        "page": 9
+      },
+      {
+        "title": "ST1 Família 2000 Mega + 2 Wi-Fi Mesh Indoor",
+        "page": 10
+      },
+      {
+        "title": "Antivírus Kaspersky + Deezer · Família 2000 Mega Indoor",
+        "page": 11
+      },
+      {
+        "title": "Docway + ExitLag · Família 2000 Mega Indoor",
+        "page": 12
+      },
+      {
+        "title": "Looke + SKY+ Standard · Família 2000 Mega Indoor",
+        "page": 13
+      },
+      {
+        "title": "Estuda+ + Universal+ · Família 2000 Mega Indoor",
+        "page": 14
+      },
+      {
+        "title": "Disney+ + HBO Max · Família 2000 Mega Indoor",
+        "page": 15
+      },
+      {
+        "title": "Amazon Prime + Globoplay · Família 2000 Mega Indoor",
+        "page": 16
+      },
+      {
+        "title": "Apple TV · Família 2000 Mega Indoor",
+        "page": 17
+      }
+    ],
+    "dahmas": true,
+    "search": "PAP Elite Residencial Ofertas, equipamentos e aplicativos da linha Elite. Catálogo PAP Elite Capa Catálogo PAP ELITE ST1 1300 Mega Residencial Wi-Fi 7 Aplicativos / 1300 Mega Residencial Wi-Fi 7 / 1 Deezer Docway Aplicativos / 1300 Mega Residencial Wi-Fi 7 / 2 ExitLag Looke Aplicativos / 1300 Mega Residencial Wi-Fi 7 / 3 SKY+ Standard ST1 Prestige 1600 Mega + 1 Wi-Fi Mesh Indoor Aplicativos / Prestige 1600 Mega Indoor / 1 Deezer Docway Aplicativos / Prestige 1600 Mega Indoor / 2 ExitLag Looke Aplicativos / Prestige 1600 Mega Indoor / 3 SKY+ Standard Estuda+ ST1 Família 2000 Mega + 2 Wi-Fi Mesh Indoor Aplicativos / Família 2000 Mega Indoor / 1 Antivírus Kaspersky Deezer Aplicativos / Família 2000 Mega Indoor / 2 Docway ExitLag Aplicativos / Família 2000 Mega Indoor / 3 Looke SKY+ Standard Aplicativos / Família 2000 Mega Indoor / 4 Estuda+ Universal+ Aplicativos / Família 2000 Mega Indoor / 5 Disney+ HBO Max Aplicativos / Família 2000 Mega Indoor / 6 Amazon Prime Globoplay Aplicativos / Família 2000 Mega Indoor / 7 Apple TV",
+    "cover": "covers/elite.webp",
+    "presentation": {
+      "name": "PAP Elite",
+      "channel": "Residencial",
+      "description": "Linha Elite",
+      "plans": 3,
+      "theme": "elite"
+    }
+  },
+  {
+    "id": "st1-catalogo-indoor",
+    "file": "catalogo-indoor.pdf",
+    "title": "Catálogo Indoor",
+    "summary": "Planos Prestige e Família, com todos os benefícios.",
+    "category": "produtos",
+    "tracks": [
+      "indoor"
+    ],
+    "pages": 13,
+    "sha256": "18be8be8df245ff6f54b2a005e50438ae098961c8c616e95b9fb7686922b5814",
+    "sections": [
+      {
+        "title": "Capa",
+        "page": 1
+      },
+      {
+        "title": "ST1 Prestige 1600 Mega + 1 Wi-Fi Mesh Indoor",
+        "page": 2
+      },
+      {
+        "title": "Deezer + Docway · Prestige 1600 Mega Indoor",
+        "page": 3
+      },
+      {
+        "title": "ExitLag + Looke · Prestige 1600 Mega Indoor",
+        "page": 4
+      },
+      {
+        "title": "SKY+ Standard + Estuda+ · Prestige 1600 Mega Indoor",
+        "page": 5
+      },
+      {
+        "title": "ST1 Família 2000 Mega + 2 Wi-Fi Mesh Indoor",
+        "page": 6
+      },
+      {
+        "title": "Antivírus Kaspersky + Deezer · Família 2000 Mega Indoor",
+        "page": 7
+      },
+      {
+        "title": "Docway + ExitLag · Família 2000 Mega Indoor",
+        "page": 8
+      },
+      {
+        "title": "Looke + SKY+ Standard · Família 2000 Mega Indoor",
+        "page": 9
+      },
+      {
+        "title": "Estuda+ + Universal+ · Família 2000 Mega Indoor",
+        "page": 10
+      },
+      {
+        "title": "Disney+ + HBO Max · Família 2000 Mega Indoor",
+        "page": 11
+      },
+      {
+        "title": "Amazon Prime + Globoplay · Família 2000 Mega Indoor",
+        "page": 12
+      },
+      {
+        "title": "Apple TV · Família 2000 Mega Indoor",
+        "page": 13
+      }
+    ],
+    "dahmas": true,
+    "search": "Indoor Residencial Planos Prestige e Família, com todos os benefícios. Catálogo Indoor Capa Catálogo INDOOR ST1 Prestige 1600 Mega + 1 Wi-Fi Mesh Indoor Aplicativos / Prestige 1600 Mega Indoor / 1 Deezer Docway Aplicativos / Prestige 1600 Mega Indoor / 2 ExitLag Looke Aplicativos / Prestige 1600 Mega Indoor / 3 SKY+ Standard Estuda+ ST1 Família 2000 Mega + 2 Wi-Fi Mesh Indoor Aplicativos / Família 2000 Mega Indoor / 1 Antivírus Kaspersky Deezer Aplicativos / Família 2000 Mega Indoor / 2 Docway ExitLag Aplicativos / Família 2000 Mega Indoor / 3 Looke SKY+ Standard Aplicativos / Família 2000 Mega Indoor / 4 Estuda+ Universal+ Aplicativos / Família 2000 Mega Indoor / 5 Disney+ HBO Max Aplicativos / Família 2000 Mega Indoor / 6 Amazon Prime Globoplay Aplicativos / Família 2000 Mega Indoor / 7 Apple TV",
+    "cover": "covers/indoor.webp",
+    "presentation": {
+      "name": "Indoor",
+      "channel": "Residencial",
+      "description": "Prestige e Família",
+      "plans": 2,
+      "theme": "indoor"
+    }
+  },
+  {
+    "id": "st1-catalogo-pme",
+    "file": "catalogo-pme.pdf",
+    "title": "Catálogo PME",
+    "summary": "Planos e aplicativos para pequenos negócios.",
+    "category": "produtos",
+    "tracks": [
+      "pme"
+    ],
+    "pages": 9,
+    "sha256": "e3288cb3ee999f7caaa21ff856eeb0ffa72aaa3a4f3dd06514598e9a87b065c1",
+    "sections": [
+      {
+        "title": "Capa",
+        "page": 1
+      },
+      {
+        "title": "ST1 1000 Mega PME",
+        "page": 2
+      },
+      {
+        "title": "Antivírus Kaspersky + Deezer · 1000 Mega PME",
+        "page": 3
+      },
+      {
+        "title": "Docway · 1000 Mega PME",
+        "page": 4
+      },
+      {
+        "title": "ST1 1300 Mega PME + 1 Mesh",
+        "page": 5
+      },
+      {
+        "title": "Antivírus Kaspersky + Deezer · 1300 Mega PME + 1 Mesh",
+        "page": 6
+      },
+      {
+        "title": "Docway + SKY+ Standard · 1300 Mega PME + 1 Mesh",
+        "page": 7
+      },
+      {
+        "title": "HBO Max + Amazon Prime · 1300 Mega PME + 1 Mesh",
+        "page": 8
+      },
+      {
+        "title": "Globoplay + Apple TV · 1300 Mega PME + 1 Mesh",
+        "page": 9
+      }
+    ],
+    "dahmas": false,
+    "search": "PME Empresas Planos e aplicativos para pequenos negócios. Catálogo PME Capa Catálogo PME ST1 1000 Mega PME Aplicativos / 1000 Mega PME / 1 Antivírus Kaspersky Deezer Aplicativos / 1000 Mega PME / 2 Docway ST1 1300 Mega PME + 1 Mesh Aplicativos / 1300 Mega PME + 1 Mesh / 1 Antivírus Kaspersky Deezer Aplicativos / 1300 Mega PME + 1 Mesh / 2 Docway SKY+ Standard Aplicativos / 1300 Mega PME + 1 Mesh / 3 HBO Max Amazon Prime Aplicativos / 1300 Mega PME + 1 Mesh / 4 Globoplay Apple TV",
+    "cover": "covers/pme.webp",
+    "presentation": {
+      "name": "PME",
+      "channel": "Empresas",
+      "description": "Pequenos negócios",
+      "plans": 2,
+      "theme": "pme"
+    }
+  },
+  {
+    "id": "st1-processo-pap",
+    "file": "processo-pap.pdf",
+    "title": "Processo comercial PAP",
+    "summary": "Cadastro, conferência, assinatura e acompanhamento no ST1 Sales.",
+    "category": "processos",
+    "tracks": [
+      "pap",
+      "elite"
+    ],
+    "pages": 4,
+    "sha256": "bcb6596321c1fec7df6f003ce7b12df110bb4a9bd42dac8011c2d318ed839de8",
+    "sections": [
+      {
+        "title": "Capa",
+        "page": 1
+      },
+      {
+        "title": "Fluxograma das oito etapas",
+        "page": 2
+      },
+      {
+        "title": "01-03 | Venda e assinatura",
+        "page": 3
+      },
+      {
+        "title": "04-08 | Instalação e cobrança",
+        "page": 4
+      }
+    ],
+    "dahmas": false,
+    "search": "PAP Processo comercial Cadastro, conferência, assinatura e acompanhamento no ST1 Sales. Processo comercial PAP Capa Guia de processo comercial B2C Fluxograma das oito etapas 01-03 | Venda e assinatura 04-08 | Instalação e cobrança",
+    "cover": "covers/processo-pap.webp",
+    "presentation": {
+      "name": "PAP",
+      "channel": "Processo comercial",
+      "description": "Cadastro, conferência, assinatura e acompanhamento no ST1 Sales.",
+      "plans": null,
+      "theme": "pap"
+    }
+  },
+  {
+    "id": "st1-processo-digital",
+    "file": "processo-digital.pdf",
+    "title": "Processo comercial Digital",
+    "summary": "Do primeiro contato à instalação, com mensagens e follow-ups.",
+    "category": "processos",
+    "tracks": [
+      "digital"
+    ],
+    "pages": 10,
+    "sha256": "116ce25a4092169219304deea53746408d7f916f26c082ca87c0c09652fe79b2",
+    "sections": [
+      {
+        "title": "Capa",
+        "page": 1
+      },
+      {
+        "title": "O atendimento em uma página",
+        "page": 2
+      },
+      {
+        "title": "01-02  Abertura e viabilidade",
+        "page": 3
+      },
+      {
+        "title": "03  Qualificação do cliente",
+        "page": 4
+      },
+      {
+        "title": "04-05  Solução e preço",
+        "page": 5
+      },
+      {
+        "title": "06  Fechamento e cadastro",
+        "page": 6
+      },
+      {
+        "title": "07-08  Contrato e instalação",
+        "page": 7
+      },
+      {
+        "title": "Leads sem resposta",
+        "page": 8
+      },
+      {
+        "title": "Cliente ainda não fechou",
+        "page": 9
+      },
+      {
+        "title": "Kitnet e outras situações",
+        "page": 10
+      }
+    ],
+    "dahmas": false,
+    "search": "Digital Processo comercial Do primeiro contato à instalação, com mensagens e follow-ups. Processo comercial Digital Capa Processo comercial B2C Digital O atendimento em uma página 01-02  Abertura e viabilidade 03  Qualificação do cliente 04-05  Solução e preço 06  Fechamento e cadastro 07-08  Contrato e instalação Leads sem resposta Cliente ainda não fechou Kitnet e outras situações",
+    "cover": "covers/processo-digital.webp",
+    "presentation": {
+      "name": "Digital",
+      "channel": "Processo comercial",
+      "description": "Do primeiro contato à instalação, com mensagens e follow-ups.",
+      "plans": null,
+      "theme": "digital"
+    }
+  }
+]

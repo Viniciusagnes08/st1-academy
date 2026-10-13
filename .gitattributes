@@ -1,0 +1,6 @@
+*.pdf binary
+*.webp binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+public/assets/pdfjs/* linguist-vendored

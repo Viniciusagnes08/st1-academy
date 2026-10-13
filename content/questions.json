@@ -1,0 +1,3082 @@
+{
+  "title": "ST1 Academy",
+  "minimumPercent": 80,
+  "criticalRequired": true,
+  "tracks": [
+    {
+      "id": "pap",
+      "name": "PAP",
+      "badge": "Especialista PAP",
+      "color": "#ee6e14",
+      "description": "Planos, apps e processo porta a porta.",
+      "version": "1.0",
+      "estimatedMinutes": 12,
+      "materials": [
+        "catalogo-pap.pdf",
+        "processo-pap.pdf"
+      ],
+      "questions": [
+        {
+          "stem": "Qual pacote está correto para o Residencial de 500 Mega?",
+          "explanation": "O 500 Mega é a opção de entrada: R$ 89,90, Wi-Fi 5, sem Mesh e sem SVA.",
+          "source": {
+            "file": "catalogo-pap.pdf",
+            "page": 2
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "pap_01",
+          "options": [
+            {
+              "id": "pap_01_1",
+              "text": "R$ 99,90, Wi-Fi 7 e dois aplicativos."
+            },
+            {
+              "id": "pap_01_2",
+              "text": "R$ 89,90 com um Mesh incluído."
+            },
+            {
+              "id": "pap_01_3",
+              "text": "R$ 109,90 com cinco aplicativos."
+            },
+            {
+              "id": "pap_01_4",
+              "text": "R$ 89,90, Wi-Fi 5, sem Mesh e sem aplicativos."
+            }
+          ],
+          "answer": "pap_01_4"
+        },
+        {
+          "stem": "No Residencial de 1.000 Mega por R$ 99,90, o cliente recebe o quê?",
+          "explanation": "Este pacote não inclui aplicativos. O Mesh é um adicional opcional, cujo valor precisa ser informado.",
+          "source": {
+            "file": "catalogo-pap.pdf",
+            "page": 3
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "pap_02",
+          "options": [
+            {
+              "id": "pap_02_1",
+              "text": "Wi-Fi 7, um Mesh e um app."
+            },
+            {
+              "id": "pap_02_2",
+              "text": "Wi-Fi 6 e dois apps PREMIUM."
+            },
+            {
+              "id": "pap_02_3",
+              "text": "Wi-Fi 6, sem apps; Mesh opcional contratado à parte."
+            },
+            {
+              "id": "pap_02_4",
+              "text": "Wi-Fi 5 com Mesh grátis."
+            }
+          ],
+          "answer": "pap_02_3"
+        },
+        {
+          "stem": "O cliente escolheu o Residencial de 1.300 Mega por R$ 109,90. Qual benefício digital fica incluído?",
+          "explanation": "Inclui Wi-Fi 6, 1 SVA BASIC e nenhum ponto Mesh. Os demais apps não são incluídos automaticamente.",
+          "source": {
+            "file": "catalogo-pap.pdf",
+            "page": 4
+          },
+          "critical": true,
+          "topic": "Planos",
+          "id": "pap_03",
+          "options": [
+            {
+              "id": "pap_03_1",
+              "text": "Todos os cinco aplicativos."
+            },
+            {
+              "id": "pap_03_2",
+              "text": "1 SVA BASIC: um app escolhido entre as opções do plano."
+            },
+            {
+              "id": "pap_03_3",
+              "text": "Dois apps PREMIUM."
+            },
+            {
+              "id": "pap_03_4",
+              "text": "Nenhum aplicativo."
+            }
+          ],
+          "answer": "pap_03_2"
+        },
+        {
+          "stem": "Qual é o pacote do Residencial Wi-Fi 7 de 1.300 Mega?",
+          "explanation": "O plano de R$ 129,90 inclui um app BASIC à escolha, entre as mesmas cinco opções do Residencial de R$ 109,90.",
+          "source": {
+            "file": "catalogo-pap.pdf",
+            "page": 8
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "pap_04",
+          "options": [
+            {
+              "id": "pap_04_1",
+              "text": "R$ 129,90, Wi-Fi 7, sem Mesh e 1 SVA BASIC."
+            },
+            {
+              "id": "pap_04_2",
+              "text": "R$ 109,90, Wi-Fi 7 e um Mesh."
+            },
+            {
+              "id": "pap_04_3",
+              "text": "R$ 129,90 com todos os streamings."
+            },
+            {
+              "id": "pap_04_4",
+              "text": "R$ 149,90 com dois Mesh."
+            }
+          ],
+          "answer": "pap_04_1"
+        },
+        {
+          "stem": "Qual apresentação do Prestige está correta?",
+          "explanation": "O Prestige reúne velocidade, Wi-Fi 7, um Mesh e um app BASIC entre seis opções.",
+          "source": {
+            "file": "catalogo-pap.pdf",
+            "page": 12
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "pap_05",
+          "options": [
+            {
+              "id": "pap_05_1",
+              "text": "1.600 Mega, dois Mesh e dois apps por R$ 149,90."
+            },
+            {
+              "id": "pap_05_2",
+              "text": "1.300 Mega, sem Mesh, por R$ 249,90."
+            },
+            {
+              "id": "pap_05_3",
+              "text": "2.000 Mega liberado para qualquer endereço."
+            },
+            {
+              "id": "pap_05_4",
+              "text": "1.600 Mega, Wi-Fi 7, 1 ponto Mesh e 1 SVA BASIC por R$ 149,90."
+            }
+          ],
+          "answer": "pap_05_4"
+        },
+        {
+          "stem": "O cliente quer ouvir música sem internet no Deezer. Qual explicação está correta?",
+          "explanation": "O catálogo confirma música, podcasts e uso sem internet após o download. Vários usuários e ausência de anúncios dependem da modalidade.",
+          "source": {
+            "file": "catalogo-pap.pdf",
+            "page": 5
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pap_06",
+          "options": [
+            {
+              "id": "pap_06_1",
+              "text": "Toda música toca sem internet, mesmo sem baixar."
+            },
+            {
+              "id": "pap_06_2",
+              "text": "Deezer só oferece filmes."
+            },
+            {
+              "id": "pap_06_3",
+              "text": "É preciso baixar o conteúdo antes de ouvir sem internet."
+            },
+            {
+              "id": "pap_06_4",
+              "text": "O plano Família com vários usuários é sempre incluído."
+            }
+          ],
+          "answer": "pap_06_3"
+        },
+        {
+          "stem": "O cliente quer incluir toda a família no Docway. O que você deve explicar?",
+          "explanation": "O Docway prevê acesso individual no CPF do titular. Não é plano de saúde nem atendimento de emergência.",
+          "source": {
+            "file": "catalogo-pap.pdf",
+            "page": 5
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pap_07",
+          "options": [
+            {
+              "id": "pap_07_1",
+              "text": "Toda a família já tem consultas ilimitadas."
+            },
+            {
+              "id": "pap_07_2",
+              "text": "O acesso previsto é individual; dependentes não são incluídos automaticamente."
+            },
+            {
+              "id": "pap_07_3",
+              "text": "É um plano de saúde com emergência presencial."
+            },
+            {
+              "id": "pap_07_4",
+              "text": "É uma assinatura de filmes com cinco perfis."
+            }
+          ],
+          "answer": "pap_07_2"
+        },
+        {
+          "stem": "Qual apresentação do ExitLag respeita o benefício previsto?",
+          "explanation": "O ExitLag pode reduzir atrasos e oscilações. Não garante ping zero, não aumenta a velocidade contratada e exige a rede ST1.",
+          "source": {
+            "file": "catalogo-pap.pdf",
+            "page": 6
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pap_08",
+          "options": [
+            {
+              "id": "pap_08_1",
+              "text": "Otimiza rotas de jogos compatíveis, com acesso individual na rede ST1."
+            },
+            {
+              "id": "pap_08_2",
+              "text": "Garante ping zero em qualquer jogo."
+            },
+            {
+              "id": "pap_08_3",
+              "text": "Aumenta os Mega contratados e inclui jogos."
+            },
+            {
+              "id": "pap_08_4",
+              "text": "O mesmo login pode ser dividido fora da rede ST1."
+            }
+          ],
+          "answer": "pap_08_1"
+        },
+        {
+          "stem": "No Looke, o cliente confunde perfis com telas. Qual informação está correta?",
+          "explanation": "Telas são aparelhos assistindo juntos. Perfis são usuários na conta. O Looke também tem Looke Kids; conteúdos fora da assinatura não são incluídos.",
+          "source": {
+            "file": "catalogo-pap.pdf",
+            "page": 6
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pap_09",
+          "options": [
+            {
+              "id": "pap_09_1",
+              "text": "São 5 telas simultâneas e 3 perfis."
+            },
+            {
+              "id": "pap_09_2",
+              "text": "Todos os lançamentos do cinema são incluídos."
+            },
+            {
+              "id": "pap_09_3",
+              "text": "Não existe conteúdo infantil."
+            },
+            {
+              "id": "pap_09_4",
+              "text": "São 3 telas simultâneas e 5 perfis."
+            }
+          ],
+          "answer": "pap_09_4"
+        },
+        {
+          "stem": "O cliente escolheu SKY+ Standard e pede Premiere. O que você responde?",
+          "explanation": "A oferta Standard tem 1 tela e até 3 perfis. Premiere, SportyNet, Paramount+, Combate e Telecine são extras pagos.",
+          "source": {
+            "file": "catalogo-pap.pdf",
+            "page": 7
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pap_10",
+          "options": [
+            {
+              "id": "pap_10_1",
+              "text": "Premiere e Telecine estão sempre incluídos."
+            },
+            {
+              "id": "pap_10_2",
+              "text": "O Standard libera o pacote Full."
+            },
+            {
+              "id": "pap_10_3",
+              "text": "Premiere é um extra pago; não está incluído automaticamente no Standard."
+            },
+            {
+              "id": "pap_10_4",
+              "text": "O Standard permite cinco telas ao mesmo tempo."
+            }
+          ],
+          "answer": "pap_10_3"
+        },
+        {
+          "stem": "Um responsável pergunta se o Estuda+ garante professor ao vivo e aprovação. Qual é a resposta correta?",
+          "explanation": "O catálogo confirma apostilas e conteúdos escolares. Aulas ao vivo, professor e correção de redação não foram confirmados.",
+          "source": {
+            "file": "catalogo-pap.pdf",
+            "page": 15
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pap_11",
+          "options": [
+            {
+              "id": "pap_11_1",
+              "text": "Garante aprovação em qualquer prova."
+            },
+            {
+              "id": "pap_11_2",
+              "text": "Oferece apostilas e apoio escolar; esses serviços e a aprovação não estão garantidos."
+            },
+            {
+              "id": "pap_11_3",
+              "text": "Inclui professor particular ao vivo todos os dias."
+            },
+            {
+              "id": "pap_11_4",
+              "text": "Inclui correção de toda redação e certificado garantido."
+            }
+          ],
+          "answer": "pap_11_2"
+        },
+        {
+          "stem": "O endereço é elegível na área Azul. Qual oferta da linha PAP tem Wi-Fi 7 sem Mesh?",
+          "explanation": "O 1.300 Mega Wi-Fi 7 é previsto para áreas Azul e Laranja. A elegibilidade do endereço deve ser conferida.",
+          "source": {
+            "file": "catalogo-pap.pdf",
+            "page": 8
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "pap_12",
+          "options": [
+            {
+              "id": "pap_12_1",
+              "text": "Residencial de 1.300 Mega por R$ 129,90."
+            },
+            {
+              "id": "pap_12_2",
+              "text": "500 Mega por R$ 89,90."
+            },
+            {
+              "id": "pap_12_3",
+              "text": "1.000 Mega por R$ 99,90 com Mesh grátis."
+            },
+            {
+              "id": "pap_12_4",
+              "text": "1.300 Mega por R$ 109,90 com Wi-Fi 5."
+            }
+          ],
+          "answer": "pap_12_1"
+        },
+        {
+          "stem": "A consulta retornou “Sem viabilidade”. O cliente pede que você agende mesmo assim. Qual é a conduta correta?",
+          "explanation": "Distância não confirma cobertura. O guia orienta resolver “Sem viabilidade” antes de agendar.",
+          "source": {
+            "file": "processo-pap.pdf",
+            "page": 3
+          },
+          "critical": true,
+          "topic": "Processo",
+          "id": "pap_13",
+          "options": [
+            {
+              "id": "pap_13_1",
+              "text": "Agendar porque a distância parece curta."
+            },
+            {
+              "id": "pap_13_2",
+              "text": "Prometer cobertura e corrigir depois."
+            },
+            {
+              "id": "pap_13_3",
+              "text": "Marcar a venda como ganha sem consultar o endereço."
+            },
+            {
+              "id": "pap_13_4",
+              "text": "Resolver a viabilidade antes de agendar ou prometer a instalação."
+            }
+          ],
+          "answer": "pap_13_4"
+        },
+        {
+          "stem": "Qual conjunto de arquivos o vendedor deve conferir no cadastro PAP?",
+          "explanation": "O cadastro exige esses documentos e a conferência dos dados, endereço, plano, cobrança, vencimento e Mesh.",
+          "source": {
+            "file": "processo-pap.pdf",
+            "page": 3
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "pap_14",
+          "options": [
+            {
+              "id": "pap_14_1",
+              "text": "Somente uma foto do rosto."
+            },
+            {
+              "id": "pap_14_2",
+              "text": "Somente o comprovante de pagamento."
+            },
+            {
+              "id": "pap_14_3",
+              "text": "RG ou CNH frente e verso, comprovante de residência, foto da fachada e confirmação do cliente."
+            },
+            {
+              "id": "pap_14_4",
+              "text": "Apenas o nome e o aplicativo escolhido."
+            }
+          ],
+          "answer": "pap_14_3"
+        },
+        {
+          "stem": "Quem confere a venda e marca a negociação como ganha?",
+          "explanation": "O back-office revisa dados, documentos, cobertura e condições. Com tudo certo, a negociação aparece como “Vencemos”.",
+          "source": {
+            "file": "processo-pap.pdf",
+            "page": 3
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "pap_15",
+          "options": [
+            {
+              "id": "pap_15_1",
+              "text": "O cliente ao abrir o boleto."
+            },
+            {
+              "id": "pap_15_2",
+              "text": "O back-office, depois de revisar a venda."
+            },
+            {
+              "id": "pap_15_3",
+              "text": "O vendedor antes de cadastrar o endereço."
+            },
+            {
+              "id": "pap_15_4",
+              "text": "A Torre, somente depois do primeiro boleto."
+            }
+          ],
+          "answer": "pap_15_2"
+        },
+        {
+          "stem": "Antes de seguir da assinatura para a cobrança, o que deve ser confirmado?",
+          "explanation": "O vendedor acompanha a assinatura. Depois de confirmá-la, conclui a OS e segue para a cobrança.",
+          "source": {
+            "file": "processo-pap.pdf",
+            "page": 3
+          },
+          "critical": true,
+          "topic": "Processo",
+          "id": "pap_16",
+          "options": [
+            {
+              "id": "pap_16_1",
+              "text": "Status “Vencemos” e “Contrato assinado” como “Sim”."
+            },
+            {
+              "id": "pap_16_2",
+              "text": "Somente a mensagem enviada no WhatsApp."
+            },
+            {
+              "id": "pap_16_3",
+              "text": "A promessa verbal de assinar depois."
+            },
+            {
+              "id": "pap_16_4",
+              "text": "Apenas o plano selecionado."
+            }
+          ],
+          "answer": "pap_16_1"
+        },
+        {
+          "stem": "Existe taxa de instalação nesta venda. Quando a OS de instalação é liberada?",
+          "explanation": "Taxa paga libera a OS de instalação. A confirmação precisa ocorrer no sistema.",
+          "source": {
+            "file": "processo-pap.pdf",
+            "page": 4
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "pap_17",
+          "options": [
+            {
+              "id": "pap_17_1",
+              "text": "Assim que o boleto é gerado."
+            },
+            {
+              "id": "pap_17_2",
+              "text": "Antes de assinar o contrato."
+            },
+            {
+              "id": "pap_17_3",
+              "text": "Quando o cliente diz que vai pagar."
+            },
+            {
+              "id": "pap_17_4",
+              "text": "Depois da confirmação do pagamento da taxa no sistema."
+            }
+          ],
+          "answer": "pap_17_4"
+        },
+        {
+          "stem": "Em “Pendências de vendas”, um arquivo continua em “Arquivos IXC pendentes”. Qual é o próximo passo?",
+          "explanation": "O recurso tenta reenviar documentos que falharam. Persistindo a pendência, o guia orienta análise da integração.",
+          "source": {
+            "file": "processo-pap.pdf",
+            "page": 4
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "pap_18",
+          "options": [
+            {
+              "id": "pap_18_1",
+              "text": "Ignorar o arquivo e encerrar a venda."
+            },
+            {
+              "id": "pap_18_2",
+              "text": "Marcar todos os documentos como recebidos sem conferir."
+            },
+            {
+              "id": "pap_18_3",
+              "text": "Tentar o reenvio e, se continuar pendente, encaminhar para análise da integração."
+            },
+            {
+              "id": "pap_18_4",
+              "text": "Cobrar o primeiro boleto para resolver o arquivo."
+            }
+          ],
+          "answer": "pap_18_3"
+        },
+        {
+          "stem": "Quem realiza a ativação física e a auditoria de qualidade?",
+          "explanation": "A Torre ativa no endereço, confere o funcionamento e audita a qualidade. Se não estiver ativo, decide sobre retomada ou cancelamento.",
+          "source": {
+            "file": "processo-pap.pdf",
+            "page": 4
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "pap_19",
+          "options": [
+            {
+              "id": "pap_19_1",
+              "text": "O Financeiro B2C."
+            },
+            {
+              "id": "pap_19_2",
+              "text": "A Torre."
+            },
+            {
+              "id": "pap_19_3",
+              "text": "O aplicativo escolhido pelo cliente."
+            },
+            {
+              "id": "pap_19_4",
+              "text": "O cliente ao assinar o contrato."
+            }
+          ],
+          "answer": "pap_19_2"
+        },
+        {
+          "stem": "O primeiro boleto e o boleto da taxa de instalação são a mesma cobrança?",
+          "explanation": "O guia distingue a taxa de instalação do boleto do primeiro pagamento, gerado após a ativação física.",
+          "source": {
+            "file": "processo-pap.pdf",
+            "page": 4
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "pap_20",
+          "options": [
+            {
+              "id": "pap_20_1",
+              "text": "Não. O primeiro boleto é gerado pelo Financeiro depois da ativação física."
+            },
+            {
+              "id": "pap_20_2",
+              "text": "Sim, todo boleto é a mesma cobrança."
+            },
+            {
+              "id": "pap_20_3",
+              "text": "O primeiro boleto é gerado antes do cadastro."
+            },
+            {
+              "id": "pap_20_4",
+              "text": "A taxa de instalação sempre substitui a mensalidade."
+            }
+          ],
+          "answer": "pap_20_1"
+        }
+      ]
+    },
+    {
+      "id": "digital",
+      "name": "Digital",
+      "badge": "Especialista Digital",
+      "color": "#424adb",
+      "description": "Oferta consultiva, aplicativos e condução do atendimento.",
+      "version": "1.0",
+      "estimatedMinutes": 12,
+      "materials": [
+        "catalogo-digital.pdf",
+        "processo-digital.pdf"
+      ],
+      "questions": [
+        {
+          "stem": "Qual pacote está correto para o Residencial de 500 Mega?",
+          "explanation": "O 500 Mega é a opção de entrada: R$ 89,90, Wi-Fi 5, sem Mesh e sem SVA.",
+          "source": {
+            "file": "catalogo-digital.pdf",
+            "page": 2
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "digital_01",
+          "options": [
+            {
+              "id": "digital_01_1",
+              "text": "R$ 99,90, Wi-Fi 7 e dois aplicativos."
+            },
+            {
+              "id": "digital_01_2",
+              "text": "R$ 89,90 com um Mesh incluído."
+            },
+            {
+              "id": "digital_01_3",
+              "text": "R$ 109,90 com cinco aplicativos."
+            },
+            {
+              "id": "digital_01_4",
+              "text": "R$ 89,90, Wi-Fi 5, sem Mesh e sem aplicativos."
+            }
+          ],
+          "answer": "digital_01_4"
+        },
+        {
+          "stem": "No Residencial de 1.000 Mega por R$ 99,90, o cliente recebe o quê?",
+          "explanation": "Este pacote não inclui aplicativos. O Mesh é um adicional opcional, cujo valor precisa ser informado.",
+          "source": {
+            "file": "catalogo-digital.pdf",
+            "page": 3
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "digital_02",
+          "options": [
+            {
+              "id": "digital_02_1",
+              "text": "Wi-Fi 7, um Mesh e um app."
+            },
+            {
+              "id": "digital_02_2",
+              "text": "Wi-Fi 6 e dois apps PREMIUM."
+            },
+            {
+              "id": "digital_02_3",
+              "text": "Wi-Fi 6, sem apps; Mesh opcional contratado à parte."
+            },
+            {
+              "id": "digital_02_4",
+              "text": "Wi-Fi 5 com Mesh grátis."
+            }
+          ],
+          "answer": "digital_02_3"
+        },
+        {
+          "stem": "O cliente escolheu o Residencial de 1.300 Mega por R$ 109,90. Qual benefício digital fica incluído?",
+          "explanation": "Inclui Wi-Fi 6, 1 SVA BASIC e nenhum ponto Mesh. Os demais apps não são incluídos automaticamente.",
+          "source": {
+            "file": "catalogo-digital.pdf",
+            "page": 4
+          },
+          "critical": true,
+          "topic": "Planos",
+          "id": "digital_03",
+          "options": [
+            {
+              "id": "digital_03_1",
+              "text": "Todos os cinco aplicativos."
+            },
+            {
+              "id": "digital_03_2",
+              "text": "1 SVA BASIC: um app escolhido entre as opções do plano."
+            },
+            {
+              "id": "digital_03_3",
+              "text": "Dois apps PREMIUM."
+            },
+            {
+              "id": "digital_03_4",
+              "text": "Nenhum aplicativo."
+            }
+          ],
+          "answer": "digital_03_2"
+        },
+        {
+          "stem": "Qual é o pacote do Residencial Wi-Fi 7 de 1.300 Mega?",
+          "explanation": "O plano de R$ 129,90 inclui um app BASIC à escolha, entre as mesmas cinco opções do Residencial de R$ 109,90.",
+          "source": {
+            "file": "catalogo-digital.pdf",
+            "page": 8
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "digital_04",
+          "options": [
+            {
+              "id": "digital_04_1",
+              "text": "R$ 129,90, Wi-Fi 7, sem Mesh e 1 SVA BASIC."
+            },
+            {
+              "id": "digital_04_2",
+              "text": "R$ 109,90, Wi-Fi 7 e um Mesh."
+            },
+            {
+              "id": "digital_04_3",
+              "text": "R$ 129,90 com todos os streamings."
+            },
+            {
+              "id": "digital_04_4",
+              "text": "R$ 149,90 com dois Mesh."
+            }
+          ],
+          "answer": "digital_04_1"
+        },
+        {
+          "stem": "Qual apresentação do Prestige está correta?",
+          "explanation": "O Prestige reúne velocidade, Wi-Fi 7, um Mesh e um app BASIC entre seis opções.",
+          "source": {
+            "file": "catalogo-digital.pdf",
+            "page": 12
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "digital_05",
+          "options": [
+            {
+              "id": "digital_05_1",
+              "text": "1.600 Mega, dois Mesh e dois apps por R$ 149,90."
+            },
+            {
+              "id": "digital_05_2",
+              "text": "1.300 Mega, sem Mesh, por R$ 249,90."
+            },
+            {
+              "id": "digital_05_3",
+              "text": "2.000 Mega liberado para qualquer endereço."
+            },
+            {
+              "id": "digital_05_4",
+              "text": "1.600 Mega, Wi-Fi 7, 1 ponto Mesh e 1 SVA BASIC por R$ 149,90."
+            }
+          ],
+          "answer": "digital_05_4"
+        },
+        {
+          "stem": "Qual apresentação do Família de 2.000 Mega respeita o pacote?",
+          "explanation": "Somente os dois aplicativos escolhidos ficam incluídos. O plano tem dois Mesh e venda exclusiva no DAHMAS.",
+          "source": {
+            "file": "catalogo-digital.pdf",
+            "page": 16
+          },
+          "critical": true,
+          "topic": "Planos",
+          "id": "digital_06",
+          "options": [
+            {
+              "id": "digital_06_1",
+              "text": "R$ 299,90 com todos os treze aplicativos."
+            },
+            {
+              "id": "digital_06_2",
+              "text": "R$ 249,90, um Mesh e nenhum app."
+            },
+            {
+              "id": "digital_06_3",
+              "text": "R$ 299,90, Wi-Fi 7/XGS-PON, 2 Mesh e 2 apps à escolha."
+            },
+            {
+              "id": "digital_06_4",
+              "text": "R$ 149,90, Wi-Fi 5 e um app."
+            }
+          ],
+          "answer": "digital_06_3"
+        },
+        {
+          "stem": "Um cliente fora do condomínio DAHMAS pede o plano de 2.000 Mega. Qual é sua decisão?",
+          "explanation": "Confirme o endereço antes da contratação. O Família de 2.000 Mega é exclusivo do condomínio DAHMAS.",
+          "source": {
+            "file": "catalogo-digital.pdf",
+            "page": 16
+          },
+          "critical": true,
+          "topic": "Planos",
+          "id": "digital_07",
+          "options": [
+            {
+              "id": "digital_07_1",
+              "text": "Vender porque ele aceitou o valor."
+            },
+            {
+              "id": "digital_07_2",
+              "text": "Apresentar outra oferta elegível; o 2.000 Mega só pode ser vendido no DAHMAS."
+            },
+            {
+              "id": "digital_07_3",
+              "text": "Vender em qualquer condomínio."
+            },
+            {
+              "id": "digital_07_4",
+              "text": "Vender e corrigir o endereço depois."
+            }
+          ],
+          "answer": "digital_07_2"
+        },
+        {
+          "stem": "Qual apresentação do ExitLag respeita o benefício previsto?",
+          "explanation": "O ExitLag pode reduzir atrasos e oscilações. Não garante ping zero, não aumenta a velocidade contratada e exige a rede ST1.",
+          "source": {
+            "file": "catalogo-digital.pdf",
+            "page": 18
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "digital_08",
+          "options": [
+            {
+              "id": "digital_08_1",
+              "text": "Otimiza rotas de jogos compatíveis, com acesso individual na rede ST1."
+            },
+            {
+              "id": "digital_08_2",
+              "text": "Garante ping zero em qualquer jogo."
+            },
+            {
+              "id": "digital_08_3",
+              "text": "Aumenta os Mega contratados e inclui jogos."
+            },
+            {
+              "id": "digital_08_4",
+              "text": "O mesmo login pode ser dividido fora da rede ST1."
+            }
+          ],
+          "answer": "digital_08_1"
+        },
+        {
+          "stem": "O cliente escolheu SKY+ Standard e pede Premiere. O que você responde?",
+          "explanation": "A oferta Standard tem 1 tela e até 3 perfis. Premiere, SportyNet, Paramount+, Combate e Telecine são extras pagos.",
+          "source": {
+            "file": "catalogo-digital.pdf",
+            "page": 19
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "digital_09",
+          "options": [
+            {
+              "id": "digital_09_1",
+              "text": "Premiere e Telecine estão sempre incluídos."
+            },
+            {
+              "id": "digital_09_2",
+              "text": "O Standard libera o pacote Full."
+            },
+            {
+              "id": "digital_09_3",
+              "text": "O Standard permite cinco telas ao mesmo tempo."
+            },
+            {
+              "id": "digital_09_4",
+              "text": "Premiere é um extra pago; não está incluído automaticamente no Standard."
+            }
+          ],
+          "answer": "digital_09_4"
+        },
+        {
+          "stem": "O cliente espera HBO Max com 4K e quatro telas. Qual é a oferta correta?",
+          "explanation": "A opção confirmada é HBO Max Standard. Não inclui 4K nem quatro telas simultâneas. Conteúdo ao vivo pode exibir anúncios.",
+          "source": {
+            "file": "catalogo-digital.pdf",
+            "page": 21
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "digital_10",
+          "options": [
+            {
+              "id": "digital_10_1",
+              "text": "Premium: 4K e quatro telas incluídos."
+            },
+            {
+              "id": "digital_10_2",
+              "text": "Quatro telas e downloads ilimitados."
+            },
+            {
+              "id": "digital_10_3",
+              "text": "Standard: Full HD, 2 telas e até 30 vídeos baixados."
+            },
+            {
+              "id": "digital_10_4",
+              "text": "Uma tela, sem opção de download."
+            }
+          ],
+          "answer": "digital_10_3"
+        },
+        {
+          "stem": "O cliente escolheu Globoplay. Qual informação está correta?",
+          "explanation": "Globoplay Premium tem 5 telas e 5 perfis. A grade deve ser confirmada e canais ao vivo podem ter intervalos.",
+          "source": {
+            "file": "catalogo-digital.pdf",
+            "page": 22
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "digital_11",
+          "options": [
+            {
+              "id": "digital_11_1",
+              "text": "A opção é apenas com anúncios e uma tela."
+            },
+            {
+              "id": "digital_11_2",
+              "text": "A opção é Premium, com 5 telas; Premiere não entra automaticamente."
+            },
+            {
+              "id": "digital_11_3",
+              "text": "Premiere é sempre incluído no Premium."
+            },
+            {
+              "id": "digital_11_4",
+              "text": "Canais ao vivo nunca têm intervalos."
+            }
+          ],
+          "answer": "digital_11_2"
+        },
+        {
+          "stem": "O cliente quer assinar um canal extra e alugar um filme no Prime Video. Esses itens entram no pacote?",
+          "explanation": "O benefício é o catálogo da assinatura ativada. Extras são cobrados à parte; frete e outros benefícios Amazon Prime dependem da oferta.",
+          "source": {
+            "file": "catalogo-digital.pdf",
+            "page": 22
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "digital_12",
+          "options": [
+            {
+              "id": "digital_12_1",
+              "text": "Canais extras, compras e aluguéis são cobrados à parte."
+            },
+            {
+              "id": "digital_12_2",
+              "text": "Tudo que aparece no aplicativo é gratuito."
+            },
+            {
+              "id": "digital_12_3",
+              "text": "Todos os canais extras e o frete estão garantidos."
+            },
+            {
+              "id": "digital_12_4",
+              "text": "O catálogo permite comprar filmes sem cobrança."
+            }
+          ],
+          "answer": "digital_12_1"
+        },
+        {
+          "stem": "O cliente chegou no WhatsApp perguntando o preço. Qual passo vem antes de apresentar a solução?",
+          "explanation": "A viabilidade vem antes da oferta. Depois de informar a cobertura, entenda o perfil do cliente.",
+          "source": {
+            "file": "processo-digital.pdf",
+            "page": 3
+          },
+          "critical": true,
+          "topic": "Processo",
+          "id": "digital_13",
+          "options": [
+            {
+              "id": "digital_13_1",
+              "text": "Enviar qualquer plano sem consultar cobertura."
+            },
+            {
+              "id": "digital_13_2",
+              "text": "Pedir pagamento para depois descobrir a cobertura."
+            },
+            {
+              "id": "digital_13_3",
+              "text": "Solicitar todos os documentos antes de saber se atende o endereço."
+            },
+            {
+              "id": "digital_13_4",
+              "text": "Pedir endereço completo e localização fixa e consultar a viabilidade."
+            }
+          ],
+          "answer": "digital_13_4"
+        },
+        {
+          "stem": "Quatro pessoas usam a internet na casa. Como indicar 1.000 ou 1.300 Mega?",
+          "explanation": "Quatro pessoas ficam na fronteira das referências. A decisão considera uso, pessoas e equipamentos juntos.",
+          "source": {
+            "file": "processo-digital.pdf",
+            "page": 4
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "digital_14",
+          "options": [
+            {
+              "id": "digital_14_1",
+              "text": "Indicar sempre o mais caro apenas pela quantidade."
+            },
+            {
+              "id": "digital_14_2",
+              "text": "Indicar sempre 1.000, sem perguntar sobre o uso."
+            },
+            {
+              "id": "digital_14_3",
+              "text": "Entender o uso simultâneo e as atividades antes de indicar."
+            },
+            {
+              "id": "digital_14_4",
+              "text": "Dispensar a consulta de viabilidade."
+            }
+          ],
+          "answer": "digital_14_3"
+        },
+        {
+          "stem": "A casa tem mais de três cômodos. O que a qualificação orienta avaliar?",
+          "explanation": "O Mesh entra na indicação junto da distribuição dos cômodos e andares. Respeite os equipamentos do plano.",
+          "source": {
+            "file": "processo-digital.pdf",
+            "page": 4
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "digital_15",
+          "options": [
+            {
+              "id": "digital_15_1",
+              "text": "Garantir sinal em qualquer ambiente sem avaliar o espaço."
+            },
+            {
+              "id": "digital_15_2",
+              "text": "A necessidade de Mesh e a distribuição dos ambientes."
+            },
+            {
+              "id": "digital_15_3",
+              "text": "Prometer um Mesh grátis em todo plano."
+            },
+            {
+              "id": "digital_15_4",
+              "text": "Trocar o app e dispensar a avaliação do Wi-Fi."
+            }
+          ],
+          "answer": "digital_15_2"
+        },
+        {
+          "stem": "Antes do áudio com a indicação personalizada, o que o processo orienta enviar?",
+          "explanation": "Depois dos dois criativos, envie o áudio relacionado a pessoas, cômodos e necessidade informados pelo cliente.",
+          "source": {
+            "file": "processo-digital.pdf",
+            "page": 5
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "digital_16",
+          "options": [
+            {
+              "id": "digital_16_1",
+              "text": "Os dois criativos da oferta apresentada ao cliente."
+            },
+            {
+              "id": "digital_16_2",
+              "text": "Todos os catálogos de uma vez, sem explicar."
+            },
+            {
+              "id": "digital_16_3",
+              "text": "Somente o boleto da taxa."
+            },
+            {
+              "id": "digital_16_4",
+              "text": "Uma oferta diferente daquela que foi indicada."
+            }
+          ],
+          "answer": "digital_16_1"
+        },
+        {
+          "stem": "O cliente diz “está caro”. Qual abordagem combina com o processo Digital?",
+          "explanation": "Esclareça a objeção e ajude o cliente a comparar. A indicação precisa fazer sentido para o uso informado.",
+          "source": {
+            "file": "processo-digital.pdf",
+            "page": 5
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "digital_17",
+          "options": [
+            {
+              "id": "digital_17_1",
+              "text": "Insistir sem ouvir a objeção."
+            },
+            {
+              "id": "digital_17_2",
+              "text": "Prometer benefícios que não estão no pacote."
+            },
+            {
+              "id": "digital_17_3",
+              "text": "Pedir os documentos antes de esclarecer a dúvida."
+            },
+            {
+              "id": "digital_17_4",
+              "text": "Entender a comparação e relacionar velocidade, Wi-Fi, estabilidade e suporte à necessidade dele."
+            }
+          ],
+          "answer": "digital_17_4"
+        },
+        {
+          "stem": "Qual escolha de vencimento NÃO está disponível no processo Digital?",
+          "explanation": "Os dias disponíveis vão de 1 a 18, exceto 5, 10 e 15.",
+          "source": {
+            "file": "processo-digital.pdf",
+            "page": 6
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "digital_18",
+          "options": [
+            {
+              "id": "digital_18_1",
+              "text": "Dias 1, 2 e 3."
+            },
+            {
+              "id": "digital_18_2",
+              "text": "Dias 6, 7 e 8."
+            },
+            {
+              "id": "digital_18_3",
+              "text": "Dias 5, 10 e 15."
+            },
+            {
+              "id": "digital_18_4",
+              "text": "Dias 16, 17 e 18."
+            }
+          ],
+          "answer": "digital_18_3"
+        },
+        {
+          "stem": "O atendimento é para uma kitnet. Qual sequência está correta?",
+          "explanation": "Em kitnet, a taxa é de R$ 149,99. A primeira mensalidade vence após 30 dias, com o vencimento definido na contratação.",
+          "source": {
+            "file": "processo-digital.pdf",
+            "page": 10
+          },
+          "critical": true,
+          "topic": "Processo",
+          "id": "digital_19",
+          "options": [
+            {
+              "id": "digital_19_1",
+              "text": "Agendar antes do pagamento e avisar a taxa depois."
+            },
+            {
+              "id": "digital_19_2",
+              "text": "Explicar R$ 149,99 de taxa, gerar o boleto e confirmar o pagamento antes do agendamento."
+            },
+            {
+              "id": "digital_19_3",
+              "text": "Prometer instalação sem taxa para qualquer kitnet."
+            },
+            {
+              "id": "digital_19_4",
+              "text": "Cobrar R$ 149,90 e substituir a primeira mensalidade."
+            }
+          ],
+          "answer": "digital_19_2"
+        },
+        {
+          "stem": "Depois da assinatura, como você explica a instalação residencial?",
+          "explanation": "A preferência de turno é registrada. Para residência, explique fidelidade de 12 meses e primeira fatura proporcional; kitnet tem orientação própria.",
+          "source": {
+            "file": "processo-digital.pdf",
+            "page": 7
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "digital_20",
+          "options": [
+            {
+              "id": "digital_20_1",
+              "text": "Prazo de até 2 dias; registrar o turno e informar que a equipe alinhará o agendamento."
+            },
+            {
+              "id": "digital_20_2",
+              "text": "Garantir instalação imediata no turno escolhido."
+            },
+            {
+              "id": "digital_20_3",
+              "text": "Informar que não precisa acompanhar a assinatura."
+            },
+            {
+              "id": "digital_20_4",
+              "text": "Prometer mensalidade sempre integral no primeiro mês."
+            }
+          ],
+          "answer": "digital_20_1"
+        }
+      ]
+    },
+    {
+      "id": "elite",
+      "name": "PAP Elite",
+      "badge": "Especialista Elite",
+      "color": "#bfa168",
+      "description": "Domínio dos pacotes Elite e das condições de venda.",
+      "version": "1.0",
+      "estimatedMinutes": 12,
+      "materials": [
+        "catalogo-elite.pdf",
+        "processo-pap.pdf"
+      ],
+      "questions": [
+        {
+          "stem": "Na linha Elite, qual é o pacote de entrada com Wi-Fi 7?",
+          "explanation": "O Residencial Wi-Fi 7 da linha Elite tem um app BASIC entre cinco opções; não inclui ponto Mesh.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 2
+          },
+          "critical": true,
+          "topic": "Planos",
+          "id": "elite_01",
+          "options": [
+            {
+              "id": "elite_01_1",
+              "text": "1.300 Mega por R$ 109,90 com dois Mesh."
+            },
+            {
+              "id": "elite_01_2",
+              "text": "1.300 Mega por R$ 129,90, sem Mesh e com 1 SVA BASIC."
+            },
+            {
+              "id": "elite_01_3",
+              "text": "1.000 Mega por R$ 99,90 com todos os streamings."
+            },
+            {
+              "id": "elite_01_4",
+              "text": "2.000 Mega para qualquer endereço."
+            }
+          ],
+          "answer": "elite_01_2"
+        },
+        {
+          "stem": "Um cliente quer o Prestige. Qual pacote você apresenta?",
+          "explanation": "O Prestige tem um app à escolha entre seis opções. Um ponto Mesh faz parte do pacote.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 6
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "elite_02",
+          "options": [
+            {
+              "id": "elite_02_1",
+              "text": "1.600 Mega, Wi-Fi 7, 1 Mesh e 1 SVA BASIC por R$ 149,90."
+            },
+            {
+              "id": "elite_02_2",
+              "text": "1.600 Mega com todos os apps PREMIUM."
+            },
+            {
+              "id": "elite_02_3",
+              "text": "1.300 Mega por R$ 249,90 sem Mesh."
+            },
+            {
+              "id": "elite_02_4",
+              "text": "2.000 Mega e dois Mesh por R$ 149,90."
+            }
+          ],
+          "answer": "elite_02_1"
+        },
+        {
+          "stem": "O cliente do DAHMAS escolheu Família. O que fica incluído?",
+          "explanation": "O Família custa R$ 299,90 e inclui dois apps à escolha entre as treze opções, além de dois Mesh.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 10
+          },
+          "critical": true,
+          "topic": "Planos",
+          "id": "elite_03",
+          "options": [
+            {
+              "id": "elite_03_1",
+              "text": "Todos os treze apps da lista."
+            },
+            {
+              "id": "elite_03_2",
+              "text": "Apenas um app e nenhum Mesh."
+            },
+            {
+              "id": "elite_03_3",
+              "text": "2.000 Mega, Wi-Fi 5 e um Mesh."
+            },
+            {
+              "id": "elite_03_4",
+              "text": "2.000 Mega, Wi-Fi 7/XGS-PON, 2 Mesh e somente os 2 apps escolhidos."
+            }
+          ],
+          "answer": "elite_03_4"
+        },
+        {
+          "stem": "O cliente mora em outro condomínio e quer 2.000 Mega. O que você faz?",
+          "explanation": "A restrição é pelo local de instalação. Confirme que o endereço fica no condomínio DAHMAS.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 10
+          },
+          "critical": true,
+          "topic": "Planos",
+          "id": "elite_04",
+          "options": [
+            {
+              "id": "elite_04_1",
+              "text": "Vende em qualquer condomínio que tenha portaria."
+            },
+            {
+              "id": "elite_04_2",
+              "text": "Vende porque o cliente aceitou R$ 299,90."
+            },
+            {
+              "id": "elite_04_3",
+              "text": "Consulta outra oferta elegível: o Família de 2.000 Mega é exclusivo do DAHMAS."
+            },
+            {
+              "id": "elite_04_4",
+              "text": "Cadastra o endereço como DAHMAS para liberar o plano."
+            }
+          ],
+          "answer": "elite_04_3"
+        },
+        {
+          "stem": "O cliente escolheu o Kaspersky PREMIUM. Quantas licenças você pode apresentar como incluídas?",
+          "explanation": "A opção PREMIUM tem 5 licenças. A opção BASIC do PME tem 1. Licenças extras e VPN ilimitada não são garantidas.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 11
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_05",
+          "options": [
+            {
+              "id": "elite_05_1",
+              "text": "Licenças ilimitadas"
+            },
+            {
+              "id": "elite_05_2",
+              "text": "5 licenças"
+            },
+            {
+              "id": "elite_05_3",
+              "text": "10 licenças"
+            },
+            {
+              "id": "elite_05_4",
+              "text": "3 licenças"
+            }
+          ],
+          "answer": "elite_05_2"
+        },
+        {
+          "stem": "O cliente quer ouvir música sem internet no Deezer. Qual explicação está correta?",
+          "explanation": "O catálogo confirma música, podcasts e uso sem internet após o download. Vários usuários e ausência de anúncios dependem da modalidade.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 11
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_06",
+          "options": [
+            {
+              "id": "elite_06_1",
+              "text": "É preciso baixar o conteúdo antes de ouvir sem internet."
+            },
+            {
+              "id": "elite_06_2",
+              "text": "Toda música toca sem internet, mesmo sem baixar."
+            },
+            {
+              "id": "elite_06_3",
+              "text": "Deezer só oferece filmes."
+            },
+            {
+              "id": "elite_06_4",
+              "text": "O plano Família com vários usuários é sempre incluído."
+            }
+          ],
+          "answer": "elite_06_1"
+        },
+        {
+          "stem": "O cliente quer incluir toda a família no Docway. O que você deve explicar?",
+          "explanation": "O Docway prevê acesso individual no CPF do titular. Não é plano de saúde nem atendimento de emergência.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 12
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_07",
+          "options": [
+            {
+              "id": "elite_07_1",
+              "text": "Toda a família já tem consultas ilimitadas."
+            },
+            {
+              "id": "elite_07_2",
+              "text": "É um plano de saúde com emergência presencial."
+            },
+            {
+              "id": "elite_07_3",
+              "text": "É uma assinatura de filmes com cinco perfis."
+            },
+            {
+              "id": "elite_07_4",
+              "text": "O acesso previsto é individual; dependentes não são incluídos automaticamente."
+            }
+          ],
+          "answer": "elite_07_4"
+        },
+        {
+          "stem": "Qual apresentação do ExitLag respeita o benefício previsto?",
+          "explanation": "O ExitLag pode reduzir atrasos e oscilações. Não garante ping zero, não aumenta a velocidade contratada e exige a rede ST1.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 12
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_08",
+          "options": [
+            {
+              "id": "elite_08_1",
+              "text": "Garante ping zero em qualquer jogo."
+            },
+            {
+              "id": "elite_08_2",
+              "text": "Aumenta os Mega contratados e inclui jogos."
+            },
+            {
+              "id": "elite_08_3",
+              "text": "Otimiza rotas de jogos compatíveis, com acesso individual na rede ST1."
+            },
+            {
+              "id": "elite_08_4",
+              "text": "O mesmo login pode ser dividido fora da rede ST1."
+            }
+          ],
+          "answer": "elite_08_3"
+        },
+        {
+          "stem": "No Looke, o cliente confunde perfis com telas. Qual informação está correta?",
+          "explanation": "Telas são aparelhos assistindo juntos. Perfis são usuários na conta. O Looke também tem Looke Kids; conteúdos fora da assinatura não são incluídos.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 13
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_09",
+          "options": [
+            {
+              "id": "elite_09_1",
+              "text": "São 5 telas simultâneas e 3 perfis."
+            },
+            {
+              "id": "elite_09_2",
+              "text": "São 3 telas simultâneas e 5 perfis."
+            },
+            {
+              "id": "elite_09_3",
+              "text": "Todos os lançamentos do cinema são incluídos."
+            },
+            {
+              "id": "elite_09_4",
+              "text": "Não existe conteúdo infantil."
+            }
+          ],
+          "answer": "elite_09_2"
+        },
+        {
+          "stem": "O cliente escolheu SKY+ Standard e pede Premiere. O que você responde?",
+          "explanation": "A oferta Standard tem 1 tela e até 3 perfis. Premiere, SportyNet, Paramount+, Combate e Telecine são extras pagos.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 13
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_10",
+          "options": [
+            {
+              "id": "elite_10_1",
+              "text": "Premiere é um extra pago; não está incluído automaticamente no Standard."
+            },
+            {
+              "id": "elite_10_2",
+              "text": "Premiere e Telecine estão sempre incluídos."
+            },
+            {
+              "id": "elite_10_3",
+              "text": "O Standard libera o pacote Full."
+            },
+            {
+              "id": "elite_10_4",
+              "text": "O Standard permite cinco telas ao mesmo tempo."
+            }
+          ],
+          "answer": "elite_10_1"
+        },
+        {
+          "stem": "Um responsável pergunta se o Estuda+ garante professor ao vivo e aprovação. Qual é a resposta correta?",
+          "explanation": "O catálogo confirma apostilas e conteúdos escolares. Aulas ao vivo, professor e correção de redação não foram confirmados.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 14
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_11",
+          "options": [
+            {
+              "id": "elite_11_1",
+              "text": "Garante aprovação em qualquer prova."
+            },
+            {
+              "id": "elite_11_2",
+              "text": "Inclui professor particular ao vivo todos os dias."
+            },
+            {
+              "id": "elite_11_3",
+              "text": "Inclui correção de toda redação e certificado garantido."
+            },
+            {
+              "id": "elite_11_4",
+              "text": "Oferece apostilas e apoio escolar; esses serviços e a aprovação não estão garantidos."
+            }
+          ],
+          "answer": "elite_11_4"
+        },
+        {
+          "stem": "Qual versão do Universal+ faz parte das opções confirmadas?",
+          "explanation": "A versão confirmada é sem anúncios, com até 4 telas e até 5 perfis. O download não foi especificado: confirme antes de prometer.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 14
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_12",
+          "options": [
+            {
+              "id": "elite_12_1",
+              "text": "Com anúncios, uma tela e pacote esportivo completo."
+            },
+            {
+              "id": "elite_12_2",
+              "text": "4K obrigatório em todos os aparelhos."
+            },
+            {
+              "id": "elite_12_3",
+              "text": "Sem anúncios, até 4 telas e vídeo até Full HD."
+            },
+            {
+              "id": "elite_12_4",
+              "text": "Downloads garantidos sem verificar a oferta."
+            }
+          ],
+          "answer": "elite_12_3"
+        },
+        {
+          "stem": "Qual Disney+ você deve apresentar nesta oferta?",
+          "explanation": "A versão aprovada é Padrão sem anúncios: 2 telas e 7 perfis. Ao vivo, reprises de eventos e ações promocionais podem ter publicidade.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 15
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_13",
+          "options": [
+            {
+              "id": "elite_13_1",
+              "text": "Premium, com todos os canais ESPN."
+            },
+            {
+              "id": "elite_13_2",
+              "text": "Padrão sem anúncios, com 2 telas; não é a versão Premium."
+            },
+            {
+              "id": "elite_13_3",
+              "text": "Padrão com anúncios e apenas uma tela."
+            },
+            {
+              "id": "elite_13_4",
+              "text": "Qualquer versão, porque os direitos são iguais."
+            }
+          ],
+          "answer": "elite_13_2"
+        },
+        {
+          "stem": "O cliente espera HBO Max com 4K e quatro telas. Qual é a oferta correta?",
+          "explanation": "A opção confirmada é HBO Max Standard. Não inclui 4K nem quatro telas simultâneas. Conteúdo ao vivo pode exibir anúncios.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 15
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_14",
+          "options": [
+            {
+              "id": "elite_14_1",
+              "text": "Standard: Full HD, 2 telas e até 30 vídeos baixados."
+            },
+            {
+              "id": "elite_14_2",
+              "text": "Premium: 4K e quatro telas incluídos."
+            },
+            {
+              "id": "elite_14_3",
+              "text": "Quatro telas e downloads ilimitados."
+            },
+            {
+              "id": "elite_14_4",
+              "text": "Uma tela, sem opção de download."
+            }
+          ],
+          "answer": "elite_14_1"
+        },
+        {
+          "stem": "O cliente quer assinar um canal extra e alugar um filme no Prime Video. Esses itens entram no pacote?",
+          "explanation": "O benefício é o catálogo da assinatura ativada. Extras são cobrados à parte; frete e outros benefícios Amazon Prime dependem da oferta.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 16
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_15",
+          "options": [
+            {
+              "id": "elite_15_1",
+              "text": "Tudo que aparece no aplicativo é gratuito."
+            },
+            {
+              "id": "elite_15_2",
+              "text": "Todos os canais extras e o frete estão garantidos."
+            },
+            {
+              "id": "elite_15_3",
+              "text": "O catálogo permite comprar filmes sem cobrança."
+            },
+            {
+              "id": "elite_15_4",
+              "text": "Canais extras, compras e aluguéis são cobrados à parte."
+            }
+          ],
+          "answer": "elite_15_4"
+        },
+        {
+          "stem": "O cliente escolheu Globoplay. Qual informação está correta?",
+          "explanation": "Globoplay Premium tem 5 telas e 5 perfis. A grade deve ser confirmada e canais ao vivo podem ter intervalos.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 16
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_16",
+          "options": [
+            {
+              "id": "elite_16_1",
+              "text": "A opção é apenas com anúncios e uma tela."
+            },
+            {
+              "id": "elite_16_2",
+              "text": "Premiere é sempre incluído no Premium."
+            },
+            {
+              "id": "elite_16_3",
+              "text": "A opção é Premium, com 5 telas; Premiere não entra automaticamente."
+            },
+            {
+              "id": "elite_16_4",
+              "text": "Canais ao vivo nunca têm intervalos."
+            }
+          ],
+          "answer": "elite_16_3"
+        },
+        {
+          "stem": "O cliente não tem aparelho Apple. Como você apresenta o Apple TV?",
+          "explanation": "A assinatura inclui Apple Originals e Compartilhamento Familiar para titular e até 5 familiares. Nem tudo que aparece no aplicativo está incluído.",
+          "source": {
+            "file": "catalogo-elite.pdf",
+            "page": 17
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "elite_17",
+          "options": [
+            {
+              "id": "elite_17_1",
+              "text": "É obrigatório comprar um iPhone."
+            },
+            {
+              "id": "elite_17_2",
+              "text": "Ele pode usar a assinatura de Apple Originals sem ter aparelho Apple; compras e aluguéis ficam fora."
+            },
+            {
+              "id": "elite_17_3",
+              "text": "Todos os aluguéis da loja são incluídos."
+            },
+            {
+              "id": "elite_17_4",
+              "text": "Inclui automaticamente assinaturas de outros serviços."
+            }
+          ],
+          "answer": "elite_17_2"
+        },
+        {
+          "stem": "A consulta retornou “Sem viabilidade”. O cliente pede que você agende mesmo assim. Qual é a conduta correta?",
+          "explanation": "Distância não confirma cobertura. O guia orienta resolver “Sem viabilidade” antes de agendar.",
+          "source": {
+            "file": "processo-pap.pdf",
+            "page": 3
+          },
+          "critical": true,
+          "topic": "Processo",
+          "id": "elite_18",
+          "options": [
+            {
+              "id": "elite_18_1",
+              "text": "Resolver a viabilidade antes de agendar ou prometer a instalação."
+            },
+            {
+              "id": "elite_18_2",
+              "text": "Agendar porque a distância parece curta."
+            },
+            {
+              "id": "elite_18_3",
+              "text": "Prometer cobertura e corrigir depois."
+            },
+            {
+              "id": "elite_18_4",
+              "text": "Marcar a venda como ganha sem consultar o endereço."
+            }
+          ],
+          "answer": "elite_18_1"
+        },
+        {
+          "stem": "Antes de seguir da assinatura para a cobrança, o que deve ser confirmado?",
+          "explanation": "O vendedor acompanha a assinatura. Depois de confirmá-la, conclui a OS e segue para a cobrança.",
+          "source": {
+            "file": "processo-pap.pdf",
+            "page": 3
+          },
+          "critical": true,
+          "topic": "Processo",
+          "id": "elite_19",
+          "options": [
+            {
+              "id": "elite_19_1",
+              "text": "Somente a mensagem enviada no WhatsApp."
+            },
+            {
+              "id": "elite_19_2",
+              "text": "A promessa verbal de assinar depois."
+            },
+            {
+              "id": "elite_19_3",
+              "text": "Apenas o plano selecionado."
+            },
+            {
+              "id": "elite_19_4",
+              "text": "Status “Vencemos” e “Contrato assinado” como “Sim”."
+            }
+          ],
+          "answer": "elite_19_4"
+        },
+        {
+          "stem": "O primeiro boleto e o boleto da taxa de instalação são a mesma cobrança?",
+          "explanation": "O guia distingue a taxa de instalação do boleto do primeiro pagamento, gerado após a ativação física.",
+          "source": {
+            "file": "processo-pap.pdf",
+            "page": 4
+          },
+          "critical": false,
+          "topic": "Processo",
+          "id": "elite_20",
+          "options": [
+            {
+              "id": "elite_20_1",
+              "text": "Sim, todo boleto é a mesma cobrança."
+            },
+            {
+              "id": "elite_20_2",
+              "text": "O primeiro boleto é gerado antes do cadastro."
+            },
+            {
+              "id": "elite_20_3",
+              "text": "Não. O primeiro boleto é gerado pelo Financeiro depois da ativação física."
+            },
+            {
+              "id": "elite_20_4",
+              "text": "A taxa de instalação sempre substitui a mensalidade."
+            }
+          ],
+          "answer": "elite_20_3"
+        }
+      ]
+    },
+    {
+      "id": "indoor",
+      "name": "Indoor",
+      "badge": "Especialista Indoor",
+      "color": "#2688ad",
+      "description": "Prestige, Família e direitos de cada aplicativo.",
+      "version": "1.0",
+      "estimatedMinutes": 12,
+      "materials": [
+        "catalogo-indoor.pdf"
+      ],
+      "questions": [
+        {
+          "stem": "Um cliente quer o Prestige. Qual pacote você apresenta?",
+          "explanation": "O Prestige tem um app à escolha entre seis opções. Um ponto Mesh faz parte do pacote.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 2
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "indoor_01",
+          "options": [
+            {
+              "id": "indoor_01_1",
+              "text": "1.600 Mega com todos os apps PREMIUM."
+            },
+            {
+              "id": "indoor_01_2",
+              "text": "1.300 Mega por R$ 249,90 sem Mesh."
+            },
+            {
+              "id": "indoor_01_3",
+              "text": "1.600 Mega, Wi-Fi 7, 1 Mesh e 1 SVA BASIC por R$ 149,90."
+            },
+            {
+              "id": "indoor_01_4",
+              "text": "2.000 Mega e dois Mesh por R$ 149,90."
+            }
+          ],
+          "answer": "indoor_01_3"
+        },
+        {
+          "stem": "O cliente do DAHMAS escolheu Família. O que fica incluído?",
+          "explanation": "O Família custa R$ 299,90 e inclui dois apps à escolha entre as treze opções, além de dois Mesh.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 6
+          },
+          "critical": true,
+          "topic": "Planos",
+          "id": "indoor_02",
+          "options": [
+            {
+              "id": "indoor_02_1",
+              "text": "Todos os treze apps da lista."
+            },
+            {
+              "id": "indoor_02_2",
+              "text": "2.000 Mega, Wi-Fi 7/XGS-PON, 2 Mesh e somente os 2 apps escolhidos."
+            },
+            {
+              "id": "indoor_02_3",
+              "text": "Apenas um app e nenhum Mesh."
+            },
+            {
+              "id": "indoor_02_4",
+              "text": "2.000 Mega, Wi-Fi 5 e um Mesh."
+            }
+          ],
+          "answer": "indoor_02_2"
+        },
+        {
+          "stem": "O cliente mora em outro condomínio e quer 2.000 Mega. O que você faz?",
+          "explanation": "A restrição é pelo local de instalação. Confirme que o endereço fica no condomínio DAHMAS.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 6
+          },
+          "critical": true,
+          "topic": "Planos",
+          "id": "indoor_03",
+          "options": [
+            {
+              "id": "indoor_03_1",
+              "text": "Consulta outra oferta elegível: o Família de 2.000 Mega é exclusivo do DAHMAS."
+            },
+            {
+              "id": "indoor_03_2",
+              "text": "Vende em qualquer condomínio que tenha portaria."
+            },
+            {
+              "id": "indoor_03_3",
+              "text": "Vende porque o cliente aceitou R$ 299,90."
+            },
+            {
+              "id": "indoor_03_4",
+              "text": "Cadastra o endereço como DAHMAS para liberar o plano."
+            }
+          ],
+          "answer": "indoor_03_1"
+        },
+        {
+          "stem": "O cliente escolheu o Kaspersky PREMIUM. Quantas licenças você pode apresentar como incluídas?",
+          "explanation": "A opção PREMIUM tem 5 licenças. A opção BASIC do PME tem 1. Licenças extras e VPN ilimitada não são garantidas.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 7
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_04",
+          "options": [
+            {
+              "id": "indoor_04_1",
+              "text": "Licenças ilimitadas"
+            },
+            {
+              "id": "indoor_04_2",
+              "text": "10 licenças"
+            },
+            {
+              "id": "indoor_04_3",
+              "text": "3 licenças"
+            },
+            {
+              "id": "indoor_04_4",
+              "text": "5 licenças"
+            }
+          ],
+          "answer": "indoor_04_4"
+        },
+        {
+          "stem": "O cliente quer ouvir música sem internet no Deezer. Qual explicação está correta?",
+          "explanation": "O catálogo confirma música, podcasts e uso sem internet após o download. Vários usuários e ausência de anúncios dependem da modalidade.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 7
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_05",
+          "options": [
+            {
+              "id": "indoor_05_1",
+              "text": "Toda música toca sem internet, mesmo sem baixar."
+            },
+            {
+              "id": "indoor_05_2",
+              "text": "Deezer só oferece filmes."
+            },
+            {
+              "id": "indoor_05_3",
+              "text": "É preciso baixar o conteúdo antes de ouvir sem internet."
+            },
+            {
+              "id": "indoor_05_4",
+              "text": "O plano Família com vários usuários é sempre incluído."
+            }
+          ],
+          "answer": "indoor_05_3"
+        },
+        {
+          "stem": "O cliente quer incluir toda a família no Docway. O que você deve explicar?",
+          "explanation": "O Docway prevê acesso individual no CPF do titular. Não é plano de saúde nem atendimento de emergência.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 8
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_06",
+          "options": [
+            {
+              "id": "indoor_06_1",
+              "text": "Toda a família já tem consultas ilimitadas."
+            },
+            {
+              "id": "indoor_06_2",
+              "text": "O acesso previsto é individual; dependentes não são incluídos automaticamente."
+            },
+            {
+              "id": "indoor_06_3",
+              "text": "É um plano de saúde com emergência presencial."
+            },
+            {
+              "id": "indoor_06_4",
+              "text": "É uma assinatura de filmes com cinco perfis."
+            }
+          ],
+          "answer": "indoor_06_2"
+        },
+        {
+          "stem": "Qual apresentação do ExitLag respeita o benefício previsto?",
+          "explanation": "O ExitLag pode reduzir atrasos e oscilações. Não garante ping zero, não aumenta a velocidade contratada e exige a rede ST1.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 8
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_07",
+          "options": [
+            {
+              "id": "indoor_07_1",
+              "text": "Otimiza rotas de jogos compatíveis, com acesso individual na rede ST1."
+            },
+            {
+              "id": "indoor_07_2",
+              "text": "Garante ping zero em qualquer jogo."
+            },
+            {
+              "id": "indoor_07_3",
+              "text": "Aumenta os Mega contratados e inclui jogos."
+            },
+            {
+              "id": "indoor_07_4",
+              "text": "O mesmo login pode ser dividido fora da rede ST1."
+            }
+          ],
+          "answer": "indoor_07_1"
+        },
+        {
+          "stem": "No Looke, o cliente confunde perfis com telas. Qual informação está correta?",
+          "explanation": "Telas são aparelhos assistindo juntos. Perfis são usuários na conta. O Looke também tem Looke Kids; conteúdos fora da assinatura não são incluídos.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 9
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_08",
+          "options": [
+            {
+              "id": "indoor_08_1",
+              "text": "São 5 telas simultâneas e 3 perfis."
+            },
+            {
+              "id": "indoor_08_2",
+              "text": "Todos os lançamentos do cinema são incluídos."
+            },
+            {
+              "id": "indoor_08_3",
+              "text": "Não existe conteúdo infantil."
+            },
+            {
+              "id": "indoor_08_4",
+              "text": "São 3 telas simultâneas e 5 perfis."
+            }
+          ],
+          "answer": "indoor_08_4"
+        },
+        {
+          "stem": "O cliente escolheu SKY+ Standard e pede Premiere. O que você responde?",
+          "explanation": "A oferta Standard tem 1 tela e até 3 perfis. Premiere, SportyNet, Paramount+, Combate e Telecine são extras pagos.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 9
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_09",
+          "options": [
+            {
+              "id": "indoor_09_1",
+              "text": "Premiere e Telecine estão sempre incluídos."
+            },
+            {
+              "id": "indoor_09_2",
+              "text": "O Standard libera o pacote Full."
+            },
+            {
+              "id": "indoor_09_3",
+              "text": "Premiere é um extra pago; não está incluído automaticamente no Standard."
+            },
+            {
+              "id": "indoor_09_4",
+              "text": "O Standard permite cinco telas ao mesmo tempo."
+            }
+          ],
+          "answer": "indoor_09_3"
+        },
+        {
+          "stem": "Um responsável pergunta se o Estuda+ garante professor ao vivo e aprovação. Qual é a resposta correta?",
+          "explanation": "O catálogo confirma apostilas e conteúdos escolares. Aulas ao vivo, professor e correção de redação não foram confirmados.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 10
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_10",
+          "options": [
+            {
+              "id": "indoor_10_1",
+              "text": "Garante aprovação em qualquer prova."
+            },
+            {
+              "id": "indoor_10_2",
+              "text": "Oferece apostilas e apoio escolar; esses serviços e a aprovação não estão garantidos."
+            },
+            {
+              "id": "indoor_10_3",
+              "text": "Inclui professor particular ao vivo todos os dias."
+            },
+            {
+              "id": "indoor_10_4",
+              "text": "Inclui correção de toda redação e certificado garantido."
+            }
+          ],
+          "answer": "indoor_10_2"
+        },
+        {
+          "stem": "Qual versão do Universal+ faz parte das opções confirmadas?",
+          "explanation": "A versão confirmada é sem anúncios, com até 4 telas e até 5 perfis. O download não foi especificado: confirme antes de prometer.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 10
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_11",
+          "options": [
+            {
+              "id": "indoor_11_1",
+              "text": "Sem anúncios, até 4 telas e vídeo até Full HD."
+            },
+            {
+              "id": "indoor_11_2",
+              "text": "Com anúncios, uma tela e pacote esportivo completo."
+            },
+            {
+              "id": "indoor_11_3",
+              "text": "4K obrigatório em todos os aparelhos."
+            },
+            {
+              "id": "indoor_11_4",
+              "text": "Downloads garantidos sem verificar a oferta."
+            }
+          ],
+          "answer": "indoor_11_1"
+        },
+        {
+          "stem": "Qual Disney+ você deve apresentar nesta oferta?",
+          "explanation": "A versão aprovada é Padrão sem anúncios: 2 telas e 7 perfis. Ao vivo, reprises de eventos e ações promocionais podem ter publicidade.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 11
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_12",
+          "options": [
+            {
+              "id": "indoor_12_1",
+              "text": "Premium, com todos os canais ESPN."
+            },
+            {
+              "id": "indoor_12_2",
+              "text": "Padrão com anúncios e apenas uma tela."
+            },
+            {
+              "id": "indoor_12_3",
+              "text": "Qualquer versão, porque os direitos são iguais."
+            },
+            {
+              "id": "indoor_12_4",
+              "text": "Padrão sem anúncios, com 2 telas; não é a versão Premium."
+            }
+          ],
+          "answer": "indoor_12_4"
+        },
+        {
+          "stem": "O cliente espera HBO Max com 4K e quatro telas. Qual é a oferta correta?",
+          "explanation": "A opção confirmada é HBO Max Standard. Não inclui 4K nem quatro telas simultâneas. Conteúdo ao vivo pode exibir anúncios.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 11
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_13",
+          "options": [
+            {
+              "id": "indoor_13_1",
+              "text": "Premium: 4K e quatro telas incluídos."
+            },
+            {
+              "id": "indoor_13_2",
+              "text": "Quatro telas e downloads ilimitados."
+            },
+            {
+              "id": "indoor_13_3",
+              "text": "Standard: Full HD, 2 telas e até 30 vídeos baixados."
+            },
+            {
+              "id": "indoor_13_4",
+              "text": "Uma tela, sem opção de download."
+            }
+          ],
+          "answer": "indoor_13_3"
+        },
+        {
+          "stem": "O cliente quer assinar um canal extra e alugar um filme no Prime Video. Esses itens entram no pacote?",
+          "explanation": "O benefício é o catálogo da assinatura ativada. Extras são cobrados à parte; frete e outros benefícios Amazon Prime dependem da oferta.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 12
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_14",
+          "options": [
+            {
+              "id": "indoor_14_1",
+              "text": "Tudo que aparece no aplicativo é gratuito."
+            },
+            {
+              "id": "indoor_14_2",
+              "text": "Canais extras, compras e aluguéis são cobrados à parte."
+            },
+            {
+              "id": "indoor_14_3",
+              "text": "Todos os canais extras e o frete estão garantidos."
+            },
+            {
+              "id": "indoor_14_4",
+              "text": "O catálogo permite comprar filmes sem cobrança."
+            }
+          ],
+          "answer": "indoor_14_2"
+        },
+        {
+          "stem": "O cliente escolheu Globoplay. Qual informação está correta?",
+          "explanation": "Globoplay Premium tem 5 telas e 5 perfis. A grade deve ser confirmada e canais ao vivo podem ter intervalos.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 12
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_15",
+          "options": [
+            {
+              "id": "indoor_15_1",
+              "text": "A opção é Premium, com 5 telas; Premiere não entra automaticamente."
+            },
+            {
+              "id": "indoor_15_2",
+              "text": "A opção é apenas com anúncios e uma tela."
+            },
+            {
+              "id": "indoor_15_3",
+              "text": "Premiere é sempre incluído no Premium."
+            },
+            {
+              "id": "indoor_15_4",
+              "text": "Canais ao vivo nunca têm intervalos."
+            }
+          ],
+          "answer": "indoor_15_1"
+        },
+        {
+          "stem": "O cliente não tem aparelho Apple. Como você apresenta o Apple TV?",
+          "explanation": "A assinatura inclui Apple Originals e Compartilhamento Familiar para titular e até 5 familiares. Nem tudo que aparece no aplicativo está incluído.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 13
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "indoor_16",
+          "options": [
+            {
+              "id": "indoor_16_1",
+              "text": "É obrigatório comprar um iPhone."
+            },
+            {
+              "id": "indoor_16_2",
+              "text": "Todos os aluguéis da loja são incluídos."
+            },
+            {
+              "id": "indoor_16_3",
+              "text": "Inclui automaticamente assinaturas de outros serviços."
+            },
+            {
+              "id": "indoor_16_4",
+              "text": "Ele pode usar a assinatura de Apple Originals sem ter aparelho Apple; compras e aluguéis ficam fora."
+            }
+          ],
+          "answer": "indoor_16_4"
+        },
+        {
+          "stem": "No Prestige, o cliente quer Disney+ como seu app BASIC. Como orientar?",
+          "explanation": "Prestige: Deezer, Docway, ExitLag, Looke, SKY+ Standard ou Estuda+. O Família tem outra lista e outra regra de local.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 2
+          },
+          "critical": true,
+          "topic": "Planos",
+          "id": "indoor_17",
+          "options": [
+            {
+              "id": "indoor_17_1",
+              "text": "Ativar Disney+ e todos os aplicativos PREMIUM."
+            },
+            {
+              "id": "indoor_17_2",
+              "text": "Dizer que qualquer app do catálogo entra em todo plano."
+            },
+            {
+              "id": "indoor_17_3",
+              "text": "Explicar que Disney+ não está entre as seis opções do Prestige."
+            },
+            {
+              "id": "indoor_17_4",
+              "text": "Cobrar R$ 299,90 sem explicar a mudança de plano."
+            }
+          ],
+          "answer": "indoor_17_3"
+        },
+        {
+          "stem": "Em quais áreas o Prestige está previsto no catálogo?",
+          "explanation": "A oferta Prestige é prevista nas áreas Azul e Laranja. O Família de 2.000 Mega tem a restrição específica do DAHMAS.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 2
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "indoor_18",
+          "options": [
+            {
+              "id": "indoor_18_1",
+              "text": "Somente no condomínio DAHMAS."
+            },
+            {
+              "id": "indoor_18_2",
+              "text": "Áreas Azul e Laranja, para endereços elegíveis."
+            },
+            {
+              "id": "indoor_18_3",
+              "text": "Em qualquer endereço, sem consultar cobertura."
+            },
+            {
+              "id": "indoor_18_4",
+              "text": "Somente nas áreas Cinza e Vermelha."
+            }
+          ],
+          "answer": "indoor_18_2"
+        },
+        {
+          "stem": "O cliente no DAHMAS quer HBO Max e Disney+ no Família. Quantos apps restam incluídos depois dessas escolhas?",
+          "explanation": "A lista mostra opções, não treze assinaturas. Só os dois apps escolhidos ficam incluídos.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 6
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "indoor_19",
+          "options": [
+            {
+              "id": "indoor_19_1",
+              "text": "Nenhum outro: as duas escolhas já completam o benefício."
+            },
+            {
+              "id": "indoor_19_2",
+              "text": "Todos os outros onze apps."
+            },
+            {
+              "id": "indoor_19_3",
+              "text": "Mais três apps BASIC."
+            },
+            {
+              "id": "indoor_19_4",
+              "text": "Mais um app PREMIUM."
+            }
+          ],
+          "answer": "indoor_19_1"
+        },
+        {
+          "stem": "Ao comparar Prestige e Família, qual diferença deve ficar clara?",
+          "explanation": "Compare velocidade, preço, quantidade de Mesh, quantidade de apps e elegibilidade do endereço.",
+          "source": {
+            "file": "catalogo-indoor.pdf",
+            "page": 6
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "indoor_20",
+          "options": [
+            {
+              "id": "indoor_20_1",
+              "text": "Os dois têm dois Mesh e todos os apps."
+            },
+            {
+              "id": "indoor_20_2",
+              "text": "O preço é igual e só muda o nome."
+            },
+            {
+              "id": "indoor_20_3",
+              "text": "Prestige inclui Disney+ e Família não inclui apps."
+            },
+            {
+              "id": "indoor_20_4",
+              "text": "Prestige tem 1 Mesh e 1 app; Família tem 2 Mesh e 2 apps, com venda exclusiva no DAHMAS."
+            }
+          ],
+          "answer": "indoor_20_4"
+        }
+      ]
+    },
+    {
+      "id": "pme",
+      "name": "PME",
+      "badge": "Especialista PME",
+      "color": "#17805d",
+      "description": "Pacotes para negócios, adicionais e aplicativos.",
+      "version": "1.0",
+      "estimatedMinutes": 12,
+      "materials": [
+        "catalogo-pme.pdf"
+      ],
+      "questions": [
+        {
+          "stem": "Qual oferta está correta para o PME de 1.000 Mega?",
+          "explanation": "O PME de 1.000 Mega tem atendimento presencial nos chamados, equipe dedicada e um app BASIC à escolha.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 2
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "pme_01",
+          "options": [
+            {
+              "id": "pme_01_1",
+              "text": "R$ 99,90 sem suporte dedicado."
+            },
+            {
+              "id": "pme_01_2",
+              "text": "R$ 149,90 com oito aplicativos juntos."
+            },
+            {
+              "id": "pme_01_3",
+              "text": "R$ 249,90 com dois apps PREMIUM."
+            },
+            {
+              "id": "pme_01_4",
+              "text": "R$ 149,90, instalação grátis, suporte dedicado e 1 SVA BASIC."
+            }
+          ],
+          "answer": "pme_01_4"
+        },
+        {
+          "stem": "Qual oferta está correta para o PME de 1.300 Mega?",
+          "explanation": "O PME de 1.300 Mega inclui um ponto Mesh e um app PREMIUM, com atendimento presencial e suporte dedicado.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 5
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "pme_02",
+          "options": [
+            {
+              "id": "pme_02_1",
+              "text": "R$ 299,90, dois Mesh e dois apps."
+            },
+            {
+              "id": "pme_02_2",
+              "text": "R$ 249,90 com todos os oito aplicativos."
+            },
+            {
+              "id": "pme_02_3",
+              "text": "R$ 249,90, 1 Mesh, instalação grátis e 1 SVA PREMIUM."
+            },
+            {
+              "id": "pme_02_4",
+              "text": "R$ 149,90 sem Mesh e sem app."
+            }
+          ],
+          "answer": "pme_02_3"
+        },
+        {
+          "stem": "O cliente escolheu o Kaspersky PREMIUM. Quantas licenças você pode apresentar como incluídas?",
+          "explanation": "A opção PREMIUM tem 5 licenças. A opção BASIC do PME tem 1. Licenças extras e VPN ilimitada não são garantidas.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 6
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pme_03",
+          "options": [
+            {
+              "id": "pme_03_1",
+              "text": "Licenças ilimitadas"
+            },
+            {
+              "id": "pme_03_2",
+              "text": "5 licenças"
+            },
+            {
+              "id": "pme_03_3",
+              "text": "10 licenças"
+            },
+            {
+              "id": "pme_03_4",
+              "text": "3 licenças"
+            }
+          ],
+          "answer": "pme_03_2"
+        },
+        {
+          "stem": "O cliente quer ouvir música sem internet no Deezer. Qual explicação está correta?",
+          "explanation": "O catálogo confirma música, podcasts e uso sem internet após o download. Vários usuários e ausência de anúncios dependem da modalidade.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 6
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pme_04",
+          "options": [
+            {
+              "id": "pme_04_1",
+              "text": "É preciso baixar o conteúdo antes de ouvir sem internet."
+            },
+            {
+              "id": "pme_04_2",
+              "text": "Toda música toca sem internet, mesmo sem baixar."
+            },
+            {
+              "id": "pme_04_3",
+              "text": "Deezer só oferece filmes."
+            },
+            {
+              "id": "pme_04_4",
+              "text": "O plano Família com vários usuários é sempre incluído."
+            }
+          ],
+          "answer": "pme_04_1"
+        },
+        {
+          "stem": "O cliente quer incluir toda a família no Docway. O que você deve explicar?",
+          "explanation": "O Docway prevê acesso individual no CPF do titular. Não é plano de saúde nem atendimento de emergência.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 7
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pme_05",
+          "options": [
+            {
+              "id": "pme_05_1",
+              "text": "Toda a família já tem consultas ilimitadas."
+            },
+            {
+              "id": "pme_05_2",
+              "text": "É um plano de saúde com emergência presencial."
+            },
+            {
+              "id": "pme_05_3",
+              "text": "É uma assinatura de filmes com cinco perfis."
+            },
+            {
+              "id": "pme_05_4",
+              "text": "O acesso previsto é individual; dependentes não são incluídos automaticamente."
+            }
+          ],
+          "answer": "pme_05_4"
+        },
+        {
+          "stem": "O cliente escolheu SKY+ Standard e pede Premiere. O que você responde?",
+          "explanation": "A oferta Standard tem 1 tela e até 3 perfis. Premiere, SportyNet, Paramount+, Combate e Telecine são extras pagos.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 7
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pme_06",
+          "options": [
+            {
+              "id": "pme_06_1",
+              "text": "Premiere e Telecine estão sempre incluídos."
+            },
+            {
+              "id": "pme_06_2",
+              "text": "O Standard libera o pacote Full."
+            },
+            {
+              "id": "pme_06_3",
+              "text": "Premiere é um extra pago; não está incluído automaticamente no Standard."
+            },
+            {
+              "id": "pme_06_4",
+              "text": "O Standard permite cinco telas ao mesmo tempo."
+            }
+          ],
+          "answer": "pme_06_3"
+        },
+        {
+          "stem": "O cliente espera HBO Max com 4K e quatro telas. Qual é a oferta correta?",
+          "explanation": "A opção confirmada é HBO Max Standard. Não inclui 4K nem quatro telas simultâneas. Conteúdo ao vivo pode exibir anúncios.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 8
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pme_07",
+          "options": [
+            {
+              "id": "pme_07_1",
+              "text": "Premium: 4K e quatro telas incluídos."
+            },
+            {
+              "id": "pme_07_2",
+              "text": "Standard: Full HD, 2 telas e até 30 vídeos baixados."
+            },
+            {
+              "id": "pme_07_3",
+              "text": "Quatro telas e downloads ilimitados."
+            },
+            {
+              "id": "pme_07_4",
+              "text": "Uma tela, sem opção de download."
+            }
+          ],
+          "answer": "pme_07_2"
+        },
+        {
+          "stem": "O cliente quer assinar um canal extra e alugar um filme no Prime Video. Esses itens entram no pacote?",
+          "explanation": "O benefício é o catálogo da assinatura ativada. Extras são cobrados à parte; frete e outros benefícios Amazon Prime dependem da oferta.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 8
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pme_08",
+          "options": [
+            {
+              "id": "pme_08_1",
+              "text": "Canais extras, compras e aluguéis são cobrados à parte."
+            },
+            {
+              "id": "pme_08_2",
+              "text": "Tudo que aparece no aplicativo é gratuito."
+            },
+            {
+              "id": "pme_08_3",
+              "text": "Todos os canais extras e o frete estão garantidos."
+            },
+            {
+              "id": "pme_08_4",
+              "text": "O catálogo permite comprar filmes sem cobrança."
+            }
+          ],
+          "answer": "pme_08_1"
+        },
+        {
+          "stem": "O cliente escolheu Globoplay. Qual informação está correta?",
+          "explanation": "Globoplay Premium tem 5 telas e 5 perfis. A grade deve ser confirmada e canais ao vivo podem ter intervalos.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 9
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pme_09",
+          "options": [
+            {
+              "id": "pme_09_1",
+              "text": "A opção é apenas com anúncios e uma tela."
+            },
+            {
+              "id": "pme_09_2",
+              "text": "Premiere é sempre incluído no Premium."
+            },
+            {
+              "id": "pme_09_3",
+              "text": "Canais ao vivo nunca têm intervalos."
+            },
+            {
+              "id": "pme_09_4",
+              "text": "A opção é Premium, com 5 telas; Premiere não entra automaticamente."
+            }
+          ],
+          "answer": "pme_09_4"
+        },
+        {
+          "stem": "O cliente não tem aparelho Apple. Como você apresenta o Apple TV?",
+          "explanation": "A assinatura inclui Apple Originals e Compartilhamento Familiar para titular e até 5 familiares. Nem tudo que aparece no aplicativo está incluído.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 9
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pme_10",
+          "options": [
+            {
+              "id": "pme_10_1",
+              "text": "É obrigatório comprar um iPhone."
+            },
+            {
+              "id": "pme_10_2",
+              "text": "Todos os aluguéis da loja são incluídos."
+            },
+            {
+              "id": "pme_10_3",
+              "text": "Ele pode usar a assinatura de Apple Originals sem ter aparelho Apple; compras e aluguéis ficam fora."
+            },
+            {
+              "id": "pme_10_4",
+              "text": "Inclui automaticamente assinaturas de outros serviços."
+            }
+          ],
+          "answer": "pme_10_3"
+        },
+        {
+          "stem": "Qual fidelidade deve ser informada antes de fechar qualquer um dos dois planos PME?",
+          "explanation": "Os dois planos PME têm fidelidade de 24 meses, conforme o catálogo aprovado.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 2
+          },
+          "critical": true,
+          "topic": "Condições",
+          "id": "pme_11",
+          "options": [
+            {
+              "id": "pme_11_1",
+              "text": "12 meses em todos os casos."
+            },
+            {
+              "id": "pme_11_2",
+              "text": "24 meses."
+            },
+            {
+              "id": "pme_11_3",
+              "text": "Sem fidelidade."
+            },
+            {
+              "id": "pme_11_4",
+              "text": "Somente 3 meses."
+            }
+          ],
+          "answer": "pme_11_2"
+        },
+        {
+          "stem": "O cliente do PME de 1.300 Mega pede IP fixo. Como apresentar?",
+          "explanation": "O IP fixo é um adicional opcional de R$ 50,00 mensais no PME de 1.300 Mega.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 5
+          },
+          "critical": true,
+          "topic": "Condições",
+          "id": "pme_12",
+          "options": [
+            {
+              "id": "pme_12_1",
+              "text": "É opcional, contratado à parte por mais R$ 50,00 por mês."
+            },
+            {
+              "id": "pme_12_2",
+              "text": "Já está incluído sem custo."
+            },
+            {
+              "id": "pme_12_3",
+              "text": "Custa R$ 50,00 uma única vez."
+            },
+            {
+              "id": "pme_12_4",
+              "text": "É obrigatório para ativar qualquer plano."
+            }
+          ],
+          "answer": "pme_12_1"
+        },
+        {
+          "stem": "Quanto fica a mensalidade do PME de 1.300 Mega se o cliente contratar o IP fixo opcional?",
+          "explanation": "R$ 249,90 do plano + R$ 50,00 do IP fixo = R$ 299,90 por mês. O adicional precisa constar na proposta.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 5
+          },
+          "critical": false,
+          "topic": "Condições",
+          "id": "pme_13",
+          "options": [
+            {
+              "id": "pme_13_1",
+              "text": "R$ 249,90 por mês, sem adicional."
+            },
+            {
+              "id": "pme_13_2",
+              "text": "R$ 50,00 por mês no total."
+            },
+            {
+              "id": "pme_13_3",
+              "text": "R$ 149,90 por mês."
+            },
+            {
+              "id": "pme_13_4",
+              "text": "R$ 299,90 por mês."
+            }
+          ],
+          "answer": "pme_13_4"
+        },
+        {
+          "stem": "O PME de 1.000 Mega permite escolher qual conjunto de opções BASIC?",
+          "explanation": "O BASIC do PME tem três opções específicas. A lista residencial não deve ser aplicada ao PME.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 2
+          },
+          "critical": true,
+          "topic": "Planos",
+          "id": "pme_14",
+          "options": [
+            {
+              "id": "pme_14_1",
+              "text": "Disney+, HBO Max e Apple TV juntos."
+            },
+            {
+              "id": "pme_14_2",
+              "text": "Todos os oito apps PREMIUM."
+            },
+            {
+              "id": "pme_14_3",
+              "text": "Kaspersky, Deezer ou Docway: somente um deles."
+            },
+            {
+              "id": "pme_14_4",
+              "text": "SKY+ Standard, Looke ou ExitLag."
+            }
+          ],
+          "answer": "pme_14_3"
+        },
+        {
+          "stem": "O cliente do PME de 1.000 Mega escolheu Kaspersky BASIC. Quantos aparelhos têm licença incluída?",
+          "explanation": "A opção BASIC do Kaspersky no PME tem uma licença. A opção PREMIUM tem cinco.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 3
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "pme_15",
+          "options": [
+            {
+              "id": "pme_15_1",
+              "text": "5 aparelhos/licenças."
+            },
+            {
+              "id": "pme_15_2",
+              "text": "1 aparelho/licença."
+            },
+            {
+              "id": "pme_15_3",
+              "text": "Todos os aparelhos da empresa."
+            },
+            {
+              "id": "pme_15_4",
+              "text": "10 aparelhos/licenças."
+            }
+          ],
+          "answer": "pme_15_2"
+        },
+        {
+          "stem": "O cliente escolhe HBO Max no PME de 1.300 Mega e também pede Deezer. O que você explica?",
+          "explanation": "A lista PREMIUM do PME oferece oito opções, mas o benefício é apenas um aplicativo escolhido.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 5
+          },
+          "critical": true,
+          "topic": "Planos",
+          "id": "pme_16",
+          "options": [
+            {
+              "id": "pme_16_1",
+              "text": "O plano inclui somente um app à escolha; os dois não entram automaticamente juntos."
+            },
+            {
+              "id": "pme_16_2",
+              "text": "Os oito aplicativos ficam ativos juntos."
+            },
+            {
+              "id": "pme_16_3",
+              "text": "Todo app BASIC pode ser somado gratuitamente ao PREMIUM."
+            },
+            {
+              "id": "pme_16_4",
+              "text": "O plano não tem nenhum aplicativo."
+            }
+          ],
+          "answer": "pme_16_1"
+        },
+        {
+          "stem": "O cliente pede Disney+ no PME de 1.300 Mega. Essa escolha aparece na lista do plano?",
+          "explanation": "As opções PME PREMIUM são Kaspersky, Deezer, Docway, SKY+ Standard, HBO Max, Amazon Prime, Globoplay e Apple TV.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 5
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "pme_17",
+          "options": [
+            {
+              "id": "pme_17_1",
+              "text": "Sim, todos os apps do Família residencial valem no PME."
+            },
+            {
+              "id": "pme_17_2",
+              "text": "Sim, Disney+ vem automaticamente com HBO Max."
+            },
+            {
+              "id": "pme_17_3",
+              "text": "Sim, basta mudar o nome do plano."
+            },
+            {
+              "id": "pme_17_4",
+              "text": "Não. Disney+ não está entre as oito opções confirmadas desse PME."
+            }
+          ],
+          "answer": "pme_17_4"
+        },
+        {
+          "stem": "Qual condição de instalação consta nos dois planos PME?",
+          "explanation": "O catálogo PME confirma instalação grátis nos dois planos. A regra de kitnet do processo Digital não deve ser transferida para essa oferta.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 2
+          },
+          "critical": false,
+          "topic": "Condições",
+          "id": "pme_18",
+          "options": [
+            {
+              "id": "pme_18_1",
+              "text": "Taxa obrigatória de R$ 149,99, igual à kitnet Digital."
+            },
+            {
+              "id": "pme_18_2",
+              "text": "Instalação grátis apenas com IP fixo."
+            },
+            {
+              "id": "pme_18_3",
+              "text": "Instalação grátis."
+            },
+            {
+              "id": "pme_18_4",
+              "text": "A instalação só é liberada escolhendo Globoplay."
+            }
+          ],
+          "answer": "pme_18_3"
+        },
+        {
+          "stem": "Antes de fechar o aplicativo do cliente PME, o que deve ser registrado e explicado?",
+          "explanation": "Feche a escolha com o cliente, registre app e versão, confira cadastro e explique a ativação e as regras.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 4
+          },
+          "critical": false,
+          "topic": "Aplicativos",
+          "id": "pme_19",
+          "options": [
+            {
+              "id": "pme_19_1",
+              "text": "Apenas o nome do plano de internet."
+            },
+            {
+              "id": "pme_19_2",
+              "text": "App e versão escolhidos, cadastro, ativação e regras de uso."
+            },
+            {
+              "id": "pme_19_3",
+              "text": "Que todos os apps da lista já estão ativados."
+            },
+            {
+              "id": "pme_19_4",
+              "text": "Que compras e aluguéis de qualquer plataforma são gratuitos."
+            }
+          ],
+          "answer": "pme_19_2"
+        },
+        {
+          "stem": "Onde as ofertas PME deste catálogo são válidas?",
+          "explanation": "A oferta PME é válida para todas as cidades próprias da ST1. A contratação exige confirmar o endereço atendido.",
+          "source": {
+            "file": "catalogo-pme.pdf",
+            "page": 2
+          },
+          "critical": false,
+          "topic": "Planos",
+          "id": "pme_20",
+          "options": [
+            {
+              "id": "pme_20_1",
+              "text": "Nas cidades próprias da ST1, confirmando o endereço atendido."
+            },
+            {
+              "id": "pme_20_2",
+              "text": "Somente no condomínio DAHMAS."
+            },
+            {
+              "id": "pme_20_3",
+              "text": "Em qualquer cidade do Brasil, sem conferir."
+            },
+            {
+              "id": "pme_20_4",
+              "text": "Somente na área Azul residencial."
+            }
+          ],
+          "answer": "pme_20_1"
+        }
+      ]
+    }
+  ],
+  "sourceRevision": "central-1e01a357",
+  "sourcePortal": "https://st1-central-comercial.vercel.app/"
+}
