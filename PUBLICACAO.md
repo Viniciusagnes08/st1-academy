@@ -6,6 +6,8 @@ A configuração escolhida é **Supabase Free para PostgreSQL e Render Free para
 
 Contas, permissões, conteúdos e arquivos, módulos, mapas, provas, certificados, perfis, squads, mensagens e agenda ficam em tabelas relacionais reais no esquema privado `academy`. A conexão é TLS com validação do certificado. O esquema não concede acesso a `PUBLIC`, e as tabelas têm RLS habilitada. A Data API pública não deve expor esse esquema. A aplicação acessa o banco apenas pelo servidor e conserva as verificações de papel, squad, canal, versão e pré-requisitos.
 
+O certificado público `config/supabase-root-ca.crt` vem do botão **Download certificate** do painel Supabase, em **Database → Settings → SSL configuration**. `NODE_EXTRA_CA_CERTS` aponta para esse arquivo antes da inicialização do Node, preservando a validação da cadeia e do hostname. O aplicativo não desativa `rejectUnauthorized`. Em comandos locais PowerShell, defina `$env:NODE_EXTRA_CA_CERTS = (Resolve-Path config/supabase-root-ca.crt).Path` antes de iniciar o processo; carregar essa variável somente por `--env-file` não basta. [Certificado e conexão verificada no Supabase](https://supabase.com/docs/guides/database/connecting-to-postgres).
+
 Os arquivos desta versão são `BYTEA` no PostgreSQL, com SHA-256 e permissões da Academy; ainda não usam buckets do Supabase Storage. Portanto, consomem a franquia do banco. A cópia inicial preparada tem cerca de 25 MB. Uma futura migração de arquivos para buckets privados pode liberar espaço, mas precisa manter as mesmas regras de acesso.
 
 O piloto local conserva SQLite. O servidor publicado usa `ACADEMY_STORAGE=postgres`; o disco temporário do Render não guarda os dados principais nem o segredo da sessão. O repositório de consultas mantém o contrato síncrono dos serviços existentes por um worker dedicado, que executa SQL em PostgreSQL. A ponte preserva os tipos, transações, arquivos, datas e hashes de senha; ela não armazena uma cópia SQLite como banco remoto. Se uma conexão cair, a gravação que falhou não é repetida automaticamente. Transações interrompidas são rejeitadas antes de reconectar.
@@ -24,6 +26,7 @@ A sincronização e as verificações internas da agenda dependem do servidor at
 | --- | --- |
 | `NODE_VERSION` | `24.15.0` |
 | `NODE_ENV` | `production` |
+| `NODE_EXTRA_CA_CERTS` | `config/supabase-root-ca.crt`, configurado no ambiente antes de iniciar o Node |
 | `ACADEMY_DEPLOYMENT` | `production` |
 | `ACADEMY_STORAGE` | `postgres` |
 | `DATABASE_URL` | Conexão PostgreSQL privada; pooler de sessão na porta 5432 para IPv4 |

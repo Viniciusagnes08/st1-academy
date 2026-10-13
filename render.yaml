@@ -17,6 +17,8 @@ services:
         value: 24.15.0
       - key: NODE_ENV
         value: production
+      - key: NODE_EXTRA_CA_CERTS
+        value: config/supabase-root-ca.crt
       - key: ACADEMY_DEPLOYMENT
         value: production
       - key: ACADEMY_STORAGE
