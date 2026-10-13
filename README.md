@@ -1,7 +1,9 @@
-<!-- Versão 2.6.0: PostgreSQL no Supabase e configuração gratuita de publicação. -->
+<!-- Versão 2.6.1: leitura das páginas com PostgreSQL e configuração gratuita de publicação. -->
 # ST1 Academy
 
-Academia de capacitação comercial, com identidade ST1, conteúdos privados, gamificação e cinco trilhas: PAP, Digital, PAP Elite, Indoor e PME. Versão 2.6.0.
+Academia de capacitação comercial, com identidade ST1, conteúdos privados, gamificação e cinco trilhas: PAP, Digital, PAP Elite, Indoor e PME. Versão 2.6.1.
+
+As páginas reutilizam consultas determinísticas ao PostgreSQL durante uma única resposta. O estado é descartado entre acessos e invalidado após gravações, evitando recalcular repetidamente a evolução sem manter permissões ou progresso antigos.
 
 O mapa de conhecimento apresenta o percurso completo de cada canal ou função, com etapas conectadas, pré-requisitos, zoom, arraste, minimapa e detalhes em gaveta. O Admin configura quais estudos e práticas abrem cada próximo passo. Estudo e evidências de avaliação aparecem com estados distintos. A organização, as versões e as permissões estão descritas em [MAPA_CONHECIMENTO.md](MAPA_CONHECIMENTO.md).
 

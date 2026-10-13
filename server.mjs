@@ -194,7 +194,7 @@ export async function createApp(options={}) {
   app.get('/api/admin/report',member,admin,(req,res)=>res.json(reportFor(req.member)));
   app.get('/api/team/report',member,team,(req,res)=>res.json(reportFor(req.member)));
   app.get('/api/admin/access',member,admin,(_,res)=>res.json(access.directory()));
-  const contentAction=action=>(req,res)=>{try{action(req,res);}catch(error){res.status(error.status||400).json({message:error.message});}};
+  const contentAction=action=>(req,res)=>{try{const work=()=>action(req,res);if(req.method==='GET'&&db.withReadScope)db.withReadScope(work);else work();}catch(error){res.status(error.status||400).json({message:error.message});}};
   app.get('/api/profile',member,contentAction((req,res)=>{const value=ctx.profiles.detail(req.member);res.json({...value,recognitions:ctx.management.recognitions(req.member,value.id)});}));
   app.get('/api/profiles',member,contentAction((req,res)=>res.json({items:ctx.profiles.peers(req.member)})));
   app.get('/api/profiles/:id',member,contentAction((req,res)=>{const value=ctx.profiles.detail(req.member,req.params.id);res.json({...value,recognitions:ctx.management.recognitions(req.member,value.id)});}));

@@ -21,6 +21,23 @@ async function adminConnection(){
   const client=new pg.Client({connectionString:url,ssl:false});await client.connect();return client;
 }
 
+test('PostgreSQL reuses response reads, clears writes, and refreshes the next request',{skip:!url},async()=>{
+  const schema=schemaName(),admin=await adminConnection(),db=new PostgresDatabase({url,schema,ssl:false});
+  try{
+    db.exec('CREATE TABLE response_state(id TEXT PRIMARY KEY,value TEXT)');
+    db.prepare('INSERT INTO response_state VALUES(?,?)').run('study','locked');
+    const get=()=>db.prepare('SELECT value FROM response_state WHERE id=?').get('study');
+    db.withReadScope(()=>{
+      const first=get();first.value='client mutation';assert.equal(get().value,'locked');
+      db.prepare('UPDATE response_state SET value=? WHERE id=?').run('available','study');
+      assert.equal(get().value,'available');
+      db.exec('BEGIN');db.prepare('UPDATE response_state SET value=? WHERE id=?').run('temporary','study');assert.equal(get().value,'temporary');db.exec('ROLLBACK');assert.equal(get().value,'available');
+    });
+    await admin.query('UPDATE "'+schema+'".response_state SET value=$1 WHERE id=$2',['changed outside scope','study']);
+    db.withReadScope(()=>assert.equal(get().value,'changed outside scope'));
+  }finally{db.close();await admin.query('DROP SCHEMA "'+schema+'" CASCADE');await admin.end();}
+});
+
 test('PostgreSQL guarda bytes e datas e desfaz somente a transação interna',{skip:!url},async()=>{
   const schema=schemaName(),admin=await adminConnection(),db=new PostgresDatabase({url,schema,ssl:false});
   try{
