@@ -29,7 +29,13 @@ function harness(source,{hostname='localhost',hash='#trilhas',search='',fetcher}
   const origin='http://'+hostname+':4177';
   const location={hostname,origin,hash,search,pathname:source==='login'?'/login':'/',href:origin+(source==='login'?'/login':'/')+search+hash,
     assign:url=>navigation.push({kind:'assign',url}),replace:url=>navigation.push({kind:'replace',url})};
-  const context=createContext({URL,URLSearchParams,console,fetch:fetcher,location,
+  const fetchFixture=async path=>{
+    if(source!=='academy'||path!=='/api/bootstrap')return fetcher(path);
+    const profile=await fetcher('/api/me');if(!profile.ok)return profile;
+    const user=await profile.json(),definition=await fetcher('/api/catalog');if(!definition.ok)return definition;
+    return json({user,catalog:await definition.json()});
+  };
+  const context=createContext({URL,URLSearchParams,console,fetch:fetchFixture,location,
     history:{replaceState(_state,_title,url){navigation.push({kind:'history',url});}},
     document:{body:{dataset:{},style:{},classList:{contains:()=>false,remove(){},add(){}}},querySelector:element,querySelectorAll:()=>[],addEventListener(){},createElement:tag=>element('created-'+tag)},
     window:{scrollTo(){}},navigator:{},matchMedia:()=>({matches:false,addEventListener(){}}),
