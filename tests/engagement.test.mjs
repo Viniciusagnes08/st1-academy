@@ -18,6 +18,18 @@ test('Etapas, XP, squads e quizzes usam evidências reais e preservam a governan
   try{
     await signup('admin','admin');await signup('seller','seller');await signup('peer','seller');await signup('supervisor','supervisor');await signup('outsider','seller');await signup('restricted','seller',['materials']);
     await t.test('importa dez squads e prepara etapas e sprints sem fabricar participantes ou XP',async()=>{const squads=await request(people.admin,'/api/admin/squads');assert.equal(squads.data.items.length,10);assert.ok(squads.data.items.every(s=>s.members.length===0));const game=await request(people.seller,'/api/game/me');assert.equal(game.data.xp,0);assert.equal(game.data.paths.length,1);assert.equal(game.data.paths[0].nodes[0].status,'available');assert.equal(game.data.paths[0].nodes[1].status,'locked');const flash=await request(people.seller,'/api/quizzes?type=flash');assert.equal(flash.data.items.length,0);assert.equal((await request(people.restricted,'/api/game/me')).status,403);});
+    await t.test('endereços de progresso preservam dados e controles de acesso',async()=>{
+      for(const [original,current] of [['/api/game/me','/api/progress/me'],['/api/game/knowledge','/api/progress/knowledge'],['/api/game/results','/api/progress/results'],['/api/admin/game/rules','/api/admin/progress/rules']]){
+        const previous=await request(people.admin,original),next=await request(people.admin,current);
+        assert.equal(next.status,200);assert.deepEqual(next.data,previous.data);
+        assert.equal((await request(null,current)).status,401);
+      }
+      assert.equal((await request(people.restricted,'/api/progress/me')).status,403);
+      const sellerPrevious=await request(people.seller,'/api/game/results'),sellerCurrent=await request(people.seller,'/api/progress/results');
+      assert.equal(sellerCurrent.status,200);assert.deepEqual(sellerCurrent.data,sellerPrevious.data);
+      assert.equal((await request(people.restricted,'/api/progress/results')).status,403);
+      assert.equal((await request(people.seller,'/api/admin/progress/rules',{method:'PATCH',body:{}})).status,403);
+    });
     await t.test('etapas respeitam ordem, permissões e concedem XP uma vez',async()=>{assert.equal((await request(people.seller,'/api/quizzes/etapa-pap-1/start',{method:'POST',body:{}})).status,403);const completed=await answerPractice(people.seller,'etapa-pap-0');assert.equal(completed.result.pointsAwarded,25);assert.equal(completed.result.approved,true);assert.equal((await answerPractice(people.seller,'etapa-pap-0')).result.pointsAwarded,0);assert.equal((await request(people.seller,'/api/game/me')).data.xp,25);assert.equal((await request(people.seller,'/api/game/me')).data.paths[0].nodes[1].status,'available');assert.equal((await request(people.restricted,'/api/quizzes/etapa-pap-0/start',{method:'POST',body:{}})).status,404);});
     let flash,expiredAttempt;
     await t.test('quiz guarda prazo fixo e não expõe respostas corretas durante a prova',async()=>{flash=await createFlash();const opened=await request(people.seller,'/api/quizzes/'+flash.id+'/start',{method:'POST',body:{durationSeconds:999999}});expiredAttempt=opened.data;assert.equal(Date.parse(expiredAttempt.expiresAt)-Date.parse(expiredAttempt.startedAt),20000);assert.ok(expiredAttempt.questions.every(q=>q.answer===undefined&&q.explanation===undefined));assert.equal((await request(people.peer,'/api/quiz-attempts/'+expiredAttempt.id)).status,404);});
