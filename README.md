@@ -1,7 +1,7 @@
-<!-- Versão 2.6.1: leitura das páginas com PostgreSQL e configuração gratuita de publicação. -->
+<!-- Versão 2.6.2: leitura com PostgreSQL, caminhos de progresso compatíveis com navegadores e configuração gratuita de publicação. -->
 # ST1 Academy
 
-Academia de capacitação comercial, com identidade ST1, conteúdos privados, gamificação e cinco trilhas: PAP, Digital, PAP Elite, Indoor e PME. Versão 2.6.1.
+Academia de capacitação comercial, com identidade ST1, conteúdos privados, gamificação e cinco trilhas: PAP, Digital, PAP Elite, Indoor e PME. Versão 2.6.2.
 
 As páginas reutilizam consultas determinísticas ao PostgreSQL durante uma única resposta. O estado é descartado entre acessos e invalidado após gravações, evitando recalcular repetidamente a evolução sem manter permissões ou progresso antigos.
 

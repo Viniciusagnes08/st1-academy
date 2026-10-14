@@ -211,8 +211,8 @@ export async function createApp(options={}) {
   app.patch('/api/squad-requests/:id',member,contentAction((req,res)=>res.json(ctx.profiles.requests.decide(req.member,req.params.id,req.body))));
   app.post('/api/study',member,contentAction((req,res)=>{ctx.learningFlows.assertAccess(req.member,'material',req.body.contentId);res.status(201).json(ctx.study.start(req.member,req.body.contentId));}));
   app.post('/api/study/:id/heartbeat',member,contentAction((req,res)=>{const session=db.prepare('SELECT content_id FROM academy_study_session WHERE id=? AND user_id=?').get(req.params.id,req.member.user_id);if(session)ctx.learningFlows.assertAccess(req.member,'material',session.content_id);res.json(ctx.study.heartbeat(req.member,req.params.id));}));
-  app.get('/api/game/me',member,contentAction((req,res)=>res.json(ctx.game.me(req.member))));
-  app.get('/api/game/knowledge',member,contentAction((req,res)=>res.json(ctx.game.knowledge(req.member,req.query.userId||req.member.user_id))));
+  app.get(['/api/game/me','/api/progress/me'],member,contentAction((req,res)=>res.json(ctx.game.me(req.member))));
+  app.get(['/api/game/knowledge','/api/progress/knowledge'],member,contentAction((req,res)=>res.json(ctx.game.knowledge(req.member,req.query.userId||req.member.user_id))));
   app.get('/api/learning-flows',member,contentAction((req,res)=>res.json(ctx.learningFlows.list(req.member,req.query.userId))));
   app.get('/api/learning-flows/:id',member,contentAction((req,res)=>res.json(ctx.learningFlows.get(req.member,req.params.id,req.query.userId))));
   app.get('/api/admin/learning-flows',member,admin,contentAction((req,res)=>res.json({items:ctx.learningFlows.adminList(req.member)})));
@@ -227,9 +227,9 @@ export async function createApp(options={}) {
   app.use('/api/quiz-attempts/:id',member,(req,res,next)=>{const attempt=db.prepare('SELECT quiz_id,status FROM academy_quiz_attempt WHERE id=? AND user_id=?').get(req.params.id,req.member.user_id);if(!attempt||attempt.status!=='open')return next();learningGate('quiz',()=>attempt.quiz_id)(req,res,next);});
   app.get('/api/knowledge-map',member,contentAction((req,res)=>res.json(ctx.knowledgeMap.overview(req.member,req.query))));
   app.get('/api/knowledge-map/:kind/:id',member,contentAction((req,res)=>res.json(ctx.knowledgeMap.children(req.member,req.params.kind,req.params.id,req.query))));
-  app.get('/api/game/results',member,contentAction((req,res)=>res.json(ctx.game.results(req.member,{period:req.query.period||'all',role:req.query.role||'seller'}))));
-  app.get('/api/admin/game/rules',member,admin,contentAction((req,res)=>res.json(ctx.game.rules())));
-  app.patch('/api/admin/game/rules',member,admin,contentAction((req,res)=>res.json(ctx.game.setRules(req.member.user_id,req.body))));
+  app.get(['/api/game/results','/api/progress/results'],member,contentAction((req,res)=>res.json(ctx.game.results(req.member,{period:req.query.period||'all',role:req.query.role||'seller'}))));
+  app.get(['/api/admin/game/rules','/api/admin/progress/rules'],member,admin,contentAction((req,res)=>res.json(ctx.game.rules())));
+  app.patch(['/api/admin/game/rules','/api/admin/progress/rules'],member,admin,contentAction((req,res)=>res.json(ctx.game.setRules(req.member.user_id,req.body))));
   app.get('/api/quizzes',member,contentAction((req,res)=>res.json({items:ctx.game.quizzes.list(req.member,req.query.type)})));
   app.get('/api/quizzes/:id',member,contentAction((req,res)=>res.json(ctx.game.quizzes.detail(req.member,req.params.id))));
   app.post('/api/quizzes/:id/start',member,contentAction((req,res)=>res.status(201).json(ctx.game.quizzes.start(req.member,req.params.id))));
