@@ -16,6 +16,7 @@
     error.unavailable=true;if(status)error.status=status;return error;
   }
   async function api(path,{method='GET',body,headers={}}={}){
+    path=path.replace(/^\/api\/(admin\/)?game\//,(_match,adminPath)=>'/api/'+(adminPath||'')+'progress/');
     let response;try{response=await fetch(path,{method,headers:{...(body?{'Content-Type':'application/json'}:{}),...headers},...(body?{body:JSON.stringify(body)}:{}),credentials:'same-origin'});}catch{throw unavailableError();}
     if(response.status>=500)throw unavailableError(response.status);
     let data;try{data=await response.json();}catch{throw unavailableError();}
@@ -118,7 +119,7 @@
     await state.accessPanel.render();
   }
   async function engagementPanel(){
-    if(!state.engagementPanel){const {createEngagementPanel}=await import('/assets/engagement.js?v=2.5.0');state.engagementPanel??=createEngagementPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast});}
+    if(!state.engagementPanel){const {createEngagementPanel}=await import('/assets/progress-panel.js?v=2.6.2');state.engagementPanel??=createEngagementPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast});}
     return state.engagementPanel;
   }
   async function agendaPanel(){
