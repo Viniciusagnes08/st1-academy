@@ -25,7 +25,7 @@
   }
   function toast(message){const box=document.querySelector('#toast');box.textContent=message;box.hidden=false;setTimeout(()=>box.hidden=true,4200);}
   function showUnavailable(error){commitView(`<div class="wrap library"><div class="empty-panel" role="alert"><h2>Vamos retomar sua conexão.</h2><p>${esc(error.message)}</p><button class="button button-primary" type="button" data-retry-connection>Tentar novamente</button></div></div>`);}
-  async function refreshUser(){state.blocked=null;try{state.user=await api('/api/me');}catch(error){if(error.status===401||error.status===403){state.user=null;if(error.status===403)state.blocked=error.message;}else throw error;}if(state.blocked){state.catalog??={tracks:[],testMode:false};return;}state.catalog=await api('/api/catalog');}
+  async function refreshUser(){state.blocked=null;try{const bootstrap=await api('/api/bootstrap');state.user=bootstrap.user;state.catalog=bootstrap.catalog;}catch(error){if(error.status===401||error.status===403){state.user=null;if(error.status===403)state.blocked=error.message;}else throw error;}if(state.blocked){state.catalog??={tracks:[],testMode:false};return;}if(!state.user)state.catalog=await api('/api/catalog');}
   const certificateFor=id=>state.user?.certificates.find(c=>c.track_id===id);
   const trackFor=id=>state.catalog.tracks.find(t=>t.id===id);
   const trackAllowed=id=>!state.user||state.user.tracks.includes(id);
@@ -131,7 +131,7 @@
     return state.profilePanel;
   }
   async function contentPanel(){
-    if(!state.contentPanel){const {createContentPanel}=await import('/assets/content.js?v=2.5.0');state.contentPanel??=createContentPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast,sourceUrl,materialLabel,engagement:engagementPanel});}
+    if(!state.contentPanel){const {createContentPanel}=await import('/assets/content.js?v=2.6.3');state.contentPanel??=createContentPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast,sourceUrl,materialLabel,engagement:engagementPanel});}
     return state.contentPanel;
   }
   function closeNavigation(restoreFocus=true){
@@ -153,12 +153,12 @@
     try{state.attempt=await api('/api/attempts',{method:'POST',body:{trackId:id}});state.questionIndex=state.attempt.questions.findIndex(q=>!state.attempt.answers[q.id]);if(state.questionIndex<0)state.questionIndex=0;await refreshUser();go(`prova/${state.attempt.id}`);}catch(error){toast(error.message);}
   }
   async function managementPanel(){if(!state.managementPanel){const {createManagementPanel}=await import('/assets/management.js?v=2.3.3');state.managementPanel??=createManagementPanel({api,esc,icon,main,commitView,user:()=>state.user,toast,onChanged:refreshUser});}return state.managementPanel;}
-  async function render(){
+  async function render({refresh=true}={}){
     if(!state.catalog)return;
     let route=location.hash||'#inicio';if(route==='#main'){history.replaceState({},'',state.lastRoute||'#inicio');main.focus({preventScroll:true});return;}if(route.startsWith('#materiais')){route=route.replace('#materiais','#conteudos');history.replaceState({},'',route);}if(/^#conteudos\/(novo|editar)(\/|$)/.test(route)){route=route.replace('#conteudos','#publicar');history.replaceState({},'',route);}if(!['inicio','trilhas','trilha','conquistas','gestao','acessos','conteudos','dashboard','material','publicar','prova','resultado','percurso','conhecimento','squad','pessoas','squads-gestao','gamificacao','desafios','desafio','pratica','notificacoes','perfil','perfil-regras','pedidos-squad','agenda','agenda-gestao','agenda-programar','agenda-participacao','agenda-integracao','cadastros'].includes(route.slice(1).split('/')[0])){route='#inicio';history.replaceState({},'',route);}const [page,id,contentId,pageNumber,subCategory]=route.slice(1).split('/');
     try{
       if(state.lastRoute.startsWith('#prova/')&&route!==state.lastRoute&&state.attempt?.status==='open'&&document.querySelector('.question-card')){if(!await saveProgress()){history.replaceState({},'',state.lastRoute);return;}}
-      await refreshUser();
+      if(refresh)await refreshUser();
       if(route!==(location.hash||'#inicio'))return;state.lastRoute=route;
       if(state.blocked)return restricted('Seu acesso está bloqueado.',state.blocked);
       if(!state.user){openAuth();return;}
@@ -227,7 +227,7 @@
     try{
       await refreshUser();
       if(!state.user&&!state.blocked){openAuth();return;}
-      await render();
+      await render({refresh:false});
     }catch(error){if(error.unavailable)showUnavailable(error);else main.innerHTML=`<div class="wrap library"><div class="empty-panel"><h2>Vamos retomar seu acesso.</h2><p>${esc(error.message)}</p><a href="/login" class="button button-primary">Voltar ao acesso</a></div></div>`;}
   }
   init();
