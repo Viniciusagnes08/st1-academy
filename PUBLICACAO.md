@@ -59,7 +59,7 @@ Nenhuma chave secreta, senha ou `DATABASE_URL` deve aparecer em Git, argumentos 
 
    O arquivo privado contém `DATABASE_URL` e `ACADEMY_BASE_URL`. O comando compara todas as linhas, arquivos e hashes antes de confirmar a transação. Um destino que já tenha contas ou materiais é recusado; não é permitido sobrescrever um sistema em uso.
 
-4. No Render, crie um **Web Service Free** a partir do repositório privado, com `npm ci --omit=dev`, `npm start` e `/healthz`. Configure as variáveis privadas antes de iniciar a publicação. Até preservar o gestor no banco, o serviço retorna `503 preparing` e não abre o cadastro público.
+4. No Render, crie um **Web Service Free** a partir do repositório privado, com `npm ci --omit=dev` e `npm start`. Deixe **Health Check Path** vazio para usar a sondagem TCP padrão. A ponte síncrona PostgreSQL pode ocupar o event loop durante consultas longas; uma sondagem HTTP com prazo de cinco segundos retirava temporariamente o serviço do tráfego. `/healthz` continua disponível para diagnóstico manual. Configure as variáveis privadas antes de iniciar a publicação. Até preservar o gestor no banco, o serviço retorna `503 preparing` e não abre o cadastro público. [Verificações de disponibilidade do Render](https://render.com/docs/health-checks).
 
 Os vínculos de identidade Google são preservados, mas os tokens e a conexão da agenda do piloto não vão para produção. Após configurar o endereço final, a pessoa entra com Google e consente novamente para conectar a agenda ao ambiente publicado.
 

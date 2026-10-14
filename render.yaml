@@ -10,7 +10,8 @@ services:
     autoDeployTrigger: checksPass
     buildCommand: npm ci --omit=dev
     startCommand: npm start
-    healthCheckPath: /healthz
+    # Sondagem TCP padrão: consultas síncronas longas não retiram o serviço do tráfego.
+    # /healthz continua disponível para diagnóstico manual da aplicação.
     maxShutdownDelaySeconds: 30
     envVars:
       - key: NODE_VERSION
