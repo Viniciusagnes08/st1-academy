@@ -12,6 +12,7 @@ import {sendChatMedia} from './lib/chat-media.mjs';
 import {createBackupService} from './lib/storage-backup.mjs';
 import {hostingConfig} from './lib/hosting.mjs';
 import {applyStagedProduction} from './lib/production-transfer.mjs';
+import {withLearningReadBatch} from './lib/learning-read-batch.mjs';
 
 export async function createApp(options={}) {
   const ctx=await createContext(options);
@@ -43,6 +44,7 @@ export async function createApp(options={}) {
     next();
   });
   const member=async(req,res,next)=>{
+    if(req.member)return next();
     const session=await auth.api.getSession({headers:fromNodeHeaders(req.headers)});
     if(!session)return res.status(401).json({message:'Entre com a sua conta da ST1 Academy.'});
     const profile=readProfile(db,session.user.id);
@@ -117,7 +119,8 @@ export async function createApp(options={}) {
     if(!invite)return res.status(404).json({message:'Convite inválido, utilizado ou vencido. Peça outro ao gestor.'});
     res.json({name:invite.name,email:invite.email,role:invite.role,expiresAt:invite.expires_at});
   });
-  app.get('/api/me',member,(req,res)=>res.json({id:req.member.user_id,name:req.member.name,email:req.member.email,role:req.member.role,avatarUrl:ctx.profiles.avatar(req.member,req.member.user_id),recognitions:ctx.management.recognitions(req.member),tracks:req.member.tracks,permissions:req.member.permissions,certificates:hasPermission(req.member,'conquests')?certificates(req.member.user_id).filter(c=>hasTrack(req.member,c.track_id)):[],attempts:hasPermission(req.member,'assessments')?db.prepare('SELECT id,track_id,status,started_at,finished_at,result_json FROM academy_attempt WHERE user_id=? ORDER BY started_at DESC').all(req.member.user_id).filter(a=>hasTrack(req.member,a.track_id)).map(a=>({...a,result:a.result_json?JSON.parse(a.result_json):null,result_json:undefined})):[],testMode}));
+  const memberPayload=profile=>({id:profile.user_id,name:profile.name,email:profile.email,role:profile.role,avatarUrl:ctx.profiles.avatar(profile,profile.user_id),recognitions:ctx.management.recognitions(profile),tracks:profile.tracks,permissions:profile.permissions,certificates:hasPermission(profile,'conquests')?certificates(profile.user_id).filter(c=>hasTrack(profile,c.track_id)):[],attempts:hasPermission(profile,'assessments')?db.prepare('SELECT id,track_id,status,started_at,finished_at,result_json FROM academy_attempt WHERE user_id=? ORDER BY started_at DESC').all(profile.user_id).filter(a=>hasTrack(profile,a.track_id)).map(a=>({...a,result:a.result_json?JSON.parse(a.result_json):null,result_json:undefined})):[],testMode});
+  app.get('/api/me',member,(req,res)=>res.json(memberPayload(req.member)));
   app.post('/api/attempts',member,(req,res)=>{
     const track=bank.tracks.find(t=>t.id===req.body.trackId);
     if(!track||!hasTrack(req.member,track.id)||!hasPermission(req.member,'assessments'))return res.status(403).json({message:'Avaliação não liberada para sua conta.'});
@@ -194,7 +197,8 @@ export async function createApp(options={}) {
   app.get('/api/admin/report',member,admin,(req,res)=>res.json(reportFor(req.member)));
   app.get('/api/team/report',member,team,(req,res)=>res.json(reportFor(req.member)));
   app.get('/api/admin/access',member,admin,(_,res)=>res.json(access.directory()));
-  const contentAction=action=>(req,res)=>{try{const work=()=>action(req,res);if(req.method==='GET'&&db.withReadScope)db.withReadScope(work);else work();}catch(error){res.status(error.status||400).json({message:error.message});}};
+  const contentAction=action=>(req,res)=>{try{const work=()=>action(req,res);if(req.method==='GET'&&/^\/api\/(?:bootstrap|library|contents(?:\/|$)|reading(?:\/|$)|learning-flows(?:\/|$)|(?:game|progress)\/(?:me|knowledge)$)/.test(req.path))withLearningReadBatch(ctx,work);else if(req.method==='GET'&&db.withReadScope)db.withReadScope(work);else work();}catch(error){res.status(error.status||400).json({message:error.message});}};
+  app.get('/api/bootstrap',member,contentAction((req,res)=>res.json({user:memberPayload(req.member),catalog:{title:bank.title,version:appVersion,minimumPercent:bank.minimumPercent,criticalRequired:bank.criticalRequired,testMode,environment:ctx.runtime.environment,totalTracks:bank.tracks.length,tracks:bank.tracks.filter(track=>hasTrack(req.member,track.id)).map(track=>trackSummary(track,hasPermission(req.member,'materials')))}})));
   app.get('/api/profile',member,contentAction((req,res)=>{const value=ctx.profiles.detail(req.member);res.json({...value,recognitions:ctx.management.recognitions(req.member,value.id)});}));
   app.get('/api/profiles',member,contentAction((req,res)=>res.json({items:ctx.profiles.peers(req.member)})));
   app.get('/api/profiles/:id',member,contentAction((req,res)=>{const value=ctx.profiles.detail(req.member,req.params.id);res.json({...value,recognitions:ctx.management.recognitions(req.member,value.id)});}));
@@ -221,7 +225,7 @@ export async function createApp(options={}) {
   app.post('/api/admin/learning-flows',member,admin,contentAction((req,res)=>res.status(201).json(ctx.learningFlows.save(req.member,null,req.body))));
   app.patch('/api/admin/learning-flows/:id',member,admin,contentAction((req,res)=>res.json(ctx.learningFlows.save(req.member,req.params.id,req.body))));
   app.delete('/api/admin/learning-flows/:id',member,admin,contentAction((req,res)=>res.json(ctx.learningFlows.save(req.member,req.params.id,{...ctx.learningFlows.adminGet(req.member,req.params.id),revision:req.body.revision,status:'archived'}))));
-  const learningGate=(kind,id)=>((req,res,next)=>{try{ctx.learningFlows.assertAccess(req.member,kind,id(req));next();}catch(error){res.status(error.status||400).json({message:error.message,flowId:error.flowId||null});}});
+  const learningGate=(kind,id)=>((req,res,next)=>{try{const work=()=>{ctx.learningFlows.assertAccess(req.member,kind,id(req));next();};if(req.method==='GET')withLearningReadBatch(ctx,work);else work();}catch(error){res.status(error.status||400).json({message:error.message,flowId:error.flowId||null});}});
   app.use('/api/contents/:id',member,(req,res,next)=>req.path==='/cover'?next():learningGate('material',r=>r.params.id)(req,res,next));
   app.use('/api/quizzes/:id/start',member,learningGate('quiz',r=>r.params.id));
   app.use('/api/quiz-attempts/:id',member,(req,res,next)=>{const attempt=db.prepare('SELECT quiz_id,status FROM academy_quiz_attempt WHERE id=? AND user_id=?').get(req.params.id,req.member.user_id);if(!attempt||attempt.status!=='open')return next();learningGate('quiz',()=>attempt.quiz_id)(req,res,next);});
@@ -276,7 +280,9 @@ export async function createApp(options={}) {
   app.get('/api/contents/:id/study',member,contentAction((req,res)=>res.json(ctx.readings.detailStudy(req.member,req.params.id))));
   app.post('/api/contents/:id/study/start',member,contentAction((req,res)=>res.json(ctx.readings.start(req.member,req.params.id,req.body))));
   app.post('/api/contents/:id/study',member,contentAction((req,res)=>res.json(ctx.readings.complete(req.member,req.params.id,req.body))));
-  app.get('/api/contents',member,contentAction((req,res)=>{const flags=ctx.learningFlows.materialFlags(req.member);res.json({items:ctx.contents.visible(req.member).map(item=>({...item,flow:flags.get(item.id)||null,study:ctx.readings.detailStudy(req.member,item.id),tags:ctx.management.tagsFor('contents',item.id)}))});}));
+  const libraryItems=viewer=>{const flags=ctx.learningFlows.materialFlags(viewer),visible=ctx.contents.visible(viewer),tags=ctx.management.tagsForMany('contents',visible.map(item=>item.id));return visible.map(item=>({...item,flow:flags.get(item.id)||null,study:ctx.readings.detailStudy(viewer,item.id),tags:tags.get(item.id)||[]}));};
+  app.get('/api/contents',member,contentAction((req,res)=>res.json({items:libraryItems(req.member)})));
+  app.get('/api/library',member,contentAction((req,res)=>res.json({items:libraryItems(req.member),modules:ctx.modules.visible(req.member),reading:ctx.readings.latest(req.member),recent:ctx.readings.recent(req.member)})));
   app.get('/api/contents/:id',member,contentAction((req,res)=>{const item=ctx.contents.detail(req.member,req.params.id);res.json({...item,study:ctx.readings.forItem(req.member,item),tags:ctx.management.tagsFor('contents',req.params.id)});}));
   app.get('/api/contents/:id/cover',member,contentAction((req,res)=>res.type('image/webp').send(ctx.contents.cover(req.member,req.params.id))));
   app.get('/api/contents/:id/file',member,contentAction((req,res)=>{

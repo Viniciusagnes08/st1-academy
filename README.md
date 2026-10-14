@@ -1,7 +1,9 @@
-<!-- Versão 2.6.2: leitura com PostgreSQL, caminhos de progresso compatíveis com navegadores e configuração gratuita de publicação. -->
+<!-- Versão 2.6.3: biblioteca e evolução em lotes, entrada progressiva e hospedagem gratuita. -->
 # ST1 Academy
 
-Academia de capacitação comercial, com identidade ST1, conteúdos privados, gamificação e cinco trilhas: PAP, Digital, PAP Elite, Indoor e PME. Versão 2.6.2.
+Academia de capacitação comercial, com identidade ST1, conteúdos privados, gamificação e cinco trilhas: PAP, Digital, PAP Elite, Indoor e PME. Versão 2.6.3.
+
+A entrada busca conta e catálogo em uma única resposta autenticada. A biblioteca reúne materiais, módulos e retomada sem repetir a autenticação em três pedidos. Conteúdos, versões, estudos, arquivos, etiquetas e evidências das etapas são projetados por leituras em lote, com estado privado apenas durante uma solicitação síncrona. Cada novo acesso confere novamente o perfil e o progresso; gravações continuam sem esse lote de leitura. O Início mostra a saudação e o Starzinho enquanto os módulos chegam, e preenche a evolução de forma independente. Uma resposta antiga não substitui outra página depois de navegar. A hospedagem permanece Supabase Free + Render Free; o despertar após inatividade continua sendo uma limitação do Render.
 
 As páginas reutilizam consultas determinísticas ao PostgreSQL durante uma única resposta. O estado é descartado entre acessos e invalidado após gravações, evitando recalcular repetidamente a evolução sem manter permissões ou progresso antigos.
 
