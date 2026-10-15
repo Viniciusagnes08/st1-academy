@@ -1,6 +1,6 @@
 import express from 'express';
 import {toNodeHandler,fromNodeHeaders} from 'better-auth/node';
-import {randomUUID,createHash} from 'node:crypto';
+import {randomUUID,createHash,timingSafeEqual} from 'node:crypto';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {readFileSync} from 'node:fs';
@@ -13,6 +13,7 @@ import {createBackupService} from './lib/storage-backup.mjs';
 import {hostingConfig} from './lib/hosting.mjs';
 import {applyStagedProduction} from './lib/production-transfer.mjs';
 import {withLearningReadBatch} from './lib/learning-read-batch.mjs';
+import {createUploadService,sendBinary,uploadChunkBytes} from './lib/uploads.mjs';
 
 export async function createApp(options={}) {
   const ctx=await createContext(options);
@@ -55,6 +56,39 @@ export async function createApp(options={}) {
   const admin=(req,res,next)=>req.member.role==='admin'?next():res.status(403).json({message:'Acesso exclusivo de Admin.'});
   const team=(req,res,next)=>['supervisor','admin'].includes(req.member.role)&&hasPermission(req.member,'team_results')?next():res.status(403).json({message:'Você não tem acesso ao acompanhamento da equipe.'});
   const agendaAction=handler=>async(req,res,next)=>{try{await handler(req,res);}catch(e){if(e.status)return res.status(e.status>=400&&e.status<=599?e.status:400).json({message:e.message});next(e);}};
+  const uploadTarget=target=>{
+    const match=target.match(/^\/api\/(?:admin\/contents\/([a-z0-9][a-z0-9_-]{0,119})\/file|profile\/media\/(avatar|cover)|squads\/([a-f0-9-]{36})\/messages\/media)$/i);
+    if(!match)throw Object.assign(new Error('Destino de arquivo inválido.'),{status:400});return match;
+  };
+  const authorizeUpload=(viewer,target)=>{
+    const match=uploadTarget(target);
+    if(match[1]){if(viewer.role!=='admin')throw Object.assign(new Error('Acesso exclusivo de Admin.'),{status:403});ctx.contents.detail(viewer,match[1],true);}
+    else if(match[3])ctx.game.squads.detail(viewer,match[3]);
+  };
+  const prepareChatMedia=async(viewer,id,bytes,contentType)=>{
+    ctx.game.squads.detail(viewer,id);
+    const form=await new Response(bytes,{headers:{'Content-Type':contentType}}).formData();
+    if([...form.keys()].some(k=>!['file','body','kind','duration'].includes(k))||['file','body','kind','duration'].some(k=>form.getAll(k).length>1))throw Object.assign(new Error('Arquivo inválido.'),{status:400});
+    const file=form.get('file');if(!file||typeof file.arrayBuffer!=='function')throw Object.assign(new Error('Escolha uma foto ou um áudio.'),{status:400});
+    const data={name:file.name,mime:file.type,bytes:Buffer.from(await file.arrayBuffer()),body:form.get('body')??'',kind:form.get('kind'),duration:Number(form.get('duration')||0)};
+    return ()=>ctx.game.squads.postMedia(viewer,id,data);
+  };
+  const uploads=createUploadService(db,{clock:options.clock,authorize:authorizeUpload,prepare:async(viewer,target,headers,bytes)=>{
+    const match=uploadTarget(target);authorizeUpload(viewer,target);
+    if(match[1])return ()=>ctx.contents.upload(viewer.user_id,match[1],Number(headers['x-content-revision']),headers['x-file-name'],bytes);
+    if(match[2])return ()=>ctx.profiles.upload(viewer,match[2],Number(headers['x-profile-revision']),headers['x-file-name'],bytes);
+    return prepareChatMedia(viewer,match[3],bytes,headers['content-type']);
+  }});
+  app.get('/api/internal/calendar-sync',agendaAction(async(req,res)=>{
+    const secret=options.cronSecret||process.env.CRON_SECRET;
+    const expected=typeof secret==='string'&&secret.length>=32?Buffer.from('Bearer '+secret):null;
+    const received=Buffer.from(req.headers.authorization||'');
+    if(!expected||received.length!==expected.length||!timingSafeEqual(received,expected))return res.status(401).json({message:'Acesso não autorizado.'});
+    const result=await ctx.googleCalendar.tick();res.status(result.failed?502:200).json(result);
+  }));
+  app.post('/api/uploads',member,agendaAction((req,res)=>res.status(201).json(uploads.create(req.member,req.body))));
+  app.put('/api/uploads/:id/parts/:part',member,express.raw({type:'application/octet-stream',limit:uploadChunkBytes}),agendaAction((req,res)=>res.json(uploads.part(req.member,req.params.id,Number(req.params.part),req.body))));
+  app.post('/api/uploads/:id/complete',member,agendaAction(async(req,res)=>res.status(201).json(await uploads.complete(req.member,req.params.id))));
   app.get('/api/admin/manage',member,admin,agendaAction((req,res)=>res.json(ctx.management.catalog(req.member))));
   app.get('/api/admin/manage/choices',member,admin,agendaAction((req,res)=>res.json(ctx.management.choices(req.member))));
   app.get('/api/admin/manage/:entity',member,admin,agendaAction((req,res)=>res.json(ctx.management.list(req.member,req.params.entity,{trash:req.query.trash==='1'}))));
@@ -180,7 +214,7 @@ export async function createApp(options={}) {
       record=db.prepare('SELECT * FROM academy_certificate WHERE id=?').get(record.id);
     }
     res.type('application/pdf').setHeader('Content-Disposition',`attachment; filename="ST1-Certificado-${record.track_id}.pdf"`);
-    res.send(Buffer.from(record.pdf));
+    sendBinary(res,record.pdf);
   });
   app.get('/api/verify/:id',(req,res)=>{
     if(!/^[a-f0-9-]{36}$/i.test(req.params.id))return res.status(404).json({valid:false});
@@ -206,7 +240,7 @@ export async function createApp(options={}) {
   app.patch('/api/profile/style',member,contentAction((req,res)=>res.json(ctx.profiles.saveStyle(req.member,req.body))));
   app.post('/api/profile/media/:kind',member,express.raw({type:'application/octet-stream',limit:'5mb'}),contentAction((req,res)=>res.status(201).json(ctx.profiles.upload(req.member,req.params.kind,Number(req.headers['x-profile-revision']),req.headers['x-file-name'],req.body))));
   app.delete('/api/profile/media/:kind',member,contentAction((req,res)=>res.json(ctx.profiles.removeMedia(req.member,req.params.kind,req.body.revision))));
-  app.get('/api/profile-media/:id',member,contentAction((req,res)=>{const asset=ctx.profiles.media(req.member,req.params.id);res.type(asset.mime).setHeader('Content-Disposition',"inline; filename*=UTF-8''"+encodeURIComponent(asset.name));res.send(Buffer.from(asset.bytes));}));
+  app.get('/api/profile-media/:id',member,contentAction((req,res)=>{const asset=ctx.profiles.media(req.member,req.params.id);res.type(asset.mime).setHeader('Content-Disposition',"inline; filename*=UTF-8''"+encodeURIComponent(asset.name));sendBinary(res,asset.bytes);}));
   app.get('/api/admin/profile-rules',member,admin,contentAction((req,res)=>res.json(ctx.profiles.rules())));
   app.patch('/api/admin/profile-rules',member,admin,contentAction((req,res)=>res.json(ctx.profiles.setRules(req.member,req.body))));
   app.post('/api/profile/squad-request',member,contentAction((req,res)=>res.status(201).json(ctx.profiles.requests.request(req.member,req.body.squadId))));
@@ -253,10 +287,8 @@ export async function createApp(options={}) {
     try{
       ctx.game.squads.detail(req.member,req.params.id);
       if(!Buffer.isBuffer(req.body))throw Object.assign(new Error('Escolha uma foto ou um áudio.'),{status:400});
-      const form=await new Response(req.body,{headers:{'Content-Type':req.headers['content-type']}}).formData();
-      if([...form.keys()].some(k=>!['file','body','kind','duration'].includes(k))||['file','body','kind','duration'].some(k=>form.getAll(k).length>1))throw Object.assign(new Error('Arquivo inválido.'),{status:400});
-      const file=form.get('file');if(!file||typeof file.arrayBuffer!=='function')throw Object.assign(new Error('Escolha uma foto ou um áudio.'),{status:400});
-      const value=ctx.game.squads.postMedia(req.member,req.params.id,{name:file.name,mime:file.type,bytes:Buffer.from(await file.arrayBuffer()),body:form.get('body')??'',kind:form.get('kind'),duration:Number(form.get('duration')||0)});
+      const commit=await prepareChatMedia(req.member,req.params.id,req.body,req.headers['content-type']);
+      const value=commit();
       res.status(201).json(value);
     }catch(error){res.status(error.status||400).json({message:error.status?error.message:'Não foi possível ler o arquivo. Escolha uma foto ou um áudio válido.'});}
   });
@@ -288,7 +320,7 @@ export async function createApp(options={}) {
   app.get('/api/contents/:id/file',member,contentAction((req,res)=>{
     const asset=ctx.contents.file(req.member,req.params.id);
     res.type(asset.mime).setHeader('Content-Disposition',`${req.query.download==='1'?'attachment':'inline'}; filename*=UTF-8''${encodeURIComponent(asset.name)}`);
-    res.send(Buffer.from(asset.bytes));
+    sendBinary(res,asset.bytes);
   }));
   app.get('/api/admin/contents',member,admin,contentAction((req,res)=>res.json({items:ctx.contents.list()})));
   app.get('/api/admin/contents/:id',member,admin,contentAction((req,res)=>res.json(ctx.contents.detail(req.member,req.params.id,true))));

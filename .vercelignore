@@ -1,0 +1,13 @@
+data
+work
+tests
+cloudflare
+.github
+.git
+.env*
+*.log
+*.sqlite*
+.auth-secret
+piloto-auth-secret
+transferencia
+.restore-pending

@@ -119,7 +119,7 @@
     await state.accessPanel.render();
   }
   async function engagementPanel(){
-    if(!state.engagementPanel){const {createEngagementPanel}=await import('/assets/progress-panel.js?v=2.6.2');state.engagementPanel??=createEngagementPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast});}
+    if(!state.engagementPanel){const {createEngagementPanel}=await import('/assets/progress-panel.js?v=2.7.0');state.engagementPanel??=createEngagementPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast});}
     return state.engagementPanel;
   }
   async function agendaPanel(){
@@ -127,11 +127,11 @@
     return state.agendaPanel;
   }
   async function profilePanel(){
-    if(!state.profilePanel){const {createProfilePanel}=await import('/assets/profile.js?v=2.3.3');const game=await engagementPanel();state.profilePanel??=createProfilePanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,toast,onChanged:refreshUser,star:game.star});}
+    if(!state.profilePanel){const {createProfilePanel}=await import('/assets/profile.js?v=2.7.0');const game=await engagementPanel();state.profilePanel??=createProfilePanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,toast,onChanged:refreshUser,star:game.star});}
     return state.profilePanel;
   }
   async function contentPanel(){
-    if(!state.contentPanel){const {createContentPanel}=await import('/assets/content.js?v=2.6.3');state.contentPanel??=createContentPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast,sourceUrl,materialLabel,engagement:engagementPanel});}
+    if(!state.contentPanel){const {createContentPanel}=await import('/assets/content.js?v=2.7.0');state.contentPanel??=createContentPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast,sourceUrl,materialLabel,engagement:engagementPanel});}
     return state.contentPanel;
   }
   function closeNavigation(restoreFocus=true){

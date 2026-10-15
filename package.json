@@ -1,10 +1,10 @@
 {
   "name": "st1-academy",
-  "version": "2.6.3",
+  "version": "2.7.0",
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=24.15.0"
+    "node": "24.x"
   },
   "scripts": {
     "start": "node --env-file-if-exists=.env server.mjs",

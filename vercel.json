@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "regions": ["gru1"],
+  "crons": [{"path":"/api/internal/calendar-sync","schedule":"* * * * *"}],
+  "functions": {
+    "api/index.mjs": {
+      "maxDuration": 300,
+      "includeFiles": "{lib,content,config,public}/**"
+    }
+  },
+  "routes": [
+    {"src": "^/(?:|index\\.html|login|login\\.html)$", "dest": "/api/index.mjs"},
+    {"handle": "filesystem"},
+    {"src": "/(.*)", "dest": "/api/index.mjs"}
+  ]
+}

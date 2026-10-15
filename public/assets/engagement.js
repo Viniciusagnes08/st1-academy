@@ -45,7 +45,7 @@ export function createEngagementPanel({api,esc,icon,main,commitView,tracks,user,
   const bellTimer=setInterval(()=>{if(document.visibilityState==='visible')refreshBell();},15000);
   addEventListener('pagehide',()=>clearInterval(bellTimer),{once:true});
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refreshBell();});
-  async function community(){if(!squadPanel){const {createCommunityPanel}=await import('./community.js?v=2.3.3');squadPanel??=createCommunityPanel({api,esc,icon,main,commitView,tracks,user,hasAccess,toast,star,refreshBell});}return squadPanel;}
+  async function community(){if(!squadPanel){const {createCommunityPanel}=await import('./community.js?v=2.7.0');squadPanel??=createCommunityPanel({api,esc,icon,main,commitView,tracks,user,hasAccess,toast,star,refreshBell});}return squadPanel;}
   async function quiz(){if(!quizPanel){const {createQuizPanel}=await import('./quiz-panel.js?v=2.3.3');quizPanel??=createQuizPanel({api,esc,icon,main,commitView,tracks,user,hasAccess,toast,star,refreshBell});}return quizPanel;}
   main.addEventListener('change',event=>{if(event.target.id==='ranking-period'){resultPeriod=event.target.value;results();}if(event.target.id==='ranking-role'){resultRole=event.target.value;results();}});
   main.addEventListener('click',async event=>{
