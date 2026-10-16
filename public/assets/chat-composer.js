@@ -1,3 +1,4 @@
+import {binaryFetch} from './binary-upload.js?v=2.7.0';
 export function mountChatComposer({element,squadId,api,esc,icon,toast,onSent}){
   let pending=null,recorder=null,stream=null,ticker=null,chunks=[],started=0,asking=false,sending=false,disposed=false,discard=false,generation=0;
   const emojiOptions=[['😀','sorriso'],['👏','aplausos'],['🎉','comemoração'],['⭐','estrela'],['🔥','energia'],['💪','força'],['🚀','avanço'],['🏆','conquista'],['❤️','coração'],['👍','positivo'],['🙌','celebração'],['✅','concluído'],['🤝','parceria'],['📚','estudo'],['💡','ideia'],['🎯','objetivo']];
@@ -57,7 +58,7 @@ export function mountChatComposer({element,squadId,api,esc,icon,toast,onSent}){
     const body=field.value.trim();if(!body&&!pending)return;
     sending=true;error.hidden=true;update();send.innerHTML=icon('clock');
     try{
-      if(pending){const payload=new FormData();payload.set('file',pending.file);payload.set('kind',pending.kind);payload.set('duration',String(pending.duration));payload.set('body',body);const response=await fetch('/api/squads/'+squadId+'/messages/media',{method:'POST',credentials:'same-origin',body:payload});const value=await response.json();if(!response.ok)throw new Error(value.message||'Não foi possível enviar o arquivo.');}
+      if(pending){const payload=new FormData();payload.set('file',pending.file);payload.set('kind',pending.kind);payload.set('duration',String(pending.duration));payload.set('body',body);const response=await binaryFetch('/api/squads/'+squadId+'/messages/media',{method:'POST',credentials:'same-origin',body:payload});const value=await response.json();if(!response.ok)throw new Error(value.message||'Não foi possível enviar o arquivo.');}
       else await api('/api/squads/'+squadId+'/messages',{method:'POST',body:{body}});
       if(active()){field.value='';clearPending();await onSent();field.focus();}
     }catch(problem){tell(problem.message||'Não foi possível enviar. Sua mensagem continua aqui para tentar novamente.');}

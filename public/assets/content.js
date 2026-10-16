@@ -1,5 +1,6 @@
 import {createModulePanel} from './modules-panel.js?v=2.5.0';
 import {createKnowledgePanel,categoryNames} from './knowledge.js?v=2.6.3';
+import {binaryFetch} from './binary-upload.js?v=2.7.0';
 export function createContentPanel({api,esc,icon,main,commitView,tracks,user,hasAccess,toast,sourceUrl,materialLabel,engagement}){
   let items=[],selectedTrack='all',selectedStatus='all',search='',editor=null,saving=false,editorModules=[];
   const statusName={draft:'Rascunho',published:'Publicado',archived:'Arquivado'},kindName={file:'Arquivo',text:'Texto',link:'Link / vídeo'};
@@ -60,7 +61,7 @@ export function createContentPanel({api,esc,icon,main,commitView,tracks,user,has
       if(!payload.tracks.length)throw new Error('Escolha pelo menos uma trilha.');if(file&&file.size>25*1048576)throw new Error('O arquivo pode ter até 25 MB.');
       if(payload.kind==='file'&&payload.status==='published'&&!file&&!editor.asset)throw new Error('Selecione um arquivo antes de publicar.');
       if(!id){const created=await api('/api/admin/contents',{method:'POST',body:{...payload,status:'draft'}});id=created.id;revision=created.revision;form.elements.contentId.value=id;form.elements.revision.value=revision;editor=created;}
-      if(file){const response=await fetch(`/api/admin/contents/${id}/file`,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/octet-stream','x-file-name':encodeURIComponent(file.name),'x-content-revision':String(revision)},body:file});const result=await response.json();if(!response.ok)throw new Error(result.message||'Não foi possível enviar o arquivo.');revision=result.revision;editor=result;form.elements.revision.value=revision;}
+      if(file){const response=await binaryFetch(`/api/admin/contents/${id}/file`,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/octet-stream','x-file-name':encodeURIComponent(file.name),'x-content-revision':String(revision)},body:file});const result=await response.json();if(!response.ok)throw new Error(result.message||'Não foi possível enviar o arquivo.');revision=result.revision;editor=result;form.elements.revision.value=revision;}
       const saved=await api('/api/admin/contents/'+id,{method:'PATCH',body:{...payload,revision}});editor=saved;toast(saved.status==='published'?'Conteúdo publicado para o público selecionado.':saved.status==='archived'?'Conteúdo arquivado.':'Conteúdo salvo como rascunho.');if(location.hash.startsWith('#publicar/'))location.hash='#publicar';
     }catch(error){errorBox.textContent=error.message+(id&&!form.elements.contentId.defaultValue?' Seu rascunho ficou salvo; você pode continuar o envio.':'');errorBox.hidden=false;errorBox.scrollIntoView({block:'nearest'});}finally{saving=false;submitButtons.forEach((b,i)=>{if(b.isConnected){b.disabled=false;b.innerHTML=buttonLabels[i];}});}
   });

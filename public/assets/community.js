@@ -1,4 +1,4 @@
-import {mountChatComposer} from './chat-composer.js?v=2.3.3';
+import {mountChatComposer} from './chat-composer.js?v=2.7.0';
 export function createCommunityPanel({api,esc,icon,main,commitView,user,hasAccess,toast,star,refreshBell}){
   let current=null,directory=null,poll=null,pollBusy=false,composerCleanup=()=>{};
   const heading=(title,description,action='')=>'<section class="page-top"><div class="wrap content-heading"><div><span class="overline muted">SQUADS DA ACADEMY</span><h1>'+title+'</h1><p>'+description+'</p></div><div class="page-heading-actions" data-page-actions>'+action+'</div></div></section>';

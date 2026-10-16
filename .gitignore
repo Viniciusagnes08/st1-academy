@@ -5,6 +5,7 @@ work/
 !.env.example
 *.log
 .vercel/
+.netlify/
 *.sqlite
 *.sqlite-*
 .auth-secret

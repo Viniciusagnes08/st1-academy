@@ -1,0 +1,17 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[functions]
+  node_bundler = "nft"
+  external_node_modules = ["pg"]
+  included_files = ["lib/**", "content/**", "config/supabase-root-ca.crt", "public/**", "package.json", "node_modules/pg/**", "node_modules/pg-*/**", "node_modules/pgpass/**", "node_modules/postgres-*/**", "node_modules/split2/**", "node_modules/xtend/**", "!data/**", "!data/.*", "!**/.auth-secret", "!**/.env*", "!work/**", "!cloudflare/**", "!.env*", "!tests/**", "!scripts/**"]
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Cache-Control = "public, max-age=3600"

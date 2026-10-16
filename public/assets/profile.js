@@ -1,3 +1,4 @@
+import {binaryFetch} from './binary-upload.js?v=2.7.0';
 export function createProfilePanel({api,esc,icon,main,commitView,tracks,user,toast,onChanged,star}){
   let profile=null,rules=null,selection=null,objectUrls=[],saving=false,peers=[],peerSearch='';
   const initials=name=>name.trim().split(/\s+/).slice(0,2).map(v=>v[0]).join('');
@@ -70,7 +71,7 @@ export function createProfilePanel({api,esc,icon,main,commitView,tracks,user,toa
     return file;
   }
   async function upload(kind,file){
-    const response=await fetch('/api/profile/media/'+kind,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/octet-stream','x-profile-revision':String(profile.revision),'x-file-name':encodeURIComponent(file.name)},body:file});
+    const response=await binaryFetch('/api/profile/media/'+kind,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/octet-stream','x-profile-revision':String(profile.revision),'x-file-name':encodeURIComponent(file.name)},body:file});
     const value=await response.json();if(!response.ok)throw new Error(value.message||'Não foi possível salvar a imagem.');profile=value;
   }
   main.addEventListener('change',async event=>{

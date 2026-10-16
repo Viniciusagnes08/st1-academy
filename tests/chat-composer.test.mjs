@@ -19,7 +19,8 @@ function harness({defer=false,denied=false}={}){
   class BrowserURL extends URL{static createObjectURL(){return 'blob:qa-audio';}static revokeObjectURL(){revoked++;}}
   const clock=class extends Date{static now(){return time;}};
   const context=createContext({Blob,File,FormData,Buffer,URL:BrowserURL,Date:clock,MediaRecorder:Recorder,navigator:{mediaDevices:{getUserMedia(){calls++;if(denied)return Promise.reject(Object.assign(new Error('Denied'),{name:'NotAllowedError'}));if(defer)return new Promise(r=>resolveStream=r);return Promise.resolve(mediaStream);}}},document:{addEventListener(){},removeEventListener(){},hidden:false},setInterval:fn=>{timers.set(1,fn);return 1;},clearInterval:id=>timers.delete(id),console,fetch:async()=>{network++;throw new Error('Test must not send.');}});
-  runInContext(source.replace('export function','function')+'\nglobalThis.mount=mountChatComposer;',context);
+  context.binaryFetch=context.fetch;
+  runInContext(source.replace(/^import[^;]+;\r?\n/gm,'').replace('export function','function')+'\nglobalThis.mount=mountChatComposer;',context);
   const dispose=context.mount({element:form,squadId:'qa-squad',api:async()=>network++,esc:v=>v,icon:()=>'',toast(){},onSent(){}});
   const click=selector=>listeners.get('click')({target:{closest:s=>s===selector?{}:null}});
   return {node,form,timers,recorders,click,dispose,setTime:value=>time=value,resolve:()=>resolveStream(mediaStream),stats:()=>({calls,stops,network,revoked})};
