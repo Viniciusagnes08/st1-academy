@@ -1,6 +1,6 @@
 {
   "name": "st1-academy",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "private": true,
   "type": "module",
   "engines": {
@@ -19,6 +19,7 @@
     "express": "5.1.0",
     "pdf-lib": "1.17.1",
     "pg": "8.16.3",
-    "qrcode": "1.5.4"
+    "qrcode": "1.5.4",
+    "serverless-http": "4.0.0"
   }
 }

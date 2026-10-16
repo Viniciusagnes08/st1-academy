@@ -49,7 +49,7 @@ jobs:
           tests/content.test.mjs tests/management.test.mjs tests/learning-flows.test.mjs
           tests/knowledge-map.test.mjs tests/engagement.test.mjs tests/material-study.test.mjs
           tests/foundations.test.mjs tests/google-access.test.mjs tests/chat-media.test.mjs
-          tests/library-performance.test.mjs tests/uploads.test.mjs
+          tests/library-performance.test.mjs tests/uploads.test.mjs tests/fetch-handler.test.mjs
         env:
           ACADEMY_STORAGE: postgres
           DATABASE_URL: postgresql://academyqa:isolated-ci-only@127.0.0.1:5432/academyqa

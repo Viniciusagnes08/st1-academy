@@ -9,6 +9,9 @@ test('Vercel exige PostgreSQL, origem HTTPS e credencial de servidor',()=>{
   const env={VERCEL:'1',ACADEMY_BASE_URL:'https://academy.example.test',ACADEMY_STORAGE:'postgres',DATABASE_URL:'postgresql://qa@localhost/qa',ACADEMY_AUTH_SECRET:'isolated-qa-key-at-least-thirty-two-characters'};
   assert.equal(hostingConfig({},env).serverless,true);
   assert.equal(hostingConfig({},env).production,true);
+  assert.equal(hostingConfig({},{...env,VERCEL:undefined,NETLIFY:'true'}).serverless,true);
+  assert.equal(hostingConfig({serverless:true},{...env,VERCEL:undefined}).serverless,true);
+  assert.throws(()=>hostingConfig({storage:'sqlite'},{...env,VERCEL:undefined,NETLIFY:'true'}),/PostgreSQL/);
   assert.throws(()=>hostingConfig({storage:'sqlite'},env),/PostgreSQL/);
   assert.throws(()=>hostingConfig({baseURL:'http://localhost:4177'},env),/HTTPS/);
   assert.throws(()=>hostingConfig({},{...env,DATABASE_URL:''}),/DATABASE_URL/);

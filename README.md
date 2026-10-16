@@ -1,9 +1,9 @@
-<!-- Versão 2.7.0: preparação para Vercel com PostgreSQL e arquivos em partes. Publicação pendente. -->
+<!-- Versão 2.7.1: preparação Netlify Free com PostgreSQL e arquivos privados em partes. Publicação pendente. -->
 # ST1 Academy
 
-Academia de capacitação comercial, com identidade ST1, conteúdos privados, gamificação e cinco trilhas: PAP, Digital, PAP Elite, Indoor e PME. Código preparado na versão 2.7.0; a publicação permanece na versão anterior até concluir a migração.
+Academia de capacitação comercial, com identidade ST1, conteúdos privados, gamificação e cinco trilhas: PAP, Digital, PAP Elite, Indoor e PME. Código preparado na versão 2.7.1; a publicação permanece na versão anterior até concluir a migração.
 
-A preparação da hospedagem Vercel, as verificações, as variáveis privadas e a condição de plano para uso empresarial estão em [VERCEL.md](VERCEL.md). Não houve contratação ou publicação na Vercel nesta etapa.
+A direção atual é Netlify Free com Supabase, conforme a decisão de manter custo zero. Preparação, limites e verificações estão em [NETLIFY.md](NETLIFY.md). A alternativa Vercel está preservada em [VERCEL.md](VERCEL.md); não houve contratação Pro.
 
 A entrada busca conta e catálogo em uma única resposta autenticada. A biblioteca reúne materiais, módulos e retomada sem repetir a autenticação em três pedidos. Conteúdos, versões, estudos, arquivos, etiquetas e evidências das etapas são projetados por leituras em lote, com estado privado apenas durante uma solicitação síncrona. Cada novo acesso confere novamente o perfil e o progresso; gravações continuam sem esse lote de leitura. O Início mostra a saudação e o Starzinho enquanto os módulos chegam, e preenche a evolução de forma independente. Uma resposta antiga não substitui outra página depois de navegar. A hospedagem permanece Supabase Free + Render Free; o despertar após inatividade continua sendo uma limitação do Render.
 

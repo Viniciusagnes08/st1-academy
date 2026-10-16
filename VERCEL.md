@@ -1,5 +1,7 @@
 # Publicação da ST1 Academy na Vercel
 
+**Direção suspensa em 15/10/2026:** o usuário decidiu manter custo zero e escolher outra hospedagem. A implementação foi preservada no PR #1; a preparação atual está em `NETLIFY.md`. Nenhuma contratação Pro foi autorizada.
+
 Preparação para Node.js 24, função em São Paulo (`gru1`) e o PostgreSQL privado existente do Supabase. O adaptador síncrono usa uma thread Node; não utiliza o runtime Edge nem os esboços da pasta `cloudflare/`.
 
 ## Estado e condição para publicar

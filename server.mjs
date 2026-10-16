@@ -14,6 +14,7 @@ import {hostingConfig} from './lib/hosting.mjs';
 import {applyStagedProduction} from './lib/production-transfer.mjs';
 import {withLearningReadBatch} from './lib/learning-read-batch.mjs';
 import {createUploadService,sendBinary,uploadChunkBytes} from './lib/uploads.mjs';
+import {sendStudyFile} from './lib/private-file.mjs';
 
 export async function createApp(options={}) {
   const ctx=await createContext(options);
@@ -319,8 +320,7 @@ export async function createApp(options={}) {
   app.get('/api/contents/:id/cover',member,contentAction((req,res)=>res.type('image/webp').send(ctx.contents.cover(req.member,req.params.id))));
   app.get('/api/contents/:id/file',member,contentAction((req,res)=>{
     const asset=ctx.contents.file(req.member,req.params.id);
-    res.type(asset.mime).setHeader('Content-Disposition',`${req.query.download==='1'?'attachment':'inline'}; filename*=UTF-8''${encodeURIComponent(asset.name)}`);
-    sendBinary(res,asset.bytes);
+    sendStudyFile(req,res,asset,{limited:options.limitedFileResponses===true||process.env.NETLIFY==='true',contentId:req.params.id});
   }));
   app.get('/api/admin/contents',member,admin,contentAction((req,res)=>res.json({items:ctx.contents.list()})));
   app.get('/api/admin/contents/:id',member,admin,contentAction((req,res)=>res.json(ctx.contents.detail(req.member,req.params.id,true))));
