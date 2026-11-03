@@ -4,6 +4,16 @@ const symbols={processos:'<path d="M4 4h6v6H4zM14 14h6v6h-6zM7 10v7h7M14 7h6M17 
 const categoryIcon=id=>`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${symbols[id]||symbols.treinamentos}</svg>`;
 const normalize=value=>String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');
 
+const dreamCoverTheme=dream=>{
+  const choice=normalize(dream).split(':')[0];
+  if(choice.startsWith('viajar'))return 'horizonte';
+  if(choice.startsWith('construir uma familia'))return 'raizes';
+  if(choice.startsWith('crescer na carreira'))return 'conquista';
+  if(choice.startsWith('conquistar minha casa'))return 'refugio';
+  if(choice.startsWith('estudar'))return 'descoberta';
+  if(choice.startsWith('ajudar pessoas'))return 'impacto';
+  return 'proposito';
+};
 export function createKnowledgePanel({api,esc,icon,main,commitView,tracks,user,hasAccess,toast,engagement}){
   let items=[],modules=[],selectedModule='all',category='all',track='all',search='',reader=null,stopStudy=()=>{},currentMaterial=null,savingStudyId=null,homeLoad=0;
   const disposeReader=()=>{reader?.destroy();reader=null;stopStudy();stopStudy=()=>{};main.querySelector('#knowledge-filter-dialog')?.close();};
@@ -82,9 +92,21 @@ export function createKnowledgePanel({api,esc,icon,main,commitView,tracks,user,h
   async function home(){
     await reader?.flush();
     const load=++homeLoad,current=()=>load===homeLoad&&(!location.hash||location.hash==='#inicio'),profile=user(),role=profile.role,firstName=(profile.name||'').trim().split(' ')[0];
+    let dreamCover='';
+    const applyDreamCover=()=>{
+      if(!current()||!dreamCover)return;
+      const hero=main.querySelector('.journey-hero');
+      if(!hero)return;
+      hero.classList.add('has-dream-cover');
+      hero.style.setProperty('--journey-dream-cover',`url("/assets/dream-covers/${dreamCover}.jpg")`);
+    };
+    api('/api/profile').then(value=>{
+      if(value?.fields?.dream){dreamCover=dreamCoverTheme(value.fields.dream);applyDreamCover();}
+    }).catch(()=>{});
     const phrase=role==='supervisor'?'Evolua para liderar.<br><em>Aprenda para desenvolver.</em>':role==='admin'?'Conhecimento que move<br><em>pessoas e resultados.</em>':'O que você aprende hoje<br><em>transforma sua próxima venda.</em>';
     const pendingHero='<div class="star-guide"><div class="star-character"><img src="/assets/starzinho/pose01-open.webp" alt="Starzinho, seu guia na Academy" width="150" height="180"></div><div class="star-bubble"><span>STARZINHO COM VOCÊ</span><p>Um passo de cada vez. Seu próximo aprendizado começa aqui.</p></div></div>';
     commitView(`<section class="journey-hero"><div class="knowledge-orbit" aria-hidden="true"><i></i><i></i><i></i></div><div class="wrap journey-hero-inner"><div class="journey-welcome"><span class="overline">SEU PERCURSO NA ACADEMY</span><p>Olá, ${esc(firstName)}.</p><h1>${phrase}</h1><div class="journey-hero-actions"><a class="button button-primary" href="#conteudos">Explorar conteúdos ${icon('arrow')}</a><a href="#dashboard" class="journey-evolution">Ver minha evolução ${icon('arrow')}</a></div></div><div data-home-game-hero>${pendingHero}</div></div></section><section class="wrap journey-main"><div id="journey-loading" aria-busy="true"><p role="status">Carregando seus módulos e progresso...</p></div><div data-home-game-section aria-busy="true"><p role="status">Preparando seu próximo passo...</p></div></section>`);
+    applyDreamCover();
     let game={hero:'',section:''},gameFinished=!engagement;
     const gameLoading=engagement?(async()=>{
       try{game=await (await engagement()).journeyMarkup();gameFinished=true;if(!current())return;const hero=main.querySelector('[data-home-game-hero]'),section=main.querySelector('[data-home-game-section]');if(hero&&game.hero)hero.innerHTML=game.hero;if(section){section.innerHTML=game.section;section.setAttribute('aria-busy','false');}}
@@ -106,6 +128,7 @@ export function createKnowledgePanel({api,esc,icon,main,commitView,tracks,user,h
     const studied=available.filter(item=>item.study?.completed).length,studyPercent=available.length?Math.round(studied/available.length*100):0;
     const recentCards=available.slice(0,8).map(item=>`<a class="journey-recent-material" href="#material/${item.id}"><span>${categoryIcon(item.category)}${categoryNames[item.category]}</span><h3>${esc(item.title)}</h3><p>${esc(item.summary||'Conhecimento para aplicar no seu dia a dia.')}</p><div>${studyCard(item.study)||'<span>Ainda não iniciado</span>'}${icon('arrow')}</div></a>`).join('');
     commitView(`<section class="journey-hero"><div class="knowledge-orbit" aria-hidden="true"><i></i><i></i><i></i></div><div class="wrap journey-hero-inner"><div class="journey-welcome"><span class="overline">SEU PERCURSO NA ACADEMY</span><p>Olá, ${esc(firstName)}.</p><h1>${phrase}</h1><div class="journey-hero-actions">${reading&&reading.page<reading.pages?`<a class="button button-primary" href="#material/${reading.contentId}/pagina/${reading.page}">Continuar meu estudo ${icon('arrow')}</a>`:suggested?`<a class="button button-primary" href="#material/${suggested.id}">Meu próximo conteúdo ${icon('arrow')}</a>`:`<a class="button button-primary" href="#trilhas">Explorar minhas trilhas ${icon('arrow')}</a>`}<a href="#dashboard" class="journey-evolution">Ver minha evolução ${icon('arrow')}</a></div></div><div data-home-game-hero>${game.hero||pendingHero}</div></div></section><section class="wrap journey-main"><div class="journey-data"><div><strong>${total}</strong><span>${total===1?'trilha liberada':'trilhas liberadas'}</span></div><div><strong>${earned}</strong><span>${earned===1?'trilha certificada':'trilhas certificadas'}</span></div><div><strong>${completed}</strong><span>${completed===1?'avaliação concluída':'avaliações concluídas'}</span></div><div><strong>${studied}<small> / ${available.length}</small></strong><span>estudos concluídos</span></div></div>${hasAccess('materials')?`<div class="journey-study-progress"><div><strong>Seu conhecimento em movimento.</strong><span>${studied} de ${available.length} materiais concluídos · ${studyPercent}%</span></div><progress value="${studyPercent}" max="100" aria-label="Materiais de estudo concluídos"></progress></div>`:''}${resumeMarkup(reading)}${suggested?`<section class="journey-recommendation"><div class="journey-recommendation-label">${categoryIcon(suggested.category)}<span>${previous?'CONECTE SEU ÚLTIMO ESTUDO':'SEU PRÓXIMO PASSO'}</span></div><div><h2>${esc(suggested.title)}</h2><p>${connection} ${esc(suggested.summary)}</p></div><a href="#material/${suggested.id}" class="button button-secondary">Explorar conteúdo ${icon('arrow')}</a></section>`:''}<div data-home-game-section aria-busy="${!gameFinished}">${game.section||(gameFinished?'':'<p role="status">Preparando seu próximo passo...</p>')}</div><section class="journey-section"><div class="journey-section-heading"><div><span class="overline muted">FEITO PARA A SUA ROTINA</span><h2>${previous?'Continue evoluindo com seus módulos.':'Qual será seu próximo aprendizado?'}</h2><p>Cada módulo reúne conteúdos que ajudam você a aplicar o conhecimento na prática.</p></div><div class="journey-module-actions">${hasAccess('materials')?'<a href="#conteudos">Ver todos os conteúdos '+icon('arrow')+'</a>':''}${user()?.role==='admin'?'<a href="#publicar/modulos/novo">Criar módulo '+icon('plus')+'</a>':''}</div></div><div class="journey-rail-controls"><button type="button" data-module-rail-step="-1" aria-label="Módulos anteriores">${icon('back')}</button><button type="button" data-module-rail-step="1" aria-label="Próximos módulos">${icon('arrow')}</button></div><div class="journey-module-rail" tabindex="0" aria-label="Módulos para seu desenvolvimento">${moduleCards||'<div class="knowledge-empty"><h2>Seu percurso está começando.</h2><p>Os módulos liberados para sua conta aparecerão aqui.</p></div>'}</div></section>${recentCards?`<section class="journey-section"><div class="journey-section-heading"><div><span class="overline muted">A BIBLIOTECA CONTINUA CRESCENDO</span><h2>Materiais para o seu próximo avanço.</h2><p>Explore os conteúdos publicados para você, inclusive os novos materiais de estudo.</p></div><a href="#conteudos">Explorar biblioteca ${icon('arrow')}</a></div><div class="journey-recent-rail" tabindex="0" aria-label="Materiais de estudo recentes">${recentCards}</div></section>`:''}<section class="journey-practice"><div><span class="overline muted">DO ESTUDO À CONQUISTA</span><h2>${open?'Sua avaliação está esperando por você.':'Mostre o que você aprendeu.'}</h2><p>Avance nas trilhas e conquiste a certificação do seu canal.</p></div><a class="button button-primary" href="${open?'#prova/'+open.id:'#trilhas'}">${open?'Continuar avaliação':'Minhas trilhas'} ${icon('arrow')}</a></section></section>`);
+    applyDreamCover();
   }
   main.addEventListener('input',event=>{if(event.target.id==='knowledge-search'){search=normalize(event.target.value.trim());results();}});
   main.addEventListener('change',event=>{if(event.target.id==='knowledge-track'){track=event.target.value;results();}if(event.target.id==='knowledge-module'){selectedModule=event.target.value;moduleSummary();results();updateLocation();}});
