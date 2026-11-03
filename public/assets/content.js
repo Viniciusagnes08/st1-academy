@@ -1,5 +1,5 @@
 import {createModulePanel} from './modules-panel.js?v=2.5.0';
-import {createKnowledgePanel,categoryNames} from './knowledge.js?v=2.6.3';
+import {createKnowledgePanel,categoryNames} from './knowledge.js?v=20261103-dream-home';
 export function createContentPanel({api,esc,icon,main,commitView,tracks,user,hasAccess,toast,sourceUrl,materialLabel,engagement}){
   let items=[],selectedTrack='all',selectedStatus='all',search='',editor=null,saving=false,editorModules=[];
   const statusName={draft:'Rascunho',published:'Publicado',archived:'Arquivado'},kindName={file:'Arquivo',text:'Texto',link:'Link / vídeo'};
