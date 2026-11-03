@@ -262,4 +262,6 @@
 .player-cover .player-cover-top,.player-cover .player-identity{position:relative;z-index:3!important}
 .player-cover.has-player-photo .player-cover-photo{z-index:1!important;opacity:1}
 .player-cover.has-player-photo .player-dream-cover-art{display:none}
+.player-cover.has-selected-dream .player-dream-cover-art{display:block;z-index:1!important}
+.player-cover.has-selected-dream .player-cover-photo{z-index:0!important}
 
