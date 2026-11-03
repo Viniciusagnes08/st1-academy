@@ -221,3 +221,5 @@
 .player-cover-field[data-dream-theme="descoberta"]{background:radial-gradient(ellipse at 80% 0%,#b49af777,transparent 52%),linear-gradient(135deg,#12111b,#4a3970 62%,#1b1728)!important}
 .player-cover-field[data-dream-theme="impacto"]{background:radial-gradient(ellipse at 80% 0%,#8bdcea77,transparent 52%),linear-gradient(135deg,#101719,#2d5b63 62%,#14252a)!important}
 .player-cover-field[data-dream-theme="proposito"]{background:radial-gradient(ellipse at 80% 0%,#f7771655,transparent 55%),linear-gradient(135deg,#151517,#32251e 62%,#1c1512)!important}
+
+.player-dream-field{border:0;padding:0;margin:22px 0 0}.player-dream-field legend{font-size:13px;font-weight:600;margin-bottom:10px}.player-field-hint{font-size:11px;line-height:1.7;color:#967c60;margin:0 0 16px}.player-dream-field label{display:block;font-size:13px;font-weight:600;margin:18px 0 10px}.player-dream-field select{width:100%;font:inherit;font-size:14px;border:1px solid #dcccba;border-radius:8px;padding:13px 14px;background:#fefcf9;color:#3f3021}.player-dream-field select:focus{outline:2px solid #dca159;outline-offset:2px}.player-dream-field textarea{margin-top:0}
