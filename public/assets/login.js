@@ -57,10 +57,9 @@ panel.addEventListener('click',async event=>{
   if(google&&!google.disabled){
     google.disabled=true;
     try{
-      const form=panel.querySelector('#entry-login-form,#entry-register-form'),remember=!!form?.elements.remember?.checked,email=form?.elements.email?.value.trim()||'';
-      const value=await api('/api/auth/sign-in/social',{body:{provider:'google',callbackURL:location.origin+'/google/connected',...(email?{loginHint:email}:{})},headers:{'x-academy-remember':remember?'1':'0',...(state.mode==='register'&&state.token?{'x-academy-invite':state.token}:{})}});
+      const form=panel.querySelector('#entry-login-form,#entry-register-form'),remember=!!form?.elements.remember?.checked;
+      const value=await api('/api/auth/sign-in/social',{body:{provider:'google',callbackURL:location.origin+'/google/connected'},headers:{'x-academy-remember':remember?'1':'0',...(state.mode==='register'&&state.token?{'x-academy-invite':state.token}:{})}});
       if(!value.url?.startsWith('https://accounts.google.com/'))throw new Error('O Google não confirmou o endereço de acesso.');
-      if(email)persistPreference(email,remember);
       location.assign(value.url);
     }catch(error){state.notice=error.message;render();}
     return;
