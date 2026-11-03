@@ -131,7 +131,7 @@
     return state.profilePanel;
   }
   async function contentPanel(){
-    if(!state.contentPanel){const {createContentPanel}=await import('/assets/content.js?v=2.6.3');state.contentPanel??=createContentPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast,sourceUrl,materialLabel,engagement:engagementPanel});}
+    if(!state.contentPanel){const {createContentPanel}=await import('/assets/content.js?v=20261103-dream-home');state.contentPanel??=createContentPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast,sourceUrl,materialLabel,engagement:engagementPanel});}
     return state.contentPanel;
   }
   function closeNavigation(restoreFocus=true){
