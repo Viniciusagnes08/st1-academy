@@ -265,3 +265,8 @@
 .player-cover.has-selected-dream .player-dream-cover-art{display:block;z-index:1!important}
 .player-cover.has-selected-dream .player-cover-photo{z-index:0!important}
 
+
+/* Keep the chosen dream photograph visible above legacy animated effects. */
+.player-cover[data-dream-theme] .player-cover-field{display:none!important}
+.player-cover[data-dream-theme] .player-dream-cover-art{display:block!important;z-index:1!important;opacity:1!important}
+.player-cover[data-dream-theme]::after{z-index:2!important}
