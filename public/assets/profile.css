@@ -212,3 +212,12 @@
 .player-cover[data-dream-theme="impacto"]{box-shadow:0 18px 42px #287d8c2b}
 .player-cover[data-dream-theme="proposito"] .player-cover-field{background:radial-gradient(ellipse at 78% 4%,#f7771644,transparent 55%),linear-gradient(130deg,#151517,#27201b)}
 .player-cover[data-dream-theme] .player-cover-field>span{opacity:.06}
+
+/* Direct field targeting keeps the dream atmosphere visible even with uploaded cover art. */
+.player-cover-field[data-dream-theme="horizonte"]{background:radial-gradient(ellipse at 80% 0%,#48aaf977,transparent 52%),linear-gradient(135deg,#0d1720,#2d5262 62%,#13232d)!important}
+.player-cover-field[data-dream-theme="raizes"]{background:radial-gradient(ellipse at 80% 0%,#69cbb077,transparent 52%),linear-gradient(135deg,#101914,#31543b 62%,#17251b)!important}
+.player-cover-field[data-dream-theme="conquista"]{background:radial-gradient(ellipse at 80% 0%,#f7771677,transparent 52%),linear-gradient(135deg,#171013,#5b3020 62%,#241511)!important}
+.player-cover-field[data-dream-theme="refugio"]{background:radial-gradient(ellipse at 80% 0%,#dcbf7a77,transparent 52%),linear-gradient(135deg,#171411,#59462d 62%,#241c15)!important}
+.player-cover-field[data-dream-theme="descoberta"]{background:radial-gradient(ellipse at 80% 0%,#b49af777,transparent 52%),linear-gradient(135deg,#12111b,#4a3970 62%,#1b1728)!important}
+.player-cover-field[data-dream-theme="impacto"]{background:radial-gradient(ellipse at 80% 0%,#8bdcea77,transparent 52%),linear-gradient(135deg,#101719,#2d5b63 62%,#14252a)!important}
+.player-cover-field[data-dream-theme="proposito"]{background:radial-gradient(ellipse at 80% 0%,#f7771655,transparent 55%),linear-gradient(135deg,#151517,#32251e 62%,#1c1512)!important}
