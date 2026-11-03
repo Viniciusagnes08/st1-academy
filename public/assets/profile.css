@@ -248,3 +248,5 @@
 .player-cover-field[data-dream-theme="descoberta"]{background-image:linear-gradient(105deg,#100d1dcc,transparent 72%),url('/assets/dream-covers/descoberta.svg')!important}
 .player-cover-field[data-dream-theme="impacto"]{background-image:linear-gradient(105deg,#06171dcc,transparent 72%),url('/assets/dream-covers/impacto.svg')!important}
 .player-cover-field[data-dream-theme="proposito"]{background-image:linear-gradient(105deg,#160b0dcc,transparent 72%),url('/assets/dream-covers/proposito.svg')!important}
+
+.player-dream-cover-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-3;opacity:.92;filter:saturate(1.08);transition:opacity .4s ease,transform .6s ease}.player-cover:hover .player-dream-cover-art{transform:scale(1.025)}.player-cover.has-player-photo .player-dream-cover-art{opacity:.28}.player-cover-photo{z-index:-2!important}.player-cover-field{z-index:-1!important}.player-cover:after{z-index:0!important}.player-cover-top,.player-identity{z-index:1}
