@@ -253,3 +253,13 @@
 
 /* Explicit art layer is the visible cover; legacy orbit field stays decorative only. */
 .player-dream-cover-art{z-index:0!important}.player-cover-field{z-index:1!important;background:transparent!important}.player-cover:after{z-index:2!important}.player-cover-top,.player-identity{position:relative;z-index:3!important}
+
+/* Photographic covers take precedence over the old SVG backgrounds and effects. */
+.player-cover .player-dream-cover-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0!important;opacity:1!important;filter:none;pointer-events:none}
+.player-cover .player-cover-field{z-index:1!important;background:none!important;background-image:none!important;pointer-events:none}
+.player-cover .player-cover-field>span{opacity:0!important}
+.player-cover::after{z-index:2!important;background:linear-gradient(90deg,rgba(10,11,15,.88) 0%,rgba(10,11,15,.53) 43%,rgba(10,11,15,.08) 80%)!important}
+.player-cover .player-cover-top,.player-cover .player-identity{position:relative;z-index:3!important}
+.player-cover.has-player-photo .player-cover-photo{z-index:1!important;opacity:1}
+.player-cover.has-player-photo .player-dream-cover-art{display:none}
+
