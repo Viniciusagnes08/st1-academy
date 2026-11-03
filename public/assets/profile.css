@@ -238,3 +238,13 @@
 .player-cover[data-dream-theme="descoberta"] .player-cover-field{background-image:radial-gradient(circle at 78% 20%,#e4d8ff99 0 2px,transparent 3px),repeating-linear-gradient(125deg,transparent 0 38px,#b49af733 39px 40px),linear-gradient(145deg,#0e0c19 0%,#42326a 48%,#171329 100%)!important}
 .player-cover[data-dream-theme="impacto"] .player-cover-field{background-image:radial-gradient(circle at 78% 20%,#d7fbff99 0 2px,transparent 3px),radial-gradient(ellipse at 80% 85%,#8bdcea55,transparent 42%),linear-gradient(145deg,#081418 0%,#275c65 48%,#10252b 100%)!important}
 .player-cover[data-dream-theme="proposito"] .player-cover-field{background-image:radial-gradient(circle at 78% 20%,#ffd0a477 0 2px,transparent 3px),linear-gradient(145deg,#130d0d 0%,#4b2b20 48%,#1b1210 100%)!important}
+
+/* Category artwork: each selected dream gets its own cover illustration. */
+.player-cover-field[data-dream-theme]{background-repeat:no-repeat!important;background-position:center!important;background-size:cover!important}
+.player-cover-field[data-dream-theme="horizonte"]{background-image:linear-gradient(105deg,#08131dcc,transparent 72%),url('/assets/dream-covers/horizonte.svg')!important}
+.player-cover-field[data-dream-theme="raizes"]{background-image:linear-gradient(105deg,#0b1710cc,transparent 72%),url('/assets/dream-covers/raizes.svg')!important}
+.player-cover-field[data-dream-theme="conquista"]{background-image:linear-gradient(105deg,#170b0dcc,transparent 72%),url('/assets/dream-covers/conquista.svg')!important}
+.player-cover-field[data-dream-theme="refugio"]{background-image:linear-gradient(105deg,#171008cc,transparent 72%),url('/assets/dream-covers/refugio.svg')!important}
+.player-cover-field[data-dream-theme="descoberta"]{background-image:linear-gradient(105deg,#100d1dcc,transparent 72%),url('/assets/dream-covers/descoberta.svg')!important}
+.player-cover-field[data-dream-theme="impacto"]{background-image:linear-gradient(105deg,#06171dcc,transparent 72%),url('/assets/dream-covers/impacto.svg')!important}
+.player-cover-field[data-dream-theme="proposito"]{background-image:linear-gradient(105deg,#160b0dcc,transparent 72%),url('/assets/dream-covers/proposito.svg')!important}
