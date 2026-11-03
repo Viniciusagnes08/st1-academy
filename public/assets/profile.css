@@ -223,3 +223,18 @@
 .player-cover-field[data-dream-theme="proposito"]{background:radial-gradient(ellipse at 80% 0%,#f7771655,transparent 55%),linear-gradient(135deg,#151517,#32251e 62%,#1c1512)!important}
 
 .player-dream-field{border:0;padding:0;margin:22px 0 0}.player-dream-field legend{font-size:13px;font-weight:600;margin-bottom:10px}.player-field-hint{font-size:11px;line-height:1.7;color:#967c60;margin:0 0 16px}.player-dream-field label{display:block;font-size:13px;font-weight:600;margin:18px 0 10px}.player-dream-field select{width:100%;font:inherit;font-size:14px;border:1px solid #dcccba;border-radius:8px;padding:13px 14px;background:#fefcf9;color:#3f3021}.player-dream-field select:focus{outline:2px solid #dca159;outline-offset:2px}.player-dream-field textarea{margin-top:0}
+
+/* Full-cover dream artwork: the selected dream changes the entire passport cover, not only its accent. */
+.player-cover[data-dream-theme] .player-cover-field{opacity:1!important;background-size:cover!important}
+.player-cover[data-dream-theme] .player-cover-field>span{font-size:220px!important;opacity:.11!important;right:2%;top:3%;filter:blur(.2px)}
+.player-cover[data-dream-theme] .player-cover-field>i{opacity:.34!important;border-width:2px}
+.player-cover[data-dream-theme] .player-cover-field>i:nth-child(2){opacity:.2!important}
+.player-cover[data-dream-theme] .player-cover-field>i:nth-child(3){opacity:.13!important}
+.player-cover[data-dream-theme]::after{background:linear-gradient(105deg,#0d0d0fe8 0%,#111113a8 48%,transparent 100%)!important}
+.player-cover[data-dream-theme="horizonte"] .player-cover-field{background-image:radial-gradient(circle at 78% 22%,#8bdceaaa 0 2px,transparent 3px),radial-gradient(circle at 64% 70%,#48aaf977 0 1px,transparent 2px),linear-gradient(145deg,#07131c 0%,#16485a 48%,#0b1d2a 100%)!important}
+.player-cover[data-dream-theme="raizes"] .player-cover-field{background-image:radial-gradient(circle at 76% 20%,#b4e3a666 0 2px,transparent 3px),radial-gradient(ellipse at 85% 92%,#69cbb055,transparent 44%),linear-gradient(145deg,#0a1711 0%,#275039 48%,#101e17 100%)!important}
+.player-cover[data-dream-theme="conquista"] .player-cover-field{background-image:radial-gradient(circle at 78% 20%,#ffc27b88 0 2px,transparent 3px),linear-gradient(115deg,transparent 0 45%,#f7771644 46% 47%,transparent 48%),linear-gradient(145deg,#160d0c 0%,#62301d 48%,#1c1110 100%)!important}
+.player-cover[data-dream-theme="refugio"] .player-cover-field{background-image:radial-gradient(ellipse at 75% 26%,#f7df9e88 0 2px,transparent 3px),linear-gradient(155deg,transparent 0 54%,#dcbf7a55 55% 58%,transparent 59%),linear-gradient(145deg,#17100b 0%,#614a2c 48%,#211811 100%)!important}
+.player-cover[data-dream-theme="descoberta"] .player-cover-field{background-image:radial-gradient(circle at 78% 20%,#e4d8ff99 0 2px,transparent 3px),repeating-linear-gradient(125deg,transparent 0 38px,#b49af733 39px 40px),linear-gradient(145deg,#0e0c19 0%,#42326a 48%,#171329 100%)!important}
+.player-cover[data-dream-theme="impacto"] .player-cover-field{background-image:radial-gradient(circle at 78% 20%,#d7fbff99 0 2px,transparent 3px),radial-gradient(ellipse at 80% 85%,#8bdcea55,transparent 42%),linear-gradient(145deg,#081418 0%,#275c65 48%,#10252b 100%)!important}
+.player-cover[data-dream-theme="proposito"] .player-cover-field{background-image:radial-gradient(circle at 78% 20%,#ffd0a477 0 2px,transparent 3px),linear-gradient(145deg,#130d0d 0%,#4b2b20 48%,#1b1210 100%)!important}
