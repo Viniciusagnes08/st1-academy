@@ -58,3 +58,27 @@ test('agendamento persiste, respeita a lista ajustada e envia imagens embutidas'
     const second=service.create('admin',{title:'Cancelar envio',subject:'Campanha agendada',body:'Uma mensagem para testar o agendamento.',recipientIds:['b']});service.schedule(second.id,new Date(Date.now()+120000).toISOString());assert.equal(service.cancelSchedule(second.id).status,'draft');
   }finally{db.close();}
 });
+
+test('campanhas manuais respeitam a cota dos automáticos e reagendam o envio coletivo',async()=>{
+  const db=new DatabaseSync(':memory:');
+  db.exec(`CREATE TABLE user(id TEXT PRIMARY KEY,name TEXT,email TEXT);
+    CREATE TABLE academy_member(user_id TEXT PRIMARY KEY,role TEXT,enabled INTEGER);
+    CREATE TABLE academy_onboarding(user_id TEXT PRIMARY KEY,answers_json TEXT NOT NULL,completed_at TEXT NOT NULL);
+    CREATE TABLE academy_email_job(user_id TEXT,status TEXT,accepted_at TEXT);
+    INSERT INTO user VALUES('a','Ana Silva','ana@example.test');
+    INSERT INTO academy_member VALUES('a','seller',1);
+    INSERT INTO academy_onboarding VALUES('a','{"role":"Consultor(a)"}','2026-01-01');`);
+  const clock=Date.now();db.prepare('INSERT INTO academy_email_job(user_id,status,accepted_at) VALUES(?,?,?),(?,?,?)').run('a','accepted',new Date(clock-24*60*60*1000).toISOString(),'a','accepted',new Date(clock-4*60*60*1000).toISOString());
+  const sent=[],service=createCampaignService(db,{baseURL:'https://st1academy.tech',mailerTransport:{async sendMail(message){sent.push(message);return {messageId:'limited',rejected:[]};}}});
+  try{
+    const draft=service.create('admin',{title:'Não ultrapassar a frequência',subject:'Seu próximo passo',body:'Olá, {{nome}}! Continue seu desenvolvimento na Academy.',recipientIds:['a']});
+    await assert.rejects(service.send(draft.id),/limite de frequência/);
+    assert.equal(service.list().campaigns[0].status,'draft');assert.equal(sent.length,0);
+    const scheduled=service.create('admin',{title:'Aguardar a cota',subject:'Seu próximo passo',body:'Olá, {{nome}}! Continue seu desenvolvimento na Academy.',recipientIds:['a']});
+    service.schedule(scheduled.id,new Date(Date.now()+120000).toISOString());db.prepare('UPDATE academy_campaign SET scheduled_at=? WHERE id=?').run(new Date(Date.now()-1000).toISOString(),scheduled.id);
+    await service.runDue();
+    const deferred=service.list().campaigns.find(item=>item.id===scheduled.id);
+    assert.equal(deferred.status,'scheduled');assert.ok(Date.parse(deferred.scheduledAt)>Date.now());assert.match(deferred.scheduleError,/limite de duas mensagens/);assert.equal(sent.length,0);
+  }finally{db.close();}
+});
+
