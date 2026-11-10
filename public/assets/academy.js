@@ -2,7 +2,7 @@
   'use strict';
   const main=document.querySelector('#main');
   document.body.dataset.motionMode='full';
-  const state={catalog:null,user:null,attempt:null,questionIndex:0,invite:null,inviteToken:new URLSearchParams(location.search).get('convite'),saving:false,accessPanel:null,contentPanel:null,blocked:null,lastRoute:'',engagementPanel:null,profilePanel:null,agendaPanel:null,managementPanel:null};
+  const state={catalog:null,user:null,attempt:null,questionIndex:0,invite:null,inviteToken:new URLSearchParams(location.search).get('convite'),saving:false,accessPanel:null,campaignPanel:null,contentPanel:null,blocked:null,lastRoute:'',engagementPanel:null,profilePanel:null,agendaPanel:null,managementPanel:null};
   const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const icons={user:'<circle cx="12" cy="8" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/>',users:'<circle cx="8" cy="7" r="3"/><path d="M2 21v-4a6 6 0 0 1 12 0v4M16 4a3 3 0 0 1 0 6M22 21v-4a6 6 0 0 0-4-5"/>',camera:'<path d="M3 7h4l2-3h6l2 3h4v14H3z"/><circle cx="12" cy="13" r="4"/>',heart:'<path d="M20 4c-4-3-8 1-8 1S8 1 4 4c-6 5 2 11 8 16 6-5 14-11 8-16z"/>',target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',spark:'<path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3zM3 2v4M1 4h4"/>',edit:'<path d="m16 3 5 5-12 12H4v-5zM13 6l5 5"/>',volume:'<path d="m11 5-6 4H2v6h3l6 4zM15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/>',arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',back:'<path d="M19 12H5m6-6-6 6 6 6"/>',book:'<path d="M3 4h6a4 4 0 0 1 3 2v15a4 4 0 0 0-3-2H3zM21 4h-6a4 4 0 0 0-3 2v15a4 4 0 0 1 3-2h6z"/>',shield:'<path d="m12 2 8 4v6c0 5-8 10-8 10S4 17 4 12V6z"/><path d="m8 12 3 3 5-6"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/>',list:'<path d="M9 5h12M9 12h12M9 19h12"/><path d="M3 5h1M3 12h1M3 19h1"/>',award:'<circle cx="12" cy="8" r="6"/><path d="m8 13-2 9 6-3 6 3-2-9"/>',download:'<path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/>',lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/>',check:'<path d="m5 12 4 4L19 6"/>',link:'<path d="M14 3h7v7M21 3l-9 9M10 3H3v18h18v-7"/>'};
   Object.assign(icons,{calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6M17 2v6M3 11h18"/>',plus:'<path d="M12 5v14M5 12h14"/>',bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>'});
@@ -56,13 +56,13 @@
     const avatarElement=document.querySelector('#profile-avatar');avatarElement.innerHTML=state.user?.avatarUrl?'<img src="'+esc(state.user.avatarUrl)+'" alt="">':esc((state.user?.name||'ST1').split(' ').filter(Boolean).slice(0,2).map(word=>word[0]).join('').toUpperCase());
     document.querySelector('#admin-nav').hidden=!['admin','supervisor'].includes(role)||!hasAccess('team_results');
     document.querySelector('#admin-nav-label').textContent='Resultados';
-    document.querySelector('#management-nav').hidden=role!=='admin';document.querySelector('#access-nav').hidden=role!=='admin';
+    document.querySelector('#management-nav').hidden=role!=='admin';document.querySelector('#access-nav').hidden=role!=='admin';document.querySelector('#campaign-nav').hidden=role!=='admin';
     document.querySelector('#management-navigation').hidden=role!=='admin'&&(role!=='supervisor'||!hasAccess('team_results'));
     document.querySelector('#conquests-nav').hidden=!hasAccess('conquests');document.querySelector('#materials-nav').hidden=!hasAccess('materials');
     document.querySelector('#central-footer').hidden=!hasAccess('materials');const mapNav=document.querySelector('#knowledge-map-nav');if(mapNav)mapNav.hidden=!hasAccess('assessments')&&!hasAccess('materials');
     document.querySelector('#squad-nav').hidden=!hasAccess('community');document.querySelector('#ranking-nav').hidden=!hasAccess('community')||role==='admin'||role==='supervisor'&&hasAccess('team_results');document.querySelector('#community-navigation').hidden=!hasAccess('community');state.engagementPanel?.refreshBell();
     const page=(location.hash||'#inicio').slice(1).split('/')[0],active=['trilha','prova','resultado','percurso','desafios','desafio','pratica'].includes(page)?'trilhas':page==='material'?'conteudos':['publicar','squads-gestao','gamificacao','perfil-regras'].includes(page)?'cadastros':['agenda-gestao','agenda-programar','agenda-integracao','agenda-participacao'].includes(page)?'agenda':page==='pedidos-squad'?(hasAccess('community')?'squad':'gestao'):page;
-    document.querySelector('#page-context').textContent=({cadastros:'Cadastros',agenda:'Minha agenda','agenda-gestao':'Programação do time','agenda-programar':'Programar compromisso','agenda-participacao':'Participação do time','agenda-integracao':'Conexão Google',inicio:'Início',trilhas:'Minhas trilhas',dashboard:'Dashboard',conteudos:'Conteúdos',publicar:'Publicar conteúdo',material:'Material de estudo',percurso:'Meu percurso',desafios:'Provas relâmpago',desafio:'Meu desafio',pratica:'Prática e evolução',conhecimento:'Mapa de conhecimento',squad:'Meu squad',perfil:'Meu perfil',pessoas:'Conheça seu time','perfil-regras':'Liberações do perfil','pedidos-squad':'Pedidos de squad',notificacoes:'Notificações',gamificacao:'Gamificação','squads-gestao':'Gestão de squads',conquistas:'Minhas conquistas',gestao:'Resultados',acessos:'Acessos',trilha:'Minha trilha',prova:'Avaliação',resultado:'Resultado da avaliação'})[page]||'Início';
+    document.querySelector('#page-context').textContent=({cadastros:'Cadastros',campanhas:'E-mails de incentivo',agenda:'Minha agenda','agenda-gestao':'Programação do time','agenda-programar':'Programar compromisso','agenda-participacao':'Participação do time','agenda-integracao':'Conexão Google',inicio:'Início',trilhas:'Minhas trilhas',dashboard:'Dashboard',conteudos:'Conteúdos',publicar:'Publicar conteúdo',material:'Material de estudo',percurso:'Meu percurso',desafios:'Provas relâmpago',desafio:'Meu desafio',pratica:'Prática e evolução',conhecimento:'Mapa de conhecimento',squad:'Meu squad',perfil:'Meu perfil',pessoas:'Conheça seu time','perfil-regras':'Liberações do perfil','pedidos-squad':'Pedidos de squad',notificacoes:'Notificações',gamificacao:'Gamificação','squads-gestao':'Gestão de squads',conquistas:'Minhas conquistas',gestao:'Resultados',acessos:'Acessos',trilha:'Minha trilha',prova:'Avaliação',resultado:'Resultado da avaliação'})[page]||'Início';
     document.querySelectorAll('[data-nav]').forEach(a=>{const selected=a.dataset.nav===(active==='pessoas'?'perfil':active);a.classList.toggle('active',selected);if(selected){a.setAttribute('aria-current','page');const drawer=a.closest('.sidebar-drawer');if(drawer)drawer.open=true;}else a.removeAttribute('aria-current');});
   }
   function home(onlyTracks=false){
@@ -118,6 +118,11 @@
     if(!state.accessPanel){const {createAccessPanel}=await import('/assets/access.js?v=20261110-welcome-mail');state.accessPanel=createAccessPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,refreshUser,toast});}
     await state.accessPanel.render();
   }
+  async function campaignPage(){
+    if(state.user?.role!=='admin')return restricted('Campanhas são gerenciadas pelo Admin.','Esta área é exclusiva da gestão da ST1 Academy.',!state.user);
+    if(!state.campaignPanel){const {createCampaignPanel}=await import('/assets/campaigns.js?v=20261110-campaigns');state.campaignPanel=createCampaignPanel({api,esc,main,commitView,toast});}
+    await state.campaignPanel.render();
+  }
   async function engagementPanel(){
     if(!state.engagementPanel){const {createEngagementPanel}=await import('/assets/progress-panel.js?v=2.6.2');state.engagementPanel??=createEngagementPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast});}
     return state.engagementPanel;
@@ -155,7 +160,7 @@
   async function managementPanel(){if(!state.managementPanel){const {createManagementPanel}=await import('/assets/management.js?v=2.3.3');state.managementPanel??=createManagementPanel({api,esc,icon,main,commitView,user:()=>state.user,toast,onChanged:refreshUser});}return state.managementPanel;}
   async function render({refresh=true}={}){
     if(!state.catalog)return;
-    let route=location.hash||'#inicio';if(route==='#main'){history.replaceState({},'',state.lastRoute||'#inicio');main.focus({preventScroll:true});return;}if(route.startsWith('#materiais')){route=route.replace('#materiais','#conteudos');history.replaceState({},'',route);}if(/^#conteudos\/(novo|editar)(\/|$)/.test(route)){route=route.replace('#conteudos','#publicar');history.replaceState({},'',route);}if(!['inicio','trilhas','trilha','conquistas','gestao','acessos','conteudos','dashboard','material','publicar','prova','resultado','percurso','conhecimento','squad','pessoas','squads-gestao','gamificacao','desafios','desafio','pratica','notificacoes','perfil','perfil-regras','pedidos-squad','agenda','agenda-gestao','agenda-programar','agenda-participacao','agenda-integracao','cadastros'].includes(route.slice(1).split('/')[0])){route='#inicio';history.replaceState({},'',route);}const [page,id,contentId,pageNumber,subCategory]=route.slice(1).split('/');
+    let route=location.hash||'#inicio';if(route==='#main'){history.replaceState({},'',state.lastRoute||'#inicio');main.focus({preventScroll:true});return;}if(route.startsWith('#materiais')){route=route.replace('#materiais','#conteudos');history.replaceState({},'',route);}if(/^#conteudos\/(novo|editar)(\/|$)/.test(route)){route=route.replace('#conteudos','#publicar');history.replaceState({},'',route);}if(!['inicio','trilhas','trilha','conquistas','gestao','acessos','campanhas','conteudos','dashboard','material','publicar','prova','resultado','percurso','conhecimento','squad','pessoas','squads-gestao','gamificacao','desafios','desafio','pratica','notificacoes','perfil','perfil-regras','pedidos-squad','agenda','agenda-gestao','agenda-programar','agenda-participacao','agenda-integracao','cadastros'].includes(route.slice(1).split('/')[0])){route='#inicio';history.replaceState({},'',route);}const [page,id,contentId,pageNumber,subCategory]=route.slice(1).split('/');
     try{
       if(state.lastRoute.startsWith('#prova/')&&route!==state.lastRoute&&state.attempt?.status==='open'&&document.querySelector('.question-card')){if(!await saveProgress()){history.replaceState({},'',state.lastRoute);return;}}
       if(refresh)await refreshUser();
@@ -185,6 +190,7 @@
       else if(page==='perfil-regras'){if(state.user.role!=='admin')return restricted('Acesso exclusivo de Admin.','O Admin define as liberações do perfil.');await (await profilePanel()).manager();}
       else if(page==='cadastros'){const panel=await managementPanel();if(id==='emissoes')await panel.issued();else if(!id)await panel.home();else if(contentId==='novo')await panel.edit(id);else if(contentId==='editar')await panel.edit(id,pageNumber);else if(contentId==='ver')await panel.detail(id,pageNumber);else if(contentId==='emitir')await panel.issue(id,pageNumber);else await panel.list(id,contentId==='lixeira');}
       else if(page==='acessos')await accessPage();
+      else if(page==='campanhas')await campaignPage();
       else if(page==='conteudos')await (await contentPanel()).library(id==='categoria'?contentId:pageNumber==='categoria'?subCategory:'all',id==='modulo'?contentId:'all');
       else if(page==='dashboard')await (await contentPanel()).dashboard();
       else if(page==='material')await (await contentPanel()).detail(id,contentId==='pagina'?Number(pageNumber):undefined);
@@ -232,4 +238,5 @@
   }
   init();
 })();
+
 

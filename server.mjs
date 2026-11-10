@@ -14,11 +14,13 @@ import {hostingConfig} from './lib/hosting.mjs';
 import {applyStagedProduction} from './lib/production-transfer.mjs';
 import {withLearningReadBatch} from './lib/learning-read-batch.mjs';
 import {createInvitationMailer} from './lib/invitation-mail.mjs';
+import {createCampaignService} from './lib/campaigns.mjs';
 
 export async function createApp(options={}) {
   const ctx=await createContext(options);
   const {db,auth,bank,baseURL,testMode,access}=ctx;
   const invitationMailer=options.invitationMailer||createInvitationMailer(options.mailEnv||process.env);
+  const campaigns=createCampaignService(db,{env:options.mailEnv||process.env,baseURL});
   const deliverInvitation=async invitation=>{
     if(!invitationMailer)return {...invitation,delivery:'not_configured'};
     try{await invitationMailer(invitation);return {...invitation,delivery:'sent'};}
@@ -46,6 +48,10 @@ export async function createApp(options={}) {
   app.use((req,res,next)=>ready()?next():res.status(503).set('Retry-After','30').json({message:'A ST1 Academy está sendo preparada. Tente novamente em alguns instantes.'}));
   app.all('/api/auth/*splat',toNodeHandler(auth));
   app.use(express.json({limit:'128kb'}));
+  app.get('/api/campaigns/open/:token.gif',(req,res)=>{campaigns.mark('open',req.params.token);res.setHeader('Cache-Control','no-store');res.type('image/gif').send(Buffer.from('R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=','base64'));});
+  app.get('/api/campaigns/click/:token',(req,res)=>{const target=campaigns.mark('click',req.params.token);if(!target)return res.sendStatus(404);res.redirect(302,new URL(target,baseURL).href);});
+  app.get('/api/campaigns/preferences/:token',(req,res)=>{const person=campaigns.preference(req.params.token);if(!person)return res.sendStatus(404);res.type('html').send(`<main style="font:16px Arial,sans-serif;max-width:560px;margin:80px auto;padding:24px"><h1>E-mails de incentivo</h1><p>Você pode deixar de receber as campanhas da ST1 Academy.</p><form method="post"><button style="background:#f77716;color:white;border:0;padding:14px 20px;cursor:pointer">Parar de receber</button></form></main>`);});
+  app.post('/api/campaigns/preferences/:token',express.urlencoded({extended:false}),(req,res)=>{if(!campaigns.optout(req.params.token))return res.sendStatus(404);res.type('html').send('<main style="font:16px Arial,sans-serif;max-width:560px;margin:80px auto;padding:24px"><h1>Preferência salva</h1><p>Você não receberá novas campanhas de incentivo da ST1 Academy.</p></main>');});
   app.use('/api',(req,res,next)=>{
     if(['POST','PUT','PATCH','DELETE'].includes(req.method)&&req.headers.origin!==baseURL)return res.status(403).json({message:'Solicitação de outra origem não permitida.'});
     next();
@@ -309,6 +315,9 @@ export async function createApp(options={}) {
     if(!invitationMailer)return res.status(503).json({message:'O envio de e-mail ainda não foi configurado no servidor.'});
     try{res.json(await deliverInvitation(ctx.renewInvitation(req.params.id,req.member.user_id)));}catch(error){res.status(400).json({message:error.message});}
   });
+  app.get('/api/admin/campaigns',member,admin,(_,res)=>res.json(campaigns.list()));
+  app.post('/api/admin/campaigns',member,admin,(req,res)=>{try{res.status(201).json(campaigns.create(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/campaigns/:id/send',member,admin,async(req,res)=>{try{res.json(await campaigns.send(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.patch('/api/admin/members/:id',member,admin,(req,res)=>{
     try{res.json(access.updateMember(req.member.user_id,req.params.id,req.body));}catch(error){res.status(400).json({message:error.message});}
   });
@@ -359,3 +368,4 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
   };
   process.on('SIGTERM',stop);process.on('SIGINT',stop);
 }
+
