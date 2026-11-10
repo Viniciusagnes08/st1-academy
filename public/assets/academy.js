@@ -127,7 +127,7 @@
     return state.agendaPanel;
   }
   async function profilePanel(){
-    if(!state.profilePanel){const {createProfilePanel}=await import('/assets/profile.js?v=20261103-photo');const game=await engagementPanel();state.profilePanel??=createProfilePanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,toast,onChanged:refreshUser,star:game.star});}
+    if(!state.profilePanel){const {createProfilePanel}=await import('/assets/profile.js?v=20261110-required-story');const game=await engagementPanel();state.profilePanel??=createProfilePanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,toast,onChanged:refreshUser,star:game.star});}
     return state.profilePanel;
   }
   async function contentPanel(){

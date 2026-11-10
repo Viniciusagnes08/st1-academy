@@ -29,7 +29,7 @@ test('Perfil pessoal usa progresso real, mantém privacidade e exige aprovação
     });
     await t.test('cadastro pessoal não altera nome, e-mail, papel, XP ou certificados',async()=>{
       const value=await request(people.seller,'/api/profile',{method:'PATCH',body:{revision:0,phone:'(98) 99999-0000',city:'São Luís',hobbies:'Leitura e futebol',lifeGoal:'Evoluir com minha família.',biography:'Texto de QA <script>alert(1)</script>',dream:'Construir uma casa.',shareStory:false}});assert.equal(value.status,200);
-      assert.equal(value.data.stats.xp,0);assert.equal(value.data.fields.phone,'(98) 99999-0000');
+      assert.equal(value.data.stats.xp,0);assert.equal(value.data.fields.phone,'(98) 99999-0000');assert.equal(value.data.fields.shareStory,true);
       assert.equal((await request(people.seller,'/api/profile',{method:'PATCH',body:{revision:value.data.revision,role:'admin',xp:999999}})).status,400);
       const me=(await request(people.seller,'/api/me')).data;assert.equal(me.name,'QA seller');assert.equal(me.role,'seller');assert.equal(me.email,'seller@profile-qa.example');assert.equal(me.certificates.length,0);
       assert.equal((await request(people.seller,'/api/profile',{method:'PATCH',body:{revision:0,biography:'Concorrência'}})).status,409);
@@ -61,10 +61,9 @@ test('Perfil pessoal usa progresso real, mantém privacidade e exige aprovação
       assert.equal((await profile(people.seller)).squad.id,squad.id);
       assert.equal((await request(people.leader,'/api/squad-requests/'+asked.data.id,{method:'PATCH',body:{status:'approved',revision:0}})).status,409);
     });
-    await t.test('colegas veem apenas a história compartilhada e o telefone fica com a gestão autorizada',async()=>{
-      let p=(await request(people.peer,'/api/profiles/'+people.seller.id)).data;assert.equal(p.fields.phone,'');assert.equal(p.fields.biography,'');assert.equal(p.storyVisible,false);
+    await t.test('colegas autorizados veem a história e o telefone fica com a gestão autorizada',async()=>{
+      let p=(await request(people.peer,'/api/profiles/'+people.seller.id)).data;assert.equal(p.fields.phone,'');assert.match(p.fields.biography,/<script>/);assert.equal(p.storyVisible,true);
       assert.equal((await request(people.leader,'/api/profiles/'+people.seller.id)).data.fields.phone,'(98) 99999-0000');
-      const own=await profile(people.seller);await request(people.seller,'/api/profile',{method:'PATCH',body:{revision:own.revision,shareStory:true}});
       p=(await request(people.peer,'/api/profiles/'+people.seller.id)).data;assert.match(p.fields.biography,/<script>/);assert.equal(p.fields.phone,'');assert.equal((await request(people.peer,'/api/profile-media/'+imageId)).status,200);
     });
     await t.test('XP conquistado libera cor e destaque, com pelo menos três vendedores no squad',async()=>{
