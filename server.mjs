@@ -15,12 +15,14 @@ import {applyStagedProduction} from './lib/production-transfer.mjs';
 import {withLearningReadBatch} from './lib/learning-read-batch.mjs';
 import {createInvitationMailer} from './lib/invitation-mail.mjs';
 import {createCampaignService} from './lib/campaigns.mjs';
+import {createOnboardingService} from './lib/onboarding.mjs';
 
 export async function createApp(options={}) {
   const ctx=await createContext(options);
   const {db,auth,bank,baseURL,testMode,access}=ctx;
   const invitationMailer=options.invitationMailer||createInvitationMailer(options.mailEnv||process.env);
   const campaigns=createCampaignService(db,{env:options.mailEnv||process.env,baseURL});
+  const onboarding=createOnboardingService(db,bank);
   const deliverInvitation=async invitation=>{
     if(!invitationMailer)return {...invitation,delivery:'not_configured'};
     try{await invitationMailer(invitation);return {...invitation,delivery:'sent'};}
@@ -212,7 +214,10 @@ export async function createApp(options={}) {
   app.get('/api/admin/access',member,admin,(_,res)=>res.json(access.directory()));
   const contentAction=action=>(req,res)=>{try{const work=()=>action(req,res);if(req.method==='GET'&&/^\/api\/(?:bootstrap|library|contents(?:\/|$)|reading(?:\/|$)|learning-flows(?:\/|$)|(?:game|progress)\/(?:me|knowledge)$)/.test(req.path))withLearningReadBatch(ctx,work);else if(req.method==='GET'&&db.withReadScope)db.withReadScope(work);else work();}catch(error){res.status(error.status||400).json({message:error.message});}};
   app.get('/api/bootstrap',member,contentAction((req,res)=>res.json({user:memberPayload(req.member),catalog:{title:bank.title,version:appVersion,minimumPercent:bank.minimumPercent,criticalRequired:bank.criticalRequired,testMode,environment:ctx.runtime.environment,totalTracks:bank.tracks.length,tracks:bank.tracks.filter(track=>hasTrack(req.member,track.id)).map(track=>trackSummary(track,hasPermission(req.member,'materials')))}})));
-  app.get('/api/profile',member,contentAction((req,res)=>{const value=ctx.profiles.detail(req.member);res.json({...value,recognitions:ctx.management.recognitions(req.member,value.id)});}));
+  app.get('/api/profile',member,contentAction((req,res)=>{const value=ctx.profiles.detail(req.member);res.json({...value,onboarding:onboarding.read(req.member.user_id),recognitions:ctx.management.recognitions(req.member,value.id)});}));
+  app.get('/api/onboarding',member,(req,res)=>{const record=onboarding.read(req.member.user_id);res.json({choices:onboarding.choices,record,recommendations:onboarding.recommend(req.member,record)});});
+  app.post('/api/onboarding',member,(req,res)=>{try{const record=onboarding.save(req.member.user_id,req.body);res.json({record,recommendations:onboarding.recommend(req.member,record)});}catch(error){res.status(400).json({message:error.message});}});
+  app.get('/api/admin/onboarding',member,admin,(_,res)=>res.json({items:onboarding.adminList()}));
   app.get('/api/profiles',member,contentAction((req,res)=>res.json({items:ctx.profiles.peers(req.member)})));
   app.get('/api/profiles/:id',member,contentAction((req,res)=>{const value=ctx.profiles.detail(req.member,req.params.id);res.json({...value,recognitions:ctx.management.recognitions(req.member,value.id)});}));
   app.patch('/api/profile',member,contentAction((req,res)=>res.json(ctx.profiles.save(req.member,req.body))));
