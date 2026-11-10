@@ -21,8 +21,8 @@ export async function createApp(options={}) {
   const ctx=await createContext(options);
   const {db,auth,bank,baseURL,testMode,access}=ctx;
   const invitationMailer=options.invitationMailer||createInvitationMailer(options.mailEnv||process.env);
-  const campaigns=createCampaignService(db,{env:options.mailEnv||process.env,baseURL});
   const onboarding=createOnboardingService(db,bank);
+  const campaigns=createCampaignService(db,{env:options.mailEnv||process.env,baseURL});
   const deliverInvitation=async invitation=>{
     if(!invitationMailer)return {...invitation,delivery:'not_configured'};
     try{await invitationMailer(invitation);return {...invitation,delivery:'sent'};}
@@ -374,4 +374,3 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
   };
   process.on('SIGTERM',stop);process.on('SIGINT',stop);
 }
-
