@@ -1,0 +1,358 @@
+{
+  "collection": "ST1 Academy — emails de engajamento",
+  "version": "2026-11-10",
+  "language": "pt-BR",
+  "format": "safe_markdown",
+  "notes": [
+    "Conteúdo canônico aprovado no chat e adaptado apenas para placeholders computados.",
+    "Nunca enviar variáveis ausentes, certificados não emitidos ou conteúdo inacessível.",
+    "Barra de progresso deve refletir percentual real e não ser texto 50%/80% fixo.",
+    "As variantes devem substituir ou acrescentar texto sem duplicidade, respeitando condições reais."
+  ],
+  "templates": [
+    {
+      "number": 1,
+      "key": "welcome",
+      "internalTitle": "Boas-vindas",
+      "subject": "🚀 {{primeiro_nome}}, sua jornada na ST1 Academy começou",
+      "preheader": "Sua primeira missão já está desbloqueada.",
+      "bodyMarkdown": "Olá, {{primeiro_nome}}! 👋\n\n**Você acaba de entrar na ST1 Academy.**\n\nA partir de agora, cada módulo concluído é conhecimento novo na bagagem — e uma nova habilidade para colocar em jogo na sua rotina.\n\n🎯 **Sua primeira missão:**  \n{{trilha}}\n\n⚡ **Comece por:**  \n{{aula_inicial}}\n\nNão precisa zerar tudo hoje.\n\nSó precisa dar o primeiro passo.\n\n**Bora evoluir?**",
+      "ctaLabel": "🚀 COMEÇAR MINHA JORNADA",
+      "ctaTarget": "assigned_track",
+      "variants": {},
+      "variables": [
+        "aula_inicial",
+        "primeiro_nome",
+        "trilha"
+      ]
+    },
+    {
+      "number": 2,
+      "key": "first_lesson_nudge",
+      "internalTitle": "Primeira aula não iniciada",
+      "subject": "👀 {{primeiro_nome}}, tem uma missão esperando por você",
+      "preheader": "Ela leva menos tempo para começar do que você imagina.",
+      "bodyMarkdown": "Ei, {{primeiro_nome}}...\n\nPassamos aqui porque percebemos uma coisa:\n\n🎯 **Sua primeira missão na ST1 Academy ainda está esperando por você.**\n\nO ponto de partida é:\n\n**{{aula_inicial}}**\n\nNessa etapa, você vai aprender:\n\n💡 {{objetivo_pratico}}\n\nNão pense em “terminar uma trilha inteira”.\n\nPense apenas em:\n\n**abrir a primeira aula.**\n\nO próximo passo aparece depois.\n\n👇 Sua missão começa aqui.",
+      "ctaLabel": "🎯 INICIAR PRIMEIRA MISSÃO",
+      "ctaTarget": "first_lesson",
+      "variants": {},
+      "variables": [
+        "aula_inicial",
+        "objetivo_pratico",
+        "primeiro_nome"
+      ]
+    },
+    {
+      "number": 3,
+      "key": "lesson_resume",
+      "internalTitle": "Continuar aula",
+      "subject": "⏯️ Você parou aqui, {{primeiro_nome}}",
+      "preheader": "Seu progresso continua salvo. Bora seguir?",
+      "bodyMarkdown": "Boa, {{primeiro_nome}}!\n\nVocê já começou **{{aula}}**.\n\nOu seja:\n\n✅ o primeiro passo já foi dado.\n\nAgora só falta continuar de onde parou.\n\nEssa etapa vai te ajudar a:\n\n💡 **{{objetivo_pratico}}**\n\nSeu progresso continua salvo e sua próxima evolução está a um clique.\n\n**Não recomece. Continue.**",
+      "ctaLabel": "▶️ CONTINUAR DE ONDE PAREI",
+      "ctaTarget": "current_lesson",
+      "variants": {},
+      "variables": [
+        "aula",
+        "objetivo_pratico",
+        "primeiro_nome"
+      ]
+    },
+    {
+      "number": 4,
+      "key": "half_track",
+      "internalTitle": "50% da trilha",
+      "subject": "⚡ CHECKPOINT: você chegou aos 50%",
+      "preheader": "Metade da missão concluída. Agora começa a segunda fase.",
+      "bodyMarkdown": "{{primeiro_nome}}, temos um checkpoint importante. 👀\n\n{{barra_progresso}} **{{progresso_percentual}}%**\n\nVocê já completou metade da trilha:\n\n🎓 **{{trilha}}**\n\nIsso significa que você já percorreu uma parte importante da sua jornada.\n\nSeu próximo desafio é:\n\n➡️ **{{proximo_conteudo}}**\n\nTema da próxima fase:\n\n💡 {{tema}}\n\n**Não perde o ritmo agora.**\n\nVocê já chegou até aqui.",
+      "ctaLabel": "⚡ IR PARA A PRÓXIMA FASE",
+      "ctaTarget": "next_step",
+      "variants": {},
+      "variables": [
+        "barra_progresso",
+        "primeiro_nome",
+        "progresso_percentual",
+        "proximo_conteudo",
+        "tema",
+        "trilha"
+      ]
+    },
+    {
+      "number": 5,
+      "key": "last_mile_track",
+      "internalTitle": "80% da trilha",
+      "subject": "🏁 80%. Agora não vale abandonar a missão.",
+      "preheader": "A linha de chegada já apareceu no mapa.",
+      "bodyMarkdown": "{{primeiro_nome}}...\n\nOlha isso:\n\n{{barra_progresso}} **{{progresso_percentual}}%**\n\nVocê entrou oficialmente na **reta final de {{trilha}}**. 🏁\n\nSua próxima etapa:\n\n🎯 **{{proxima_etapa}}**\n\nVocê já fez a parte mais difícil:\n\n**chegar até aqui.**\n\nAgora é hora de fechar essa missão e colocar mais uma conquista no seu histórico.\n\nFalta pouco.\n\nMuito pouco.",
+      "ctaLabel": "🏁 FINALIZAR ESSA MISSÃO",
+      "ctaTarget": "next_step",
+      "variants": {},
+      "variables": [
+        "barra_progresso",
+        "primeiro_nome",
+        "progresso_percentual",
+        "proxima_etapa",
+        "trilha"
+      ]
+    },
+    {
+      "number": 6,
+      "key": "module_complete",
+      "internalTitle": "Módulo concluído",
+      "subject": "🏆 CONQUISTA DESBLOQUEADA: {{modulo}}",
+      "preheader": "+1 módulo concluído na sua jornada.",
+      "bodyMarkdown": "🏆 **CONQUISTA DESBLOQUEADA!**\n\n{{primeiro_nome}}, você concluiu:\n\n**{{modulo}}**\n\nMais uma etapa finalizada.  \nMais conhecimento acumulado.  \nMais repertório para colocar em campo.\n\nMas tem uma pergunta importante:\n\n**qual aprendizado desse módulo você consegue aplicar ainda esta semana?**\n\nConhecimento bom é conhecimento colocado em prática. ⚡\n\nSua jornada continua.",
+      "ctaLabel": "🚀 VER MEU PRÓXIMO DESAFIO",
+      "ctaTarget": "track",
+      "variants": {
+        "next_module_available": {
+          "replaceEnding": "O próximo módulo, **{{proximo_modulo}}**, já está disponível para você.",
+          "ctaLabel": "🔓 COMEÇAR PRÓXIMO MÓDULO",
+          "ctaTarget": "next_module"
+        }
+      },
+      "variables": [
+        "modulo",
+        "primeiro_nome"
+      ]
+    },
+    {
+      "number": 7,
+      "key": "track_complete",
+      "internalTitle": "Trilha concluída",
+      "subject": "🏆 MISSÃO CONCLUÍDA: {{trilha}}",
+      "preheader": "Você chegou até o final. E isso merece reconhecimento.",
+      "bodyMarkdown": "🏆 **MISSÃO CONCLUÍDA!**\n\n{{primeiro_nome}}, você terminou:\n\n🎓 **{{trilha}}**\n\nDo primeiro conteúdo até a última etapa:\n\n**feito.**\n\nEssa conquista representa mais do que marcar uma trilha como concluída.\n\nRepresenta conhecimento que agora faz parte do seu arsenal profissional.\n\n✅ Trilhas concluídas aumentam.  \n🧠 Seu repertório aumenta.  \n🚀 Seu próximo nível também.\n\nParabéns pela conquista.\n\n**Agora fica a pergunta: qual será a próxima?**",
+      "ctaLabel": "🏆 VER MINHA CONQUISTA",
+      "ctaTarget": "track_completion",
+      "variants": {
+        "certificate_already_issued": {
+          "appendBody": "Seu certificado já está disponível. Acesse para visualizar e guardar o registro dessa conquista.",
+          "ctaLabel": "🎓 ACESSAR MEU CERTIFICADO",
+          "ctaTarget": "certificate",
+          "suppressAutomation": "certificate_available"
+        }
+      },
+      "variables": [
+        "primeiro_nome",
+        "trilha"
+      ]
+    },
+    {
+      "number": 8,
+      "key": "certificate_available",
+      "internalTitle": "Certificado disponível",
+      "subject": "🎓 Seu certificado acaba de ser desbloqueado",
+      "preheader": "{{trilha}} agora também está registrada no seu histórico.",
+      "bodyMarkdown": "Tem conquista nova no seu perfil, {{primeiro_nome}}. 🎓\n\nVocê concluiu:\n\n**{{trilha}}**\n\nE agora seu certificado está oficialmente disponível.\n\nÉ o registro de uma missão que você começou, percorreu e concluiu.\n\nPode comemorar.\n\n**Você conquistou.**\n\n👇 Seu certificado está aqui.",
+      "ctaLabel": "🎓 ACESSAR MEU CERTIFICADO",
+      "ctaTarget": "certificate",
+      "variants": {},
+      "variables": [
+        "primeiro_nome",
+        "trilha"
+      ]
+    },
+    {
+      "number": 9,
+      "key": "module_unlocked",
+      "internalTitle": "Novo módulo",
+      "subject": "🔓 NOVO CONTEÚDO DESBLOQUEADO",
+      "preheader": "{{modulo}} acaba de entrar na sua jornada.",
+      "bodyMarkdown": "🔓 **DESBLOQUEADO!**\n\nTem conteúdo novo disponível para você na ST1 Academy:\n\n🎯 **{{modulo}}**\n\nDentro dele, você vai descobrir como:\n\n💡 **{{objetivo_pratico}}**\n\nEsse módulo faz parte da trilha:\n\n**{{trilha}}**\n\nEle já está liberado.\n\nA única coisa que falta agora é você entrar. 👀",
+      "ctaLabel": "🔓 EXPLORAR NOVO MÓDULO",
+      "ctaTarget": "module",
+      "variants": {},
+      "variables": [
+        "modulo",
+        "objetivo_pratico",
+        "trilha"
+      ]
+    },
+    {
+      "number": 10,
+      "key": "content_update",
+      "internalTitle": "Conteúdo atualizado",
+      "subject": "⚠️ UPDATE NA ACADEMY: {{conteudo}}",
+      "preheader": "Tem informação nova que você precisa conhecer.",
+      "bodyMarkdown": "⚡ **UPDATE IMPORTANTE**\n\nO conteúdo **{{conteudo}}** recebeu uma atualização na ST1 Academy.\n\nO que mudou?\n\n🔄 **{{resumo_da_mudanca}}**\n\nE atenção:\n\nessa atualização impacta diretamente:\n\n🎯 **{{situacao_de_uso}}**\n\nSe esse assunto faz parte da sua rotina, vale conferir antes da próxima execução.\n\n**Informação atualizada evita execução desatualizada.**",
+      "ctaLabel": "⚡ VER O QUE MUDOU",
+      "ctaTarget": "updated_content",
+      "variants": {},
+      "variables": [
+        "conteudo",
+        "resumo_da_mudanca",
+        "situacao_de_uso"
+      ]
+    },
+    {
+      "number": 11,
+      "key": "weekly_mission",
+      "internalTitle": "Missão da semana",
+      "subject": "🎯 Sua missão desta semana chegou",
+      "preheader": "Um novo aprendizado. Uma nova habilidade para colocar em campo.",
+      "bodyMarkdown": "Nova semana.  \nNova missão. ⚡\n\n{{primeiro_nome}}, seu próximo desafio na ST1 Academy é:\n\n🎯 **{{proximo_conteudo}}**\n\nNessa etapa, você vai aprender:\n\n💡 {{objetivo_pratico}}\n\nMas queremos propor algo diferente.\n\nEnquanto estiver estudando, pense:\n\n**“Onde eu consigo usar isso na prática?”**\n\nPorque assistir conteúdo é só uma parte da jornada.\n\n**Evolução acontece quando o conhecimento sai da tela e entra na rotina.**",
+      "ctaLabel": "🚀 ACEITAR MISSÃO DA SEMANA",
+      "ctaTarget": "next_step",
+      "variants": {},
+      "variables": [
+        "objetivo_pratico",
+        "primeiro_nome",
+        "proximo_conteudo"
+      ]
+    },
+    {
+      "number": 12,
+      "key": "practical_challenge",
+      "internalTitle": "Desafio prático",
+      "subject": "⚔️ DESAFIO ACEITO? Hora de testar o que você aprendeu.",
+      "preheader": "O conhecimento agora vai para o campo.",
+      "bodyMarkdown": "Você estudou.\n\nAgora vamos descobrir se consegue colocar em prática. 👀\n\n⚔️ **DESAFIO ST1 ACADEMY**\n\nSeu desafio é:\n\n**{{desafio_pratico}}**\n\nVocê aprendeu esse conceito em:\n\n📚 {{conteudo_base}}\n\nAgora teste.\n\nObserve.\n\nAjuste.\n\nE veja o que acontece quando o conhecimento deixa de ser teoria.\n\n**Porque evolução de verdade acontece no campo.**",
+      "ctaLabel": "⚔️ REVISAR E PARTIR PARA O DESAFIO",
+      "ctaTarget": "base_content",
+      "variants": {},
+      "variables": [
+        "conteudo_base",
+        "desafio_pratico"
+      ]
+    },
+    {
+      "number": 13,
+      "key": "inactive_7d",
+      "internalTitle": "Retomada após sete dias",
+      "subject": "👀 {{primeiro_nome}}... sua missão ainda está aberta",
+      "preheader": "Seu progresso está salvo. É só voltar.",
+      "bodyMarkdown": "Ei, {{primeiro_nome}}.\n\nSeu lugar continua exatamente onde você deixou. 😉\n\nA trilha:\n\n**{{trilha}}**\n\nainda tem uma próxima etapa esperando por você:\n\n🎯 **{{proximo_conteudo}}**\n\nE a melhor parte?\n\n**Você não precisa começar tudo de novo.**\n\nSeu progresso continua salvo.\n\nÉ só voltar para o jogo.",
+      "ctaLabel": "▶️ RETOMAR MINHA JORNADA",
+      "ctaTarget": "next_step",
+      "variants": {},
+      "variables": [
+        "primeiro_nome",
+        "proximo_conteudo",
+        "trilha"
+      ]
+    },
+    {
+      "number": 14,
+      "key": "inactive_14d",
+      "internalTitle": "Ajuda após quatorze dias",
+      "subject": "🆘 Travou em alguma fase da Academy?",
+      "preheader": "Se alguma coisa te impediu de avançar, queremos saber.",
+      "bodyMarkdown": "{{primeiro_nome}}, percebemos que sua jornada ficou pausada.\n\nE tudo bem.\n\nMas queremos entender uma coisa:\n\n**alguma coisa te travou?**\n\nPode ser:\n\n🔐 dificuldade de acesso  \n🧭 não saber qual é o próximo passo  \n📚 dúvida sobre algum conteúdo  \n⏱️ falta de tempo  \n🤔 ou qualquer outra barreira\n\nSe existir alguma trava, não precisa resolver sozinho.\n\nConta pra gente.\n\n**Nossa missão também é ajudar você a continuar.**",
+      "ctaLabel": "🆘 PRECISO DE AJUDA",
+      "ctaTarget": "support",
+      "variants": {
+        "support_not_configured": {
+          "bodyMarkdown": "{{primeiro_nome}}, sua jornada na Academy continua disponível.\n\nSua próxima etapa é **{{proximo_conteudo}}**.\n\nÉ só abrir e retomar sua trilha quando puder.",
+          "ctaLabel": "▶️ RETOMAR MINHA TRILHA",
+          "ctaTarget": "next_step"
+        }
+      },
+      "variables": [
+        "primeiro_nome"
+      ]
+    },
+    {
+      "number": 15,
+      "key": "inactive_30d",
+      "internalTitle": "Retomada após trinta dias",
+      "subject": "🔄 Que tal um comeback?",
+      "preheader": "Sua jornada não acabou. Ela só ficou pausada.",
+      "bodyMarkdown": "Já faz um tempo desde sua última missão por aqui, {{primeiro_nome}}.\n\nMas temos uma boa notícia:\n\n**seu progresso não desapareceu.**\n\nA próxima etapa continua esperando:\n\n🎯 **{{proximo_conteudo}}**\n\nda trilha:\n\n🎓 **{{trilha}}**\n\nNão precisa compensar o tempo parado.\n\nNão precisa correr.\n\n**Só precisa voltar.**\n\nUm conteúdo de cada vez.\n\nUma missão de cada vez.",
+      "ctaLabel": "🔄 FAZER MEU COMEBACK",
+      "ctaTarget": "next_step",
+      "variants": {},
+      "variables": [
+        "primeiro_nome",
+        "proximo_conteudo",
+        "trilha"
+      ]
+    },
+    {
+      "number": 16,
+      "key": "deadline_3d",
+      "internalTitle": "Prazo próximo",
+      "subject": "⏳ CONTAGEM REGRESSIVA: {{trilha}}",
+      "preheader": "Você está em {{progresso_percentual}}%. Falta pouco para concluir.",
+      "bodyMarkdown": "⏳ **CONTAGEM REGRESSIVA ATIVADA**\n\n{{primeiro_nome}}, a trilha:\n\n**{{trilha}}**\n\ntem conclusão prevista até:\n\n📅 **{{data_limite}}**\n\nSeu progresso atual:\n\n**{{progresso_percentual}}%**\n\nPróxima missão:\n\n🎯 **{{proxima_etapa}}**\n\nSem pânico.\n\nSem maratona de última hora.\n\nA estratégia é simples:\n\n**entre, avance uma etapa e continue até fechar a missão.**",
+      "ctaLabel": "⏳ AVANÇAR AGORA",
+      "ctaTarget": "next_step",
+      "variants": {},
+      "variables": [
+        "data_limite",
+        "primeiro_nome",
+        "progresso_percentual",
+        "proxima_etapa",
+        "trilha"
+      ]
+    },
+    {
+      "number": 17,
+      "key": "assessment_pending",
+      "internalTitle": "Avaliação pendente",
+      "subject": "🎯 BOSS FINAL liberado: sua avaliação está disponível",
+      "preheader": "Você já passou pelo conteúdo. Agora é hora de testar seu conhecimento.",
+      "bodyMarkdown": "Você chegou à última etapa, {{primeiro_nome}}.\n\nOs conteúdos foram concluídos.\n\nAgora chegou o:\n\n🎯 **DESAFIO FINAL**\n\nSua avaliação de:\n\n**{{trilha}}**\n\njá está disponível.\n\nÉ o momento de revisar o que aprendeu, colocar o conhecimento à prova e fechar essa missão.\n\nPreparado?",
+      "ctaLabel": "🎯 INICIAR DESAFIO FINAL",
+      "ctaTarget": "assessment",
+      "variants": {},
+      "variables": [
+        "primeiro_nome",
+        "trilha"
+      ]
+    },
+    {
+      "number": 18,
+      "key": "three_consecutive_weeks",
+      "internalTitle": "Constância: três semanas",
+      "subject": "🔥 STREAK ATIVADA: 3 semanas evoluindo",
+      "preheader": "Consistência também é uma conquista.",
+      "bodyMarkdown": "🔥 **STREAK ATIVADA!**\n\n{{primeiro_nome}}, você estudou na ST1 Academy por:\n\n**3 semanas consecutivas.**\n\nTalvez pareça apenas um número.\n\nMas existe algo importante aí:\n\n**consistência.**\n\nNão é sobre assistir tudo em um único dia.\n\nÉ sobre continuar aparecendo.\n\nAprendendo.\n\nEvoluindo.\n\nSua sequência está viva. 🔥\n\nSeu próximo desafio:\n\n🎯 **{{proximo_conteudo}}**",
+      "ctaLabel": "🔥 MANTER MINHA SEQUÊNCIA",
+      "ctaTarget": "next_step",
+      "variants": {},
+      "variables": [
+        "primeiro_nome",
+        "proximo_conteudo"
+      ]
+    },
+    {
+      "number": 19,
+      "key": "monthly_wrapped",
+      "internalTitle": "Academy Wrapped",
+      "subject": "📊 Seu Academy Wrapped de {{mes}} chegou",
+      "preheader": "Veja tudo que você desbloqueou em {{mes}}.",
+      "bodyMarkdown": "🎧 Não é o Spotify.\n\nMas também temos seu **Wrapped**. 😎\n\nOlha o que aconteceu na sua jornada durante **{{mes}}**:\n\n📚 **Aulas concluídas:** {{aulas_concluidas_mes}}  \n🏆 **Módulos concluídos:** {{modulos_concluidos_mes}}  \n🎓 **Trilhas concluídas:** {{trilhas_concluidas_mes}}\n\nTudo isso virou conhecimento acumulado na sua jornada.\n\nE a próxima missão já está no radar:\n\n🎯 **{{proximo_conteudo}}**\n\nNovo mês.\n\nNova chance de subir mais um nível.",
+      "ctaLabel": "🚀 COMEÇAR O PRÓXIMO NÍVEL",
+      "ctaTarget": "next_step",
+      "variants": {
+        "all_tracks_finished": {
+          "replaceEnding": "Você pode revisitar suas conquistas e escolher o próximo conteúdo assim que ele estiver disponível.",
+          "ctaLabel": "🏆 VER MINHAS CONQUISTAS",
+          "ctaTarget": "conquests"
+        }
+      },
+      "variables": [
+        "aulas_concluidas_mes",
+        "mes",
+        "modulos_concluidos_mes",
+        "proximo_conteudo",
+        "trilhas_concluidas_mes"
+      ]
+    },
+    {
+      "number": 20,
+      "key": "post_track_feedback",
+      "internalTitle": "Feedback após conclusão",
+      "subject": "🧠 Agora é você que avalia a Academy",
+      "preheader": "Terminou a trilha? Então chegou nossa vez de ouvir.",
+      "bodyMarkdown": "Durante a trilha **{{trilha}}**, nós avaliamos sua evolução.\n\nAgora vamos inverter o jogo. 🔄\n\n**Você avalia a gente.**\n\nQueremos saber:\n\n💡 O que realmente ajudou?  \n🤔 O que ficou confuso?  \n🚀 O que faria essa experiência ser ainda melhor?\n\nNão queremos uma resposta bonita.\n\nQueremos uma resposta útil.\n\nPorque cada feedback ajuda a construir a próxima versão da ST1 Academy.",
+      "ctaLabel": "🧠 AVALIAR MINHA EXPERIÊNCIA",
+      "ctaTarget": "feedback_form",
+      "variants": {},
+      "variables": [
+        "trilha"
+      ]
+    }
+  ]
+}

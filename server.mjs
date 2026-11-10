@@ -15,6 +15,7 @@ import {applyStagedProduction} from './lib/production-transfer.mjs';
 import {withLearningReadBatch} from './lib/learning-read-batch.mjs';
 import {createInvitationMailer} from './lib/invitation-mail.mjs';
 import {createCampaignService} from './lib/campaigns.mjs';
+import {createEmailAutomationService} from './lib/email-automation-service.mjs';
 import {createWhatsAppCampaignService} from './lib/whatsapp-campaigns.mjs';
 import {createIntegrationService} from './lib/integrations.mjs';
 import {createOnboardingService} from './lib/onboarding.mjs';
@@ -27,6 +28,7 @@ export async function createApp(options={}) {
   const invitationMailer=options.invitationMailer|| (async invitation=>{const mailer=createInvitationMailer(mailEnv);if(!mailer)throw new Error('SMTP indisponível.');return mailer(invitation);});
   const onboarding=createOnboardingService(db,bank);
   const campaigns=createCampaignService(db,{env:mailEnv,baseURL});
+  const emailAutomations=createEmailAutomationService(db,{env:mailEnv,baseURL,mailerTransport:options.emailAutomationTransport});
   const whatsappCampaigns=createWhatsAppCampaignService(db,{env:whatsappEnv,sendTemplate:options.whatsappSender});
   const deliverInvitation=async invitation=>{
     if(!options.invitationMailer&&!createInvitationMailer(mailEnv))return {...invitation,delivery:'not_configured'};
@@ -59,6 +61,8 @@ export async function createApp(options={}) {
   app.get('/api/campaigns/click/:token',(req,res)=>{const target=campaigns.mark('click',req.params.token);if(!target)return res.sendStatus(404);res.redirect(302,new URL(target,baseURL).href);});
   app.get('/api/campaigns/preferences/:token',(req,res)=>{const person=campaigns.preference(req.params.token);if(!person)return res.sendStatus(404);res.type('html').send(`<main style="font:16px Arial,sans-serif;max-width:560px;margin:80px auto;padding:24px"><h1>E-mails de incentivo</h1><p>Você pode deixar de receber as campanhas da ST1 Academy.</p><form method="post"><button style="background:#f77716;color:white;border:0;padding:14px 20px;cursor:pointer">Parar de receber</button></form></main>`);});
   app.post('/api/campaigns/preferences/:token',express.urlencoded({extended:false}),(req,res)=>{if(!campaigns.optout(req.params.token))return res.sendStatus(404);res.type('html').send('<main style="font:16px Arial,sans-serif;max-width:560px;margin:80px auto;padding:24px"><h1>Preferência salva</h1><p>Você não receberá novas campanhas de incentivo da ST1 Academy.</p></main>');});
+  app.get('/api/email-automations/preferences/:token',(req,res)=>{res.type('html').send(`<main style="font:16px Arial,sans-serif;max-width:560px;margin:80px auto;padding:24px"><h1>Preferências de e-mail</h1><form method="post"><button>Parar de receber e-mails de incentivo</button></form></main>`);});
+  app.post('/api/email-automations/preferences/:token',express.urlencoded({extended:false}),(req,res)=>{if(!emailAutomations.optout(req.params.token))return res.sendStatus(404);res.type('html').send('<main style="font:16px Arial,sans-serif;max-width:560px;margin:80px auto;padding:24px"><h1>Preferência salva</h1><p>Você não receberá novos e-mails de incentivo da ST1 Academy.</p></main>');});
   app.use('/api',(req,res,next)=>{
     if(['POST','PUT','PATCH','DELETE'].includes(req.method)&&req.headers.origin!==baseURL)return res.status(403).json({message:'Solicitação de outra origem não permitida.'});
     next();
@@ -327,6 +331,9 @@ export async function createApp(options={}) {
     try{res.json(await deliverInvitation(ctx.renewInvitation(req.params.id,req.member.user_id)));}catch(error){res.status(400).json({message:error.message});}
   });
   app.get('/api/admin/campaigns',member,admin,(_,res)=>res.json(campaigns.list()));
+  app.get('/api/admin/campaigns/automations',member,admin,(_,res)=>res.json(emailAutomations.list()));
+  app.post('/api/admin/campaigns/automations/welcome/enable',member,admin,(_,res)=>{try{res.json(emailAutomations.activateWelcome());}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/campaigns/automations/:key/pause',member,admin,(req,res)=>{try{res.json(emailAutomations.pause(req.params.key));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns',member,admin,(req,res)=>{try{res.status(201).json(campaigns.create(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/:id/schedule',member,admin,(req,res)=>{try{res.json(campaigns.schedule(req.params.id,req.body.scheduledAt));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/:id/cancel-schedule',member,admin,(req,res)=>{try{res.json(campaigns.cancelSchedule(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
@@ -344,6 +351,7 @@ export async function createApp(options={}) {
   app.post('/api/admin/whatsapp-campaigns/:id/cancel-schedule',member,admin,(req,res)=>{try{res.json(whatsappCampaigns.cancelSchedule(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/whatsapp-campaigns/:id/send',member,admin,async(req,res)=>{try{res.json(await whatsappCampaigns.send(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.locals.runDueCampaigns=campaigns.runDue;
+  app.locals.runEmailAutomations=emailAutomations.tick;
   app.locals.runDueWhatsAppCampaigns=whatsappCampaigns.runDue;
   app.patch('/api/admin/members/:id',member,admin,(req,res)=>{
     try{res.json(access.updateMember(req.member.user_id,req.params.id,req.body));}catch(error){res.status(400).json({message:error.message});}
@@ -385,10 +393,11 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
   const server=app.listen(runtime.port,runtime.host,()=>{
     ctx.googleCalendar.start();if(runtime.production)backups.start();
     app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));
+    app.locals.runEmailAutomations().catch(error=>console.error('Falha ao verificar automações de e-mail:',error.message));
     app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));
     console.log(`ST1 Academy disponível em ${ctx.baseURL}`);
   });
-  const campaignTimer=setInterval(()=>{app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));},30000);campaignTimer.unref();
+  const campaignTimer=setInterval(()=>{app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));app.locals.runEmailAutomations().catch(error=>console.error('Falha ao verificar automações de e-mail:',error.message));app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));},30000);campaignTimer.unref();
   let stopping=false;
   const stop=()=>{
     if(stopping)return;stopping=true;app.locals.shuttingDown=true;clearInterval(campaignTimer);ctx.googleCalendar.stop();backups.stop();
