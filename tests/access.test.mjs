@@ -37,7 +37,9 @@ test('Migração preserva contas e convites anteriores e acrescenta o perfil Sup
 test('Acessos são aplicados no servidor e Supervisor faz provas próprias enquanto acompanha somente sua equipe',async t=>{
   const directory=await mkdtemp(resolve(tmpdir(),'st1-academia-access-test-'));
   const baseURL='http://localhost:4189';
-  let {app,ctx}=await createApp({dataDir:directory,baseURL,testMode:true,includeLearningFlows:false});
+  const sentInvitations=[];
+  const invitationMailer=async invitation=>{sentInvitations.push(invitation);};
+  let {app,ctx}=await createApp({dataDir:directory,baseURL,testMode:true,includeLearningFlows:false,invitationMailer});
   let server=await new Promise(resolve=>{const instance=app.listen(4189,'127.0.0.1',()=>resolve(instance));});
   const clients={admin:{cookie:''},supervisor:{cookie:''},seller:{cookie:''},other:{cookie:''},newAdmin:{cookie:''},newSupervisor:{cookie:''}};
   const request=async(client,path,{method='GET',body,headers={}}={})=>{
@@ -60,6 +62,16 @@ test('Acessos são aplicados no servidor e Supervisor faz provas próprias enqua
     await enroll(clients.supervisor,{name:'Supervisor de teste',email:'access-supervisor@example.test',...supervisorAccess});
     await enroll(clients.seller,{name:'Vendedor da equipe',email:'access-seller@example.test',...sellerAccess,supervisorIds:[clients.supervisor.id]});
     await enroll(clients.other,{name:'Vendedor de outra equipe',email:'access-other@example.test',role:'seller'});
+    await t.test('convite envia e-mail e reenvio troca o link anterior',async()=>{
+      const created=await request(clients.admin,'/api/admin/invitations',{method:'POST',body:{name:'Pessoa convidada',email:'access-mail@example.test',role:'seller'}});
+      assert.equal(created.status,201);assert.equal(created.data.delivery,'sent');assert.equal(sentInvitations.at(-1).email,'access-mail@example.test');
+      assert.equal((await request(clients.seller,`/api/admin/invitations/${created.data.id}/resend`,{method:'POST',body:{}})).status,403);
+      const resent=await request(clients.admin,`/api/admin/invitations/${created.data.id}/resend`,{method:'POST',body:{}});
+      assert.equal(resent.status,200);assert.equal(resent.data.delivery,'sent');assert.notEqual(resent.data.url,created.data.url);
+      assert.equal(sentInvitations.at(-1).url,resent.data.url);
+      assert.equal((await request(null,`/api/invitation/${new URL(created.data.url).searchParams.get('convite')}`)).status,404);
+      assert.equal((await request(null,`/api/invitation/${new URL(resent.data.url).searchParams.get('convite')}`)).status,200);
+    });
     sellerAccess.supervisorIds=[clients.supervisor.id];supervisorAccess.sellerIds=[clients.seller.id];
     await t.test('Vendedor e Supervisor não criam convites nem alteram os próprios privilégios',async()=>{
       for(const client of [clients.seller,clients.supervisor]){
@@ -148,7 +160,7 @@ test('Acessos são aplicados no servidor e Supervisor faz provas próprias enqua
       assert.ok(ctx.db.prepare('SELECT count(*) n FROM academy_access_audit').get().n>10);
     });
     await new Promise(resolve=>server.close(resolve));ctx.db.close();
-    const restarted=await createApp({dataDir:directory,baseURL,testMode:true,includeLearningFlows:false});ctx=restarted.ctx;server=await new Promise(resolve=>{const instance=restarted.app.listen(4189,'127.0.0.1',()=>resolve(instance));});
+    const restarted=await createApp({dataDir:directory,baseURL,testMode:true,includeLearningFlows:false,invitationMailer});ctx=restarted.ctx;server=await new Promise(resolve=>{const instance=restarted.app.listen(4189,'127.0.0.1',()=>resolve(instance));});
     await t.test('perfis, permissões e equipes persistem depois de reiniciar',async()=>{
       assert.equal((await request(clients.supervisor,'/api/me')).data.role,'supervisor');
       assert.equal((await request(clients.supervisor,'/api/team/report')).data.users[0].id,clients.seller.id);

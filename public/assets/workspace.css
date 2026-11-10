@@ -114,6 +114,7 @@ body:has(.workspace-drawer[open]){overflow:hidden}
 .access-person-v2 .access-person-scope strong{font-size:13px}
 .access-person-v2 .access-person-scope span,.access-person-v2 .access-person-scope small{font-size:12px;line-height:1.7;overflow-wrap:anywhere}
 .access-person-v2>.button{font-size:12px;min-height:46px;grid-column:auto}
+.access-resend-invite{display:block;margin-top:10px;padding:0;border:0;background:none;color:#9c4b14;font:inherit;font-size:12px;text-decoration:underline;text-align:left;cursor:pointer}.access-resend-invite:disabled{opacity:.55;cursor:wait}
 .access-own{display:inline-flex;font-size:12px;color:#a05825;background:#fff1e3;border:1px solid #f1d5bc;padding:1px 6px;border-radius:5px;margin-left:5px;vertical-align:middle}
 .access-empty-v2{padding:42px 24px;background:#faf8f5;border:1px dashed #d9d0df;border-radius:10px;text-align:center}
 .access-empty-v2>.icon{width:30px;height:30px;color:#b46d39}
