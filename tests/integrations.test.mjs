@@ -12,5 +12,9 @@ test('integrações cifram segredos, preservam chaves vazias e atualizam o ambie
     assert.doesNotMatch(db.prepare("SELECT value_cipher FROM academy_integration_setting WHERE name='ACADEMY_SMTP_PASSWORD'").get().value_cipher,/senha-de-teste/);
     service.save('admin','email',{ACADEMY_SMTP_PASSWORD:''});assert.equal(service.effective().ACADEMY_SMTP_PASSWORD,'senha-de-teste');
     const hook=service.addWebhook('admin',{name:'Meu endpoint',url:'https://example.com/webhook',secret:'segredo-do-webhook-123',events:['email.campaign.completed']});assert.equal(hook.enabled,false);assert.equal(service.list().webhooks.length,1);service.removeWebhook(hook.id);assert.equal(service.list().webhooks.length,0);
+    const item=service.addCustom('admin',{name:'ST1 Sales',category:'api',endpoint:'https://example.com/api',credential:'chave-de-teste',notes:'Receber aprovações de trilhas'});
+    assert.equal(item.status,'draft');assert.equal(item.credentialConfigured,true);assert.equal(service.list().custom[0].name,'ST1 Sales');assert.equal('endpoint' in service.list().custom[0],false);
+    assert.doesNotMatch(db.prepare('SELECT credential_cipher FROM academy_custom_integration WHERE id=?').get(item.id).credential_cipher,/chave-de-teste/);
+    service.removeCustom(item.id);assert.equal(service.list().custom.length,0);
   }finally{db.close();}
 });
