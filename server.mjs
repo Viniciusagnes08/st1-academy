@@ -16,17 +16,20 @@ import {withLearningReadBatch} from './lib/learning-read-batch.mjs';
 import {createInvitationMailer} from './lib/invitation-mail.mjs';
 import {createCampaignService} from './lib/campaigns.mjs';
 import {createWhatsAppCampaignService} from './lib/whatsapp-campaigns.mjs';
+import {createIntegrationService} from './lib/integrations.mjs';
 import {createOnboardingService} from './lib/onboarding.mjs';
 
 export async function createApp(options={}) {
   const ctx=await createContext(options);
   const {db,auth,bank,baseURL,testMode,access}=ctx;
-  const invitationMailer=options.invitationMailer||createInvitationMailer(options.mailEnv||process.env);
+  const integrations=createIntegrationService(db,{secret:ctx.integrationKey,env:process.env});
+  const mailEnv=options.mailEnv||integrations.effective(),whatsappEnv=options.whatsappEnv||integrations.effective();
+  const invitationMailer=options.invitationMailer|| (async invitation=>{const mailer=createInvitationMailer(mailEnv);if(!mailer)throw new Error('SMTP indisponível.');return mailer(invitation);});
   const onboarding=createOnboardingService(db,bank);
-  const campaigns=createCampaignService(db,{env:options.mailEnv||process.env,baseURL});
-  const whatsappCampaigns=createWhatsAppCampaignService(db,{env:options.whatsappEnv||process.env,sendTemplate:options.whatsappSender});
+  const campaigns=createCampaignService(db,{env:mailEnv,baseURL});
+  const whatsappCampaigns=createWhatsAppCampaignService(db,{env:whatsappEnv,sendTemplate:options.whatsappSender});
   const deliverInvitation=async invitation=>{
-    if(!invitationMailer)return {...invitation,delivery:'not_configured'};
+    if(!options.invitationMailer&&!createInvitationMailer(mailEnv))return {...invitation,delivery:'not_configured'};
     try{await invitationMailer(invitation);return {...invitation,delivery:'sent'};}
     catch(error){console.error('Falha no envio de convite da Academy:',error.code||error.message);return {...invitation,delivery:'failed'};}
   };
@@ -329,6 +332,10 @@ export async function createApp(options={}) {
   app.post('/api/admin/campaigns/:id/cancel-schedule',member,admin,(req,res)=>{try{res.json(campaigns.cancelSchedule(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/:id/send',member,admin,async(req,res)=>{try{res.json(await campaigns.send(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.get('/api/admin/whatsapp-campaigns',member,admin,(_,res)=>res.json(whatsappCampaigns.list()));
+  app.get('/api/admin/integrations',member,admin,(_,res)=>res.json(integrations.list()));
+  app.put('/api/admin/integrations/:type',member,admin,(req,res)=>{try{res.json(integrations.save(req.member.user_id,req.params.type,req.body));}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/integrations/webhooks',member,admin,(req,res)=>{try{res.status(201).json(integrations.addWebhook(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
+  app.delete('/api/admin/integrations/webhooks/:id',member,admin,(req,res)=>{try{integrations.removeWebhook(req.params.id);res.sendStatus(204);}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/whatsapp-campaigns',member,admin,(req,res)=>{try{res.status(201).json(whatsappCampaigns.create(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/whatsapp-campaigns/consent/:userId',member,admin,(req,res)=>{try{res.json(whatsappCampaigns.consent(req.member.user_id,req.params.userId,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/whatsapp-campaigns/:id/schedule',member,admin,(req,res)=>{try{res.json(whatsappCampaigns.schedule(req.params.id,req.body.scheduledAt));}catch(error){res.status(400).json({message:error.message});}});
