@@ -56,13 +56,13 @@
     const avatarElement=document.querySelector('#profile-avatar');avatarElement.innerHTML=state.user?.avatarUrl?'<img src="'+esc(state.user.avatarUrl)+'" alt="">':esc((state.user?.name||'ST1').split(' ').filter(Boolean).slice(0,2).map(word=>word[0]).join('').toUpperCase());
     document.querySelector('#admin-nav').hidden=!['admin','supervisor'].includes(role)||!hasAccess('team_results');
     document.querySelector('#admin-nav-label').textContent='Resultados';
-    document.querySelector('#management-nav').hidden=role!=='admin';document.querySelector('#access-nav').hidden=role!=='admin';document.querySelector('#campaign-nav').hidden=role!=='admin';document.querySelector('#whatsapp-campaign-nav').hidden=role!=='admin';
+    document.querySelector('#management-nav').hidden=role!=='admin';document.querySelector('#access-nav').hidden=role!=='admin';document.querySelector('#campaign-nav').hidden=role!=='admin';document.querySelector('#whatsapp-campaign-nav').hidden=role!=='admin';document.querySelector('#integrations-nav').hidden=role!=='admin';
     document.querySelector('#management-navigation').hidden=role!=='admin'&&(role!=='supervisor'||!hasAccess('team_results'));
     document.querySelector('#conquests-nav').hidden=!hasAccess('conquests');document.querySelector('#materials-nav').hidden=!hasAccess('materials');
     document.querySelector('#central-footer').hidden=!hasAccess('materials');const mapNav=document.querySelector('#knowledge-map-nav');if(mapNav)mapNav.hidden=!hasAccess('assessments')&&!hasAccess('materials');
     document.querySelector('#squad-nav').hidden=!hasAccess('community');document.querySelector('#ranking-nav').hidden=!hasAccess('community')||role==='admin'||role==='supervisor'&&hasAccess('team_results');document.querySelector('#community-navigation').hidden=!hasAccess('community');state.engagementPanel?.refreshBell();
     const page=(location.hash||'#inicio').slice(1).split('/')[0],active=['trilha','prova','resultado','percurso','desafios','desafio','pratica'].includes(page)?'trilhas':page==='material'?'conteudos':['publicar','squads-gestao','gamificacao','perfil-regras'].includes(page)?'cadastros':['agenda-gestao','agenda-programar','agenda-integracao','agenda-participacao'].includes(page)?'agenda':page==='pedidos-squad'?(hasAccess('community')?'squad':'gestao'):page;
-    document.querySelector('#page-context').textContent=({cadastros:'Cadastros',campanhas:'Campanhas de E-mail','campanhas-whatsapp':'Campanhas de WhatsApp',agenda:'Minha agenda','agenda-gestao':'Programação do time','agenda-programar':'Programar compromisso','agenda-participacao':'Participação do time','agenda-integracao':'Conexão Google',inicio:'Início',trilhas:'Minhas trilhas',dashboard:'Dashboard',conteudos:'Conteúdos',publicar:'Publicar conteúdo',material:'Material de estudo',percurso:'Meu percurso',desafios:'Provas relâmpago',desafio:'Meu desafio',pratica:'Prática e evolução',conhecimento:'Mapa de conhecimento',squad:'Meu squad',perfil:'Meu perfil',pessoas:'Conheça seu time','perfil-regras':'Liberações do perfil','pedidos-squad':'Pedidos de squad',notificacoes:'Notificações',gamificacao:'Gamificação','squads-gestao':'Gestão de squads',conquistas:'Minhas conquistas',gestao:'Resultados',acessos:'Acessos',trilha:'Minha trilha',prova:'Avaliação',resultado:'Resultado da avaliação'})[page]||'Início';
+    document.querySelector('#page-context').textContent=({cadastros:'Cadastros',campanhas:'Campanhas de E-mail','campanhas-whatsapp':'Campanhas de WhatsApp',integracoes:'Integrações',agenda:'Minha agenda','agenda-gestao':'Programação do time','agenda-programar':'Programar compromisso','agenda-participacao':'Participação do time','agenda-integracao':'Conexão Google',inicio:'Início',trilhas:'Minhas trilhas',dashboard:'Dashboard',conteudos:'Conteúdos',publicar:'Publicar conteúdo',material:'Material de estudo',percurso:'Meu percurso',desafios:'Provas relâmpago',desafio:'Meu desafio',pratica:'Prática e evolução',conhecimento:'Mapa de conhecimento',squad:'Meu squad',perfil:'Meu perfil',pessoas:'Conheça seu time','perfil-regras':'Liberações do perfil','pedidos-squad':'Pedidos de squad',notificacoes:'Notificações',gamificacao:'Gamificação','squads-gestao':'Gestão de squads',conquistas:'Minhas conquistas',gestao:'Resultados',acessos:'Acessos',trilha:'Minha trilha',prova:'Avaliação',resultado:'Resultado da avaliação'})[page]||'Início';
     document.querySelectorAll('[data-nav]').forEach(a=>{const selected=a.dataset.nav===(active==='pessoas'?'perfil':active);a.classList.toggle('active',selected);if(selected){a.setAttribute('aria-current','page');const drawer=a.closest('.sidebar-drawer');if(drawer)drawer.open=true;}else a.removeAttribute('aria-current');});
   }
   function home(onlyTracks=false){
@@ -129,6 +129,11 @@
     if(!state.whatsappCampaignPanel){const {createWhatsAppCampaignPanel}=await import('/assets/whatsapp-campaigns.js?v=20261110-whatsapp-campaigns');state.whatsappCampaignPanel=createWhatsAppCampaignPanel({api,esc,main,commitView,toast});}
     await state.whatsappCampaignPanel.render();
   }
+  async function integrationsPage(){
+    if(state.user?.role!=='admin')return restricted('Integrações são gerenciadas pelo Admin.','Esta área é exclusiva da gestão da ST1 Academy.',!state.user);
+    if(!state.integrationsPanel){const {createIntegrationsPanel}=await import('/assets/integrations.js?v=20261110-integrations');state.integrationsPanel=createIntegrationsPanel({api,esc,main,commitView,toast});}
+    await state.integrationsPanel.render();
+  }
   async function engagementPanel(){
     if(!state.engagementPanel){const {createEngagementPanel}=await import('/assets/progress-panel.js?v=2.6.2');state.engagementPanel??=createEngagementPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,hasAccess,toast});}
     return state.engagementPanel;
@@ -167,7 +172,7 @@
   async function render({refresh=true}={}){
     if(!state.catalog)return;
     if(state.onboardingPanel?.pending()){state.onboardingPanel.show();return;}
-    let route=location.hash||'#inicio';if(route==='#main'){history.replaceState({},'',state.lastRoute||'#inicio');main.focus({preventScroll:true});return;}if(route.startsWith('#materiais')){route=route.replace('#materiais','#conteudos');history.replaceState({},'',route);}if(/^#conteudos\/(novo|editar)(\/|$)/.test(route)){route=route.replace('#conteudos','#publicar');history.replaceState({},'',route);}if(!['inicio','trilhas','trilha','conquistas','gestao','acessos','campanhas','campanhas-whatsapp','conteudos','dashboard','material','publicar','prova','resultado','percurso','conhecimento','squad','pessoas','squads-gestao','gamificacao','desafios','desafio','pratica','notificacoes','perfil','perfil-regras','pedidos-squad','agenda','agenda-gestao','agenda-programar','agenda-participacao','agenda-integracao','cadastros'].includes(route.slice(1).split('/')[0])){route='#inicio';history.replaceState({},'',route);}const [page,id,contentId,pageNumber,subCategory]=route.slice(1).split('/');
+    let route=location.hash||'#inicio';if(route==='#main'){history.replaceState({},'',state.lastRoute||'#inicio');main.focus({preventScroll:true});return;}if(route.startsWith('#materiais')){route=route.replace('#materiais','#conteudos');history.replaceState({},'',route);}if(/^#conteudos\/(novo|editar)(\/|$)/.test(route)){route=route.replace('#conteudos','#publicar');history.replaceState({},'',route);}if(!['inicio','trilhas','trilha','conquistas','gestao','acessos','campanhas','campanhas-whatsapp','integracoes','conteudos','dashboard','material','publicar','prova','resultado','percurso','conhecimento','squad','pessoas','squads-gestao','gamificacao','desafios','desafio','pratica','notificacoes','perfil','perfil-regras','pedidos-squad','agenda','agenda-gestao','agenda-programar','agenda-participacao','agenda-integracao','cadastros'].includes(route.slice(1).split('/')[0])){route='#inicio';history.replaceState({},'',route);}const [page,id,contentId,pageNumber,subCategory]=route.slice(1).split('/');
     try{
       if(state.lastRoute.startsWith('#prova/')&&route!==state.lastRoute&&state.attempt?.status==='open'&&document.querySelector('.question-card')){if(!await saveProgress()){history.replaceState({},'',state.lastRoute);return;}}
       if(refresh)await refreshUser();
@@ -199,6 +204,7 @@
       else if(page==='acessos')await accessPage();
       else if(page==='campanhas')await campaignPage();
       else if(page==='campanhas-whatsapp')await whatsappCampaignPage();
+      else if(page==='integracoes')await integrationsPage();
       else if(page==='conteudos')await (await contentPanel()).library(id==='categoria'?contentId:pageNumber==='categoria'?subCategory:'all',id==='modulo'?contentId:'all');
       else if(page==='dashboard')await (await contentPanel()).dashboard();
       else if(page==='material')await (await contentPanel()).detail(id,contentId==='pagina'?Number(pageNumber):undefined);
