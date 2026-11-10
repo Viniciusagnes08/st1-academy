@@ -115,7 +115,7 @@
   }
   async function accessPage(){
     if(state.user?.role!=='admin')return restricted('Acessos são gerenciados pelo Admin.','Vendedores e Supervisores usam somente as áreas liberadas para suas contas.',!state.user);
-    if(!state.accessPanel){const {createAccessPanel}=await import('/assets/access.js?v=2.5.0');state.accessPanel=createAccessPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,refreshUser,toast});}
+    if(!state.accessPanel){const {createAccessPanel}=await import('/assets/access.js?v=20261110-welcome-mail');state.accessPanel=createAccessPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,refreshUser,toast});}
     await state.accessPanel.render();
   }
   async function engagementPanel(){

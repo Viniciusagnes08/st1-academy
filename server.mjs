@@ -13,10 +13,17 @@ import {createBackupService} from './lib/storage-backup.mjs';
 import {hostingConfig} from './lib/hosting.mjs';
 import {applyStagedProduction} from './lib/production-transfer.mjs';
 import {withLearningReadBatch} from './lib/learning-read-batch.mjs';
+import {createInvitationMailer} from './lib/invitation-mail.mjs';
 
 export async function createApp(options={}) {
   const ctx=await createContext(options);
   const {db,auth,bank,baseURL,testMode,access}=ctx;
+  const invitationMailer=options.invitationMailer||createInvitationMailer(options.mailEnv||process.env);
+  const deliverInvitation=async invitation=>{
+    if(!invitationMailer)return {...invitation,delivery:'not_configured'};
+    try{await invitationMailer(invitation);return {...invitation,delivery:'sent'};}
+    catch(error){console.error('Falha no envio de convite da Academy:',error.code||error.message);return {...invitation,delivery:'failed'};}
+  };
   const app=express();
   const appVersion=JSON.parse(readFileSync(resolve(projectRoot,'package.json'),'utf8')).version;
   app.disable('x-powered-by');
@@ -295,8 +302,12 @@ export async function createApp(options={}) {
   app.post('/api/admin/contents',member,admin,contentAction((req,res)=>res.status(201).json(ctx.contents.create(req.member.user_id,req.body))));
   app.patch('/api/admin/contents/:id',member,admin,contentAction((req,res)=>res.json(ctx.contents.update(req.member.user_id,req.params.id,req.body))));
   app.post('/api/admin/contents/:id/file',member,admin,express.raw({type:'application/octet-stream',limit:'25mb'}),contentAction((req,res)=>res.status(201).json(ctx.contents.upload(req.member.user_id,req.params.id,Number(req.headers['x-content-revision']),req.headers['x-file-name'],req.body))));
-  app.post('/api/admin/invitations',member,admin,(req,res)=>{
-    try{res.status(201).json(ctx.createInvitation({name:req.body.name,email:req.body.email,role:req.body.role??'seller',tracks:req.body.tracks,permissions:req.body.permissions,supervisorIds:req.body.supervisorIds,sellerIds:req.body.sellerIds,externalUserId:req.body.externalUserId,actorId:req.member.user_id}));}catch(error){res.status(400).json({message:error.message});}
+  app.post('/api/admin/invitations',member,admin,async(req,res)=>{
+    try{const invitation=ctx.createInvitation({name:req.body.name,email:req.body.email,role:req.body.role??'seller',tracks:req.body.tracks,permissions:req.body.permissions,supervisorIds:req.body.supervisorIds,sellerIds:req.body.sellerIds,externalUserId:req.body.externalUserId,actorId:req.member.user_id});res.status(201).json(await deliverInvitation({...invitation,name:req.body.name,email:req.body.email}));}catch(error){res.status(400).json({message:error.message});}
+  });
+  app.post('/api/admin/invitations/:id/resend',member,admin,async(req,res)=>{
+    if(!invitationMailer)return res.status(503).json({message:'O envio de e-mail ainda não foi configurado no servidor.'});
+    try{res.json(await deliverInvitation(ctx.renewInvitation(req.params.id,req.member.user_id)));}catch(error){res.status(400).json({message:error.message});}
   });
   app.patch('/api/admin/members/:id',member,admin,(req,res)=>{
     try{res.json(access.updateMember(req.member.user_id,req.params.id,req.body));}catch(error){res.status(400).json({message:error.message});}
