@@ -49,7 +49,7 @@ export async function createApp(options={}) {
   });
   app.use((req,res,next)=>ready()?next():res.status(503).set('Retry-After','30').json({message:'A ST1 Academy está sendo preparada. Tente novamente em alguns instantes.'}));
   app.all('/api/auth/*splat',toNodeHandler(auth));
-  app.use(express.json({limit:'128kb'}));
+  app.use((req,res,next)=>express.json({limit:req.path==='/api/admin/campaigns'?'6mb':'128kb'})(req,res,next));
   app.get('/api/campaigns/open/:token.gif',(req,res)=>{campaigns.mark('open',req.params.token);res.setHeader('Cache-Control','no-store');res.type('image/gif').send(Buffer.from('R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=','base64'));});
   app.get('/api/campaigns/click/:token',(req,res)=>{const target=campaigns.mark('click',req.params.token);if(!target)return res.sendStatus(404);res.redirect(302,new URL(target,baseURL).href);});
   app.get('/api/campaigns/preferences/:token',(req,res)=>{const person=campaigns.preference(req.params.token);if(!person)return res.sendStatus(404);res.type('html').send(`<main style="font:16px Arial,sans-serif;max-width:560px;margin:80px auto;padding:24px"><h1>E-mails de incentivo</h1><p>Você pode deixar de receber as campanhas da ST1 Academy.</p><form method="post"><button style="background:#f77716;color:white;border:0;padding:14px 20px;cursor:pointer">Parar de receber</button></form></main>`);});
@@ -323,7 +323,10 @@ export async function createApp(options={}) {
   });
   app.get('/api/admin/campaigns',member,admin,(_,res)=>res.json(campaigns.list()));
   app.post('/api/admin/campaigns',member,admin,(req,res)=>{try{res.status(201).json(campaigns.create(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/campaigns/:id/schedule',member,admin,(req,res)=>{try{res.json(campaigns.schedule(req.params.id,req.body.scheduledAt));}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/campaigns/:id/cancel-schedule',member,admin,(req,res)=>{try{res.json(campaigns.cancelSchedule(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/:id/send',member,admin,async(req,res)=>{try{res.json(await campaigns.send(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
+  app.locals.runDueCampaigns=campaigns.runDue;
   app.patch('/api/admin/members/:id',member,admin,(req,res)=>{
     try{res.json(access.updateMember(req.member.user_id,req.params.id,req.body));}catch(error){res.status(400).json({message:error.message});}
   });
@@ -363,11 +366,13 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
   const backups=runtime.storage==='sqlite'?createBackupService(ctx):{start(){},stop(){},drain:()=>Promise.resolve()};
   const server=app.listen(runtime.port,runtime.host,()=>{
     ctx.googleCalendar.start();if(runtime.production)backups.start();
+    app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));
     console.log(`ST1 Academy disponível em ${ctx.baseURL}`);
   });
+  const campaignTimer=setInterval(()=>app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message)),30000);campaignTimer.unref();
   let stopping=false;
   const stop=()=>{
-    if(stopping)return;stopping=true;app.locals.shuttingDown=true;ctx.googleCalendar.stop();backups.stop();
+    if(stopping)return;stopping=true;app.locals.shuttingDown=true;clearInterval(campaignTimer);ctx.googleCalendar.stop();backups.stop();
     const forced=setTimeout(()=>process.exit(1),25000);forced.unref();
     server.close(async()=>{await Promise.allSettled([ctx.googleCalendar.drain(),backups.drain()]);ctx.db.close();clearTimeout(forced);process.exit(0);});
     server.closeIdleConnections();
