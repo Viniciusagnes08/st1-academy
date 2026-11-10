@@ -62,7 +62,7 @@
     document.querySelector('#central-footer').hidden=!hasAccess('materials');const mapNav=document.querySelector('#knowledge-map-nav');if(mapNav)mapNav.hidden=!hasAccess('assessments')&&!hasAccess('materials');
     document.querySelector('#squad-nav').hidden=!hasAccess('community');document.querySelector('#ranking-nav').hidden=!hasAccess('community')||role==='admin'||role==='supervisor'&&hasAccess('team_results');document.querySelector('#community-navigation').hidden=!hasAccess('community');state.engagementPanel?.refreshBell();
     const page=(location.hash||'#inicio').slice(1).split('/')[0],active=['trilha','prova','resultado','percurso','desafios','desafio','pratica'].includes(page)?'trilhas':page==='material'?'conteudos':['publicar','squads-gestao','gamificacao','perfil-regras'].includes(page)?'cadastros':['agenda-gestao','agenda-programar','agenda-integracao','agenda-participacao'].includes(page)?'agenda':page==='pedidos-squad'?(hasAccess('community')?'squad':'gestao'):page;
-    document.querySelector('#page-context').textContent=({cadastros:'Cadastros',campanhas:'E-mails de incentivo',agenda:'Minha agenda','agenda-gestao':'Programação do time','agenda-programar':'Programar compromisso','agenda-participacao':'Participação do time','agenda-integracao':'Conexão Google',inicio:'Início',trilhas:'Minhas trilhas',dashboard:'Dashboard',conteudos:'Conteúdos',publicar:'Publicar conteúdo',material:'Material de estudo',percurso:'Meu percurso',desafios:'Provas relâmpago',desafio:'Meu desafio',pratica:'Prática e evolução',conhecimento:'Mapa de conhecimento',squad:'Meu squad',perfil:'Meu perfil',pessoas:'Conheça seu time','perfil-regras':'Liberações do perfil','pedidos-squad':'Pedidos de squad',notificacoes:'Notificações',gamificacao:'Gamificação','squads-gestao':'Gestão de squads',conquistas:'Minhas conquistas',gestao:'Resultados',acessos:'Acessos',trilha:'Minha trilha',prova:'Avaliação',resultado:'Resultado da avaliação'})[page]||'Início';
+    document.querySelector('#page-context').textContent=({cadastros:'Cadastros',campanhas:'Campanhas de E-mail',agenda:'Minha agenda','agenda-gestao':'Programação do time','agenda-programar':'Programar compromisso','agenda-participacao':'Participação do time','agenda-integracao':'Conexão Google',inicio:'Início',trilhas:'Minhas trilhas',dashboard:'Dashboard',conteudos:'Conteúdos',publicar:'Publicar conteúdo',material:'Material de estudo',percurso:'Meu percurso',desafios:'Provas relâmpago',desafio:'Meu desafio',pratica:'Prática e evolução',conhecimento:'Mapa de conhecimento',squad:'Meu squad',perfil:'Meu perfil',pessoas:'Conheça seu time','perfil-regras':'Liberações do perfil','pedidos-squad':'Pedidos de squad',notificacoes:'Notificações',gamificacao:'Gamificação','squads-gestao':'Gestão de squads',conquistas:'Minhas conquistas',gestao:'Resultados',acessos:'Acessos',trilha:'Minha trilha',prova:'Avaliação',resultado:'Resultado da avaliação'})[page]||'Início';
     document.querySelectorAll('[data-nav]').forEach(a=>{const selected=a.dataset.nav===(active==='pessoas'?'perfil':active);a.classList.toggle('active',selected);if(selected){a.setAttribute('aria-current','page');const drawer=a.closest('.sidebar-drawer');if(drawer)drawer.open=true;}else a.removeAttribute('aria-current');});
   }
   function home(onlyTracks=false){
@@ -121,7 +121,7 @@
   }
   async function campaignPage(){
     if(state.user?.role!=='admin')return restricted('Campanhas são gerenciadas pelo Admin.','Esta área é exclusiva da gestão da ST1 Academy.',!state.user);
-    if(!state.campaignPanel){const {createCampaignPanel}=await import('/assets/campaigns.js?v=20261110-campaigns');state.campaignPanel=createCampaignPanel({api,esc,main,commitView,toast});}
+    if(!state.campaignPanel){const {createCampaignPanel}=await import('/assets/campaigns.js?v=20261110-campaign-audience');state.campaignPanel=createCampaignPanel({api,esc,main,commitView,toast});}
     await state.campaignPanel.render();
   }
   async function engagementPanel(){
@@ -241,5 +241,4 @@
   }
   init();
 })();
-
 
