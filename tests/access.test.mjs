@@ -51,7 +51,7 @@ test('Acessos são aplicados no servidor e Supervisor faz provas próprias enqua
   const enroll=async(client,input,invitation)=>{
     const invite=invitation||ctx.createInvitation(input);const token=new URL(invite.url).searchParams.get('convite');
     const response=await request(client,'/api/auth/sign-up/email',{method:'POST',body:{name:'Nome enviado pelo navegador',email:input.email,password:randomBytes(24).toString('base64url')},headers:{'x-academy-invite':token}});
-    assert.equal(response.status,200,JSON.stringify(response.data));client.id=response.data.user.id;return invite;
+    assert.equal(response.status,200,JSON.stringify(response.data));client.id=response.data.user.id;assert.equal((await request(client,'/api/profile')).status,403);assert.equal((await request(client,'/api/onboarding',{method:'POST',body:{sector:'PAP',role:'Vendedor(a)',goal:'Especialista',dream:'Crescer na ST1',challenges:['Abordagem'],squad:'Ainda não sei'}})).status,200);return invite;
   };
   const correctAnswers=attempt=>Object.fromEntries(attempt.questions.map(q=>[q.id,ctx.bank.tracks.find(t=>t.id===attempt.trackId).questions.find(item=>item.id===q.id).answer]));
   const fullPermissions=['materials','assessments','conquests'];
@@ -168,3 +168,4 @@ test('Acessos são aplicados no servidor e Supervisor faz provas próprias enqua
     });
   }finally{await new Promise(resolve=>server.close(resolve));ctx.db.close();assert.equal(dirname(directory),resolve(tmpdir()));assert.ok(basename(directory).startsWith('st1-academia-access-test-'));await rm(directory,{recursive:true,force:true});}
 });
+

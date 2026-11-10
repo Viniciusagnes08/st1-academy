@@ -161,6 +161,7 @@
   async function managementPanel(){if(!state.managementPanel){const {createManagementPanel}=await import('/assets/management.js?v=2.3.3');state.managementPanel??=createManagementPanel({api,esc,icon,main,commitView,user:()=>state.user,toast,onChanged:refreshUser});}return state.managementPanel;}
   async function render({refresh=true}={}){
     if(!state.catalog)return;
+    if(state.onboardingPanel?.pending()){state.onboardingPanel.show();return;}
     let route=location.hash||'#inicio';if(route==='#main'){history.replaceState({},'',state.lastRoute||'#inicio');main.focus({preventScroll:true});return;}if(route.startsWith('#materiais')){route=route.replace('#materiais','#conteudos');history.replaceState({},'',route);}if(/^#conteudos\/(novo|editar)(\/|$)/.test(route)){route=route.replace('#conteudos','#publicar');history.replaceState({},'',route);}if(!['inicio','trilhas','trilha','conquistas','gestao','acessos','campanhas','conteudos','dashboard','material','publicar','prova','resultado','percurso','conhecimento','squad','pessoas','squads-gestao','gamificacao','desafios','desafio','pratica','notificacoes','perfil','perfil-regras','pedidos-squad','agenda','agenda-gestao','agenda-programar','agenda-participacao','agenda-integracao','cadastros'].includes(route.slice(1).split('/')[0])){route='#inicio';history.replaceState({},'',route);}const [page,id,contentId,pageNumber,subCategory]=route.slice(1).split('/');
     try{
       if(state.lastRoute.startsWith('#prova/')&&route!==state.lastRoute&&state.attempt?.status==='open'&&document.querySelector('.question-card')){if(!await saveProgress()){history.replaceState({},'',state.lastRoute);return;}}
@@ -234,7 +235,7 @@
     try{
       await refreshUser();
       if(!state.user&&!state.blocked){openAuth();return;}
-      const {createOnboarding}=await import('/assets/onboarding.js?v=20261110-onboarding');state.onboardingPanel=createOnboarding({api,esc,user:()=>state.user,catalog:()=>state.catalog});await state.onboardingPanel.init();
+      const {createOnboarding}=await import('/assets/onboarding.js?v=20261110-onboarding-gate');state.onboardingPanel=createOnboarding({api,esc,user:()=>state.user,catalog:()=>state.catalog});await state.onboardingPanel.init();
       await render({refresh:false});
     }catch(error){if(error.unavailable)showUnavailable(error);else main.innerHTML=`<div class="wrap library"><div class="empty-panel"><h2>Vamos retomar seu acesso.</h2><p>${esc(error.message)}</p><a href="/login" class="button button-primary">Voltar ao acesso</a></div></div>`;}
   }
