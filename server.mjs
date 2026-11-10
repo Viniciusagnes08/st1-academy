@@ -15,6 +15,7 @@ import {applyStagedProduction} from './lib/production-transfer.mjs';
 import {withLearningReadBatch} from './lib/learning-read-batch.mjs';
 import {createInvitationMailer} from './lib/invitation-mail.mjs';
 import {createCampaignService} from './lib/campaigns.mjs';
+import {createWhatsAppCampaignService} from './lib/whatsapp-campaigns.mjs';
 import {createOnboardingService} from './lib/onboarding.mjs';
 
 export async function createApp(options={}) {
@@ -23,6 +24,7 @@ export async function createApp(options={}) {
   const invitationMailer=options.invitationMailer||createInvitationMailer(options.mailEnv||process.env);
   const onboarding=createOnboardingService(db,bank);
   const campaigns=createCampaignService(db,{env:options.mailEnv||process.env,baseURL});
+  const whatsappCampaigns=createWhatsAppCampaignService(db,{env:options.whatsappEnv||process.env,sendTemplate:options.whatsappSender});
   const deliverInvitation=async invitation=>{
     if(!invitationMailer)return {...invitation,delivery:'not_configured'};
     try{await invitationMailer(invitation);return {...invitation,delivery:'sent'};}
@@ -326,7 +328,14 @@ export async function createApp(options={}) {
   app.post('/api/admin/campaigns/:id/schedule',member,admin,(req,res)=>{try{res.json(campaigns.schedule(req.params.id,req.body.scheduledAt));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/:id/cancel-schedule',member,admin,(req,res)=>{try{res.json(campaigns.cancelSchedule(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/:id/send',member,admin,async(req,res)=>{try{res.json(await campaigns.send(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
+  app.get('/api/admin/whatsapp-campaigns',member,admin,(_,res)=>res.json(whatsappCampaigns.list()));
+  app.post('/api/admin/whatsapp-campaigns',member,admin,(req,res)=>{try{res.status(201).json(whatsappCampaigns.create(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/whatsapp-campaigns/consent/:userId',member,admin,(req,res)=>{try{res.json(whatsappCampaigns.consent(req.member.user_id,req.params.userId,req.body));}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/whatsapp-campaigns/:id/schedule',member,admin,(req,res)=>{try{res.json(whatsappCampaigns.schedule(req.params.id,req.body.scheduledAt));}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/whatsapp-campaigns/:id/cancel-schedule',member,admin,(req,res)=>{try{res.json(whatsappCampaigns.cancelSchedule(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/whatsapp-campaigns/:id/send',member,admin,async(req,res)=>{try{res.json(await whatsappCampaigns.send(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.locals.runDueCampaigns=campaigns.runDue;
+  app.locals.runDueWhatsAppCampaigns=whatsappCampaigns.runDue;
   app.patch('/api/admin/members/:id',member,admin,(req,res)=>{
     try{res.json(access.updateMember(req.member.user_id,req.params.id,req.body));}catch(error){res.status(400).json({message:error.message});}
   });
@@ -367,9 +376,10 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
   const server=app.listen(runtime.port,runtime.host,()=>{
     ctx.googleCalendar.start();if(runtime.production)backups.start();
     app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));
+    app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));
     console.log(`ST1 Academy disponível em ${ctx.baseURL}`);
   });
-  const campaignTimer=setInterval(()=>app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message)),30000);campaignTimer.unref();
+  const campaignTimer=setInterval(()=>{app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));},30000);campaignTimer.unref();
   let stopping=false;
   const stop=()=>{
     if(stopping)return;stopping=true;app.locals.shuttingDown=true;clearInterval(campaignTimer);ctx.googleCalendar.stop();backups.stop();
