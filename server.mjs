@@ -332,7 +332,7 @@ export async function createApp(options={}) {
   });
   app.get('/api/admin/campaigns',member,admin,(_,res)=>res.json(campaigns.list()));
   app.get('/api/admin/campaigns/automations',member,admin,(_,res)=>res.json(emailAutomations.list()));
-  app.post('/api/admin/campaigns/automations/welcome/enable',member,admin,(_,res)=>{try{res.json(emailAutomations.activateWelcome());}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/campaigns/automations/:key/enable',member,admin,(req,res)=>{try{res.json(emailAutomations.activate(req.params.key));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/automations/:key/pause',member,admin,(req,res)=>{try{res.json(emailAutomations.pause(req.params.key));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns',member,admin,(req,res)=>{try{res.status(201).json(campaigns.create(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/:id/schedule',member,admin,(req,res)=>{try{res.json(campaigns.schedule(req.params.id,req.body.scheduledAt));}catch(error){res.status(400).json({message:error.message});}});
