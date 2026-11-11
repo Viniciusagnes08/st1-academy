@@ -56,6 +56,7 @@
     const avatarElement=document.querySelector('#profile-avatar');avatarElement.innerHTML=state.user?.avatarUrl?'<img src="'+esc(state.user.avatarUrl)+'" alt="">':esc((state.user?.name||'ST1').split(' ').filter(Boolean).slice(0,2).map(word=>word[0]).join('').toUpperCase());
     document.querySelector('#admin-nav').hidden=!['admin','supervisor'].includes(role)||!hasAccess('team_results');
     document.querySelector('#admin-nav-label').textContent='Resultados';
+    const m24Nav=document.querySelector('#m24-nav');if(m24Nav)m24Nav.hidden=state.user?.m24Homologation!==true;
     document.querySelector('#management-nav').hidden=role!=='admin';document.querySelector('#access-nav').hidden=role!=='admin';document.querySelector('#campaign-nav').hidden=role!=='admin';document.querySelector('#whatsapp-campaign-nav').hidden=role!=='admin';document.querySelector('#integrations-nav').hidden=role!=='admin';
     document.querySelector('#management-navigation').hidden=role!=='admin'&&(role!=='supervisor'||!hasAccess('team_results'));
     document.querySelector('#conquests-nav').hidden=!hasAccess('conquests');document.querySelector('#materials-nav').hidden=!hasAccess('materials');
@@ -253,3 +254,4 @@
   }
   init();
 })();
+
