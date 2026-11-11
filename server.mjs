@@ -17,6 +17,8 @@ import {createInvitationMailer} from './lib/invitation-mail.mjs';
 import {createCampaignService} from './lib/campaigns.mjs';
 import {createEmailAutomationService} from './lib/email-automation-service.mjs';
 import {createWhatsAppCampaignService} from './lib/whatsapp-campaigns.mjs';
+import {createWhatsAppAutomationService} from './lib/whatsapp-automations.mjs';
+import {createWhatsAppReceipts} from './lib/whatsapp-receipts.mjs';
 import {createIntegrationService} from './lib/integrations.mjs';
 import {createOnboardingService} from './lib/onboarding.mjs';
 
@@ -29,7 +31,9 @@ export async function createApp(options={}) {
   const onboarding=createOnboardingService(db,bank);
   const campaigns=createCampaignService(db,{env:mailEnv,baseURL});
   const emailAutomations=createEmailAutomationService(db,{env:mailEnv,baseURL,mailerTransport:options.emailAutomationTransport,context:ctx});
-  const whatsappCampaigns=createWhatsAppCampaignService(db,{env:whatsappEnv,sendTemplate:options.whatsappSender});
+  const whatsappReceipts=createWhatsAppReceipts(db,{env:whatsappEnv});
+  const whatsappCampaigns=createWhatsAppCampaignService(db,{env:whatsappEnv,sendTemplate:options.whatsappSender,receipts:whatsappReceipts});
+  const whatsappAutomations=createWhatsAppAutomationService(db,{env:whatsappEnv,baseURL,context:ctx,sendTemplate:options.whatsappSender,receipts:whatsappReceipts});
   const deliverInvitation=async invitation=>{
     if(!options.invitationMailer&&!createInvitationMailer(mailEnv))return {...invitation,delivery:'not_configured'};
     try{await invitationMailer(invitation);return {...invitation,delivery:'sent'};}
@@ -55,6 +59,8 @@ export async function createApp(options={}) {
     catch{res.status(503).json({status:'unavailable'});}
   });
   app.use((req,res,next)=>ready()?next():res.status(503).set('Retry-After','30').json({message:'A ST1 Academy está sendo preparada. Tente novamente em alguns instantes.'}));
+  app.get('/api/webhooks/whatsapp',(req,res)=>{const challenge=whatsappReceipts.verify(req.query['hub.mode'],req.query['hub.verify_token'],req.query['hub.challenge']);if(challenge===null)return res.sendStatus(403);res.type('text/plain').send(challenge);});
+  app.post('/api/webhooks/whatsapp',express.raw({type:'application/json',limit:'256kb'}),(req,res)=>whatsappReceipts.ingest(req.body,req.get('x-hub-signature-256'))?res.sendStatus(200):res.sendStatus(403));
   app.all('/api/auth/*splat',toNodeHandler(auth));
   app.use((req,res,next)=>express.json({limit:req.path==='/api/admin/campaigns'?'6mb':'128kb'})(req,res,next));
   app.get('/api/campaigns/open/:token.gif',(req,res)=>{campaigns.mark('open',req.params.token);res.setHeader('Cache-Control','no-store');res.type('image/gif').send(Buffer.from('R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=','base64'));});
@@ -345,6 +351,12 @@ export async function createApp(options={}) {
   app.post('/api/admin/campaigns/:id/cancel-schedule',member,admin,(req,res)=>{try{res.json(campaigns.cancelSchedule(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/:id/send',member,admin,async(req,res)=>{try{res.json(await campaigns.send(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.get('/api/admin/whatsapp-campaigns',member,admin,(_,res)=>res.json(whatsappCampaigns.list()));
+  app.get('/api/admin/whatsapp-automations',member,admin,(_,res)=>res.json(whatsappAutomations.list()));
+  app.get('/api/admin/whatsapp-automations/templates',member,admin,async(_,res)=>{try{res.json(await whatsappAutomations.approvedTemplates());}catch(error){res.status(400).json({message:error.message});}});
+  app.put('/api/admin/whatsapp-automations/:key',member,admin,(req,res)=>{try{res.json(whatsappAutomations.save(req.params.key,req.body));}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/whatsapp-automations/activate-approved',member,admin,async(_,res)=>{try{res.json(await whatsappAutomations.activateApproved());}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/whatsapp-automations/:key/enable',member,admin,async(req,res)=>{try{res.json(await whatsappAutomations.activate(req.params.key));}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/whatsapp-automations/:key/pause',member,admin,(req,res)=>{try{res.json(whatsappAutomations.pause(req.params.key));}catch(error){res.status(400).json({message:error.message});}});
   app.get('/api/admin/integrations',member,admin,(_,res)=>res.json(integrations.list()));
   app.put('/api/admin/integrations/:type',member,admin,(req,res)=>{try{res.json(integrations.save(req.member.user_id,req.params.type,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/integrations/webhooks',member,admin,(req,res)=>{try{res.status(201).json(integrations.addWebhook(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
@@ -359,6 +371,7 @@ export async function createApp(options={}) {
   app.locals.runDueCampaigns=campaigns.runDue;
   app.locals.runEmailAutomations=emailAutomations.tick;
   app.locals.runDueWhatsAppCampaigns=whatsappCampaigns.runDue;
+  app.locals.runWhatsAppAutomations=whatsappAutomations.tick;
   app.patch('/api/admin/members/:id',member,admin,(req,res)=>{
     try{res.json(access.updateMember(req.member.user_id,req.params.id,req.body));}catch(error){res.status(400).json({message:error.message});}
   });
@@ -401,9 +414,10 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
     app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));
     app.locals.runEmailAutomations().catch(error=>console.error('Falha ao verificar automações de e-mail:',error.message));
     app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));
+    app.locals.runWhatsAppAutomations().catch(error=>console.error('Falha ao verificar automações WhatsApp:',error.message));
     console.log(`ST1 Academy disponível em ${ctx.baseURL}`);
   });
-  const campaignTimer=setInterval(()=>{app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));app.locals.runEmailAutomations().catch(error=>console.error('Falha ao verificar automações de e-mail:',error.message));app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));},30000);campaignTimer.unref();
+  const campaignTimer=setInterval(()=>{app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));app.locals.runEmailAutomations().catch(error=>console.error('Falha ao verificar automações de e-mail:',error.message));app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));app.locals.runWhatsAppAutomations().catch(error=>console.error('Falha ao verificar automações WhatsApp:',error.message));},30000);campaignTimer.unref();
   let stopping=false;
   const stop=()=>{
     if(stopping)return;stopping=true;app.locals.shuttingDown=true;clearInterval(campaignTimer);ctx.googleCalendar.stop();backups.stop();
