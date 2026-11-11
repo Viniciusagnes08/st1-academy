@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {filterCampaigns,hasCampaignFilters} from '../public/assets/campaign-history-filters.js';
+import {filterCampaigns,hasCampaignFilters,paginateCampaigns} from '../public/assets/campaign-history-filters.js';
 
 const now=Date.parse('2026-11-11T12:00:00Z');
 const campaigns=[
@@ -23,4 +23,13 @@ test('filtra pelo período operacional mais recente',()=>{
   assert.deepEqual(filterCampaigns(campaigns,{period:'7'},now).map(x=>x.id),['1']);
   assert.equal(hasCampaignFilters({query:'',status:'all',period:'all'}),false);
   assert.equal(hasCampaignFilters({query:'ana',status:'all',period:'all'}),true);
+});
+
+test('pagina dez campanhas e limita a página solicitada',()=>{
+  const items=Array.from({length:23},(_,index)=>({id:String(index+1)}));
+  assert.deepEqual(paginateCampaigns(items,1).items.map(x=>x.id),['1','2','3','4','5','6','7','8','9','10']);
+  assert.deepEqual(paginateCampaigns(items,2).items.map(x=>x.id),['11','12','13','14','15','16','17','18','19','20']);
+  const last=paginateCampaigns(items,9);
+  assert.equal(last.currentPage,3);
+  assert.deepEqual(last.items.map(x=>x.id),['21','22','23']);
 });

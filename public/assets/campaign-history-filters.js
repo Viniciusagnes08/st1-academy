@@ -38,3 +38,11 @@ export function filterCampaigns(campaigns,filters={},now=Date.now()){
 export function hasCampaignFilters(filters={}){
   return !!String(filters.query||'').trim()||(filters.status&&filters.status!=='all')||Number(filters.period)>0;
 }
+
+export function paginateCampaigns(campaigns,page=1,pageSize=10){
+  const size=Math.max(1,Number(pageSize)||10);
+  const totalPages=Math.max(1,Math.ceil(campaigns.length/size));
+  const currentPage=Math.min(totalPages,Math.max(1,Number(page)||1));
+  const start=(currentPage-1)*size;
+  return {items:campaigns.slice(start,start+size),currentPage,totalPages,start,total:campaigns.length};
+}
