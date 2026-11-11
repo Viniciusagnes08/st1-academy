@@ -1,4 +1,5 @@
 import express from 'express';
+import {mountM24} from './lib/m24-routes.mjs';
 import {toNodeHandler,fromNodeHeaders} from 'better-auth/node';
 import {randomUUID,createHash} from 'node:crypto';
 import {resolve} from 'node:path';
@@ -88,6 +89,7 @@ export async function createApp(options={}) {
   const admin=(req,res,next)=>req.member.role==='admin'?next():res.status(403).json({message:'Acesso exclusivo de Admin.'});
   const team=(req,res,next)=>['supervisor','admin'].includes(req.member.role)&&hasPermission(req.member,'team_results')?next():res.status(403).json({message:'Você não tem acesso ao acompanhamento da equipe.'});
   const agendaAction=handler=>async(req,res,next)=>{try{await handler(req,res);}catch(e){if(e.status)return res.status(e.status>=400&&e.status<=599?e.status:400).json({message:e.message});next(e);}};
+  const m24=mountM24(app,{ctx,member,config:options.m24||{enabled:process.env.ACADEMY_M24_ENABLED!=='0'}});
   app.get('/api/admin/manage',member,admin,agendaAction((req,res)=>res.json(ctx.management.catalog(req.member))));
   app.get('/api/admin/manage/choices',member,admin,agendaAction((req,res)=>res.json(ctx.management.choices(req.member))));
   app.get('/api/admin/manage/:entity',member,admin,agendaAction((req,res)=>res.json(ctx.management.list(req.member,req.params.entity,{trash:req.query.trash==='1'}))));
@@ -152,7 +154,7 @@ export async function createApp(options={}) {
     if(!invite)return res.status(404).json({message:'Convite inválido, utilizado ou vencido. Peça outro ao gestor.'});
     res.json({name:invite.name,email:invite.email,role:invite.role,expiresAt:invite.expires_at});
   });
-  const memberPayload=profile=>({id:profile.user_id,name:profile.name,email:profile.email,role:profile.role,avatarUrl:ctx.profiles.avatar(profile,profile.user_id),recognitions:ctx.management.recognitions(profile),tracks:profile.tracks,permissions:profile.permissions,certificates:hasPermission(profile,'conquests')?certificates(profile.user_id).filter(c=>hasTrack(profile,c.track_id)):[],attempts:hasPermission(profile,'assessments')?db.prepare('SELECT id,track_id,status,started_at,finished_at,result_json FROM academy_attempt WHERE user_id=? ORDER BY started_at DESC').all(profile.user_id).filter(a=>hasTrack(profile,a.track_id)).map(a=>({...a,result:a.result_json?JSON.parse(a.result_json):null,result_json:undefined})):[],testMode});
+  const memberPayload=profile=>({m24Homologation:m24.canAccess(profile),id:profile.user_id,name:profile.name,email:profile.email,role:profile.role,avatarUrl:ctx.profiles.avatar(profile,profile.user_id),recognitions:ctx.management.recognitions(profile),tracks:profile.tracks,permissions:profile.permissions,certificates:hasPermission(profile,'conquests')?certificates(profile.user_id).filter(c=>hasTrack(profile,c.track_id)):[],attempts:hasPermission(profile,'assessments')?db.prepare('SELECT id,track_id,status,started_at,finished_at,result_json FROM academy_attempt WHERE user_id=? ORDER BY started_at DESC').all(profile.user_id).filter(a=>hasTrack(profile,a.track_id)).map(a=>({...a,result:a.result_json?JSON.parse(a.result_json):null,result_json:undefined})):[],testMode});
   app.get('/api/me',member,(req,res)=>res.json(memberPayload(req.member)));
   app.post('/api/attempts',member,(req,res)=>{
     const track=bank.tracks.find(t=>t.id===req.body.trackId);
@@ -427,3 +429,4 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
   };
   process.on('SIGTERM',stop);process.on('SIGINT',stop);
 }
+
