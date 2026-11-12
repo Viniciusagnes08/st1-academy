@@ -42,7 +42,8 @@ function harness(source,{hostname='localhost',hash='#trilhas',search='',fetcher}
     localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value),removeItem:key=>storage.delete(key)},
     addEventListener:(name,handler)=>events.set('window:'+name,handler),setTimeout:()=>0,
     initLoginMotion(){},invitationTokenFromInput,rememberedLogin,verifySignedInMember});
-  const code=source==='academy'?academySource.replace(/  init\(\);\s*\}\)\(\);\s*$/,'  globalThis.runtime={state,init,api,render,contextualActions};\n  init();\n})();'):loginSource.replace(/^import .*;\r?$/gm,'')+'\nglobalThis.runtime={state,init,api,render};';
+  const academyTestSource=academySource.replace(/const \{createOnboarding\}=await import\('\/assets\/onboarding\.js[^']*'\);state\.onboardingPanel=createOnboarding\(\{api,esc,user:\(\)=>state\.user,catalog:\(\)=>state\.catalog\}\);await state\.onboardingPanel\.init\(\);/,"state.onboardingPanel={init:async()=>{},summary:()=>'',pending:()=>false};");
+  const code=source==='academy'?academyTestSource.replace(/  init\(\);\s*\}\)\(\);\s*$/,'  globalThis.runtime={state,init,api,render,contextualActions};\n  init();\n})();'):loginSource.replace(/^import .*;\r?$/gm,'')+'\nglobalThis.runtime={state,init,api,render};';
   runInContext(code,context);
   return {context,runtime:context.runtime,elements,events,navigation,storage,location};
 }

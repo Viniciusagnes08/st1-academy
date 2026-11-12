@@ -5,6 +5,7 @@ import {tmpdir} from 'node:os';
 import {resolve,sep,basename} from 'node:path';
 import {randomBytes} from 'node:crypto';
 import {createApp} from '../server.mjs';
+import {completeOnboardingForTest} from './helpers/academy-fixtures.mjs';
 import {GOOGLE_CALENDAR_SCOPE} from '../lib/google-calendar.mjs';
 
 test('Agenda acompanha entregas e presenças e sincroniza apenas eventos ST1',async t=>{
@@ -31,7 +32,7 @@ test('Agenda acompanha entregas e presenças e sincroniza apenas eventos ST1',as
   };
   const signup=async(key,role)=>{
     const email=key+'@agenda-qa.example',inv=ctx.createInvitation({name:'QA '+key,email,role,tracks:['pap']}),r=await request(null,'/api/auth/sign-up/email',{method:'POST',headers:{'x-academy-invite':new URL(inv.url).searchParams.get('convite')},body:{name:'User-controlled name',email,password:randomBytes(24).toString('base64url')}});
-    assert.equal(r.status,200);people[key]={id:r.data.user.id,cookie:r.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')};
+    assert.equal(r.status,200);people[key]={id:r.data.user.id,cookie:r.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')};completeOnboardingForTest(ctx.db,people[key].id);
   };
   const iso=offset=>new Date(now+offset).toISOString(),input=(kind,ids)=>({kind,title:kind==='task'?'Atividade de aplicação PAP':'Treinamento de abordagem PAP',description:'Conteúdo fictício de teste.',startAt:iso(-3600000),endAt:iso(3600000),dueAt:iso(3600000),prompt:'Como você aplicará o conteúdo?',audience:{scope:'people',ids}});
   const detail=async(who,id)=>(await request(who,'/api/agenda/items/'+id)).data;
@@ -114,7 +115,8 @@ test('Agenda acompanha entregas e presenças e sincroniza apenas eventos ST1',as
     await t.test('Google OAuth usa convite verificado, PKCE e escopo restrito; metadados não expõem chave',async()=>{
       assert.equal((await request(null,'/api/auth/sign-in/social',{method:'POST',body:{provider:'google',callbackURL:'https://evil.example'}})).status,403);
       const r=await request(null,'/api/auth/sign-in/social',{method:'POST',headers:{'x-academy-remember':'0'},body:{provider:'google',callbackURL:baseURL+'/#inicio',requestSignUp:true,additionalData:{serverContext:{academyInviteId:'spoof'}}}});assert.equal(r.status,200);
-      const u=new URL(r.data.url);assert.equal(u.hostname,'accounts.google.com');assert.ok(u.searchParams.get('scope').includes(GOOGLE_CALENDAR_SCOPE));assert.ok(!u.searchParams.get('scope').split(' ').includes('https://www.googleapis.com/auth/calendar'));assert.ok(u.searchParams.get('code_challenge'));assert.equal(u.searchParams.get('redirect_uri'),baseURL+'/api/auth/callback/google');
+      const u=new URL(r.data.url);assert.equal(u.hostname,'accounts.google.com');assert.ok(!u.searchParams.get('scope').split(' ').includes(GOOGLE_CALENDAR_SCOPE),'O login básico não solicita acesso à agenda.');assert.ok(!u.searchParams.get('scope').split(' ').includes('https://www.googleapis.com/auth/calendar'));assert.ok(u.searchParams.get('code_challenge'));assert.equal(u.searchParams.get('redirect_uri'),baseURL+'/api/auth/callback/google');
+      const linked=await request(people.seller,'/api/auth/link-social',{method:'POST',body:{provider:'google',callbackURL:baseURL+'/#agenda-integracao'}});assert.equal(linked.status,200);const linkUrl=new URL(linked.data.url);assert.equal(linkUrl.hostname,'accounts.google.com');assert.ok(linkUrl.searchParams.get('scope').includes(GOOGLE_CALENDAR_SCOPE));assert.ok(!linkUrl.searchParams.get('scope').split(' ').includes('https://www.googleapis.com/auth/calendar'));assert.ok(linkUrl.searchParams.get('code_challenge'));
       assert.ok(r.headers.getSetCookie().some(c=>c.includes('dont_remember')));
       assert.equal((await request(null,'/api/auth/sign-in/social',{method:'POST',headers:{'x-academy-invite':'invalid'},body:{provider:'google'}})).status,403);
       assert.equal((await request(null,'/api/auth/sign-in/social',{method:'POST',body:{provider:'google',idToken:{token:'forged'}}})).status,403);

@@ -13,7 +13,7 @@ function harness(){
   const profile={id:'seller',name:'Pessoa de teste',role:'seller',certificates:[],attempts:[]};
   const context=createContext({location,console,URL,Set,Map,trackStudy(){},document:{},Promise});
   runInContext(source+'\nglobalThis.make=createKnowledgePanel;',context);
-  const panel=context.make({main,commitView:html=>{views.push(html);nodes.clear();},api:path=>{assert.equal(path,'/api/library');return library.promise;},esc:String,icon:()=>'',tracks:()=>[{id:'pap',name:'PAP'}],user:()=>profile,hasAccess:()=>true,engagement:async()=>({journeyMarkup:()=>game.promise}),toast(){}});
+  const panel=context.make({main,commitView:html=>{views.push(html);nodes.clear();},api:path=>{if(path==='/api/profile')return Promise.resolve({fields:{}});assert.equal(path,'/api/library');return library.promise;},esc:String,icon:()=>'',tracks:()=>[{id:'pap',name:'PAP'}],user:()=>profile,hasAccess:()=>true,engagement:async()=>({journeyMarkup:()=>game.promise}),toast(){}});
   const data={items:[{id:'content-1',title:'Meu próximo estudo',summary:'Resumo',category:'treinamentos',kind:'text',tracks:['pap'],modules:['module-1'],study:{completed:false,started:false}}],modules:[{id:'module-1',title:'Comercial',description:'Descrição do módulo',tracks:['pap']}],reading:null,recent:null};
   return {panel,library,game,views,node,location,data};
 }

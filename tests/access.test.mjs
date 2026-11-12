@@ -143,7 +143,7 @@ test('Acessos são aplicados no servidor e Supervisor faz provas próprias enqua
       const invite=await request(clients.admin,'/api/admin/invitations',{method:'POST',body:{name:'Segundo Admin de teste',email:'access-second-admin@example.test',role:'admin',tracks:[],permissions:[]}});assert.equal(invite.status,201);
       await enroll(clients.newAdmin,{email:'access-second-admin@example.test'},invite.data);
       assert.equal((await request(clients.newAdmin,'/api/admin/access')).status,200);
-      assert.equal((await request(clients.newAdmin,'/api/me')).data.tracks.length,5);
+      assert.equal((await request(clients.newAdmin,'/api/me')).data.tracks.length,ctx.bank.tracks.length);
       await request(clients.admin,`/api/admin/members/${clients.newAdmin.id}`,{method:'PATCH',body:{role:'seller',tracks:[],permissions:[]}});
       assert.equal((await request(clients.newAdmin,'/api/admin/access')).status,403);
       assert.equal((await request(clients.newAdmin,'/api/catalog')).data.tracks.length,0);

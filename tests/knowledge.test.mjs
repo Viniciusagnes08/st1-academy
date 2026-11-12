@@ -8,6 +8,7 @@ import {resolve} from 'node:path';
 import {randomBytes,createHash} from 'node:crypto';
 import {createApp} from '../server.mjs';
 import {knowledgeManifest,importKnowledgeLibrary} from '../lib/knowledge.mjs';
+import {completeOnboardingForTest} from './helpers/academy-fixtures.mjs';
 
 test('A Central de Conhecimento mantém PDFs originais, categorias e acesso privado dentro da Academy',async t=>{
   const dataDir=await mkdtemp(resolve(tmpdir(),'st1-knowledge-')),baseURL='http://localhost:4191';
@@ -18,10 +19,10 @@ test('A Central de Conhecimento mantém PDFs originais, categorias e acesso priv
   try{
   for(const [name,role,tracks,permissions] of [['admin','admin',['pap']],['pap','seller',['pap']],['digital','seller',['digital']],['super','supervisor',['pap']],['noMaterials','seller',['pap'],['assessments','conquests']]]){
     clients[name]={};const invite=instance.ctx.createInvitation({name:'Teste biblioteca '+name,email:name+'@knowledge.example',role,tracks,permissions}),token=new URL(invite.url).searchParams.get('convite');
-    const response=await fetch(baseURL+'/api/auth/sign-up/email',{method:'POST',headers:{Origin:baseURL,'Content-Type':'application/json','x-academy-invite':token},body:JSON.stringify({name:'Teste',email:name+'@knowledge.example',password:randomBytes(24).toString('base64url')})});assert.equal(response.status,200,JSON.stringify(await response.clone().json()));clients[name].cookie=response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');
+    const response=await fetch(baseURL+'/api/auth/sign-up/email',{method:'POST',headers:{Origin:baseURL,'Content-Type':'application/json','x-academy-invite':token},body:JSON.stringify({name:'Teste',email:name+'@knowledge.example',password:randomBytes(24).toString('base64url')})});assert.equal(response.status,200,JSON.stringify(await response.clone().json()));const user=await response.json();clients[name].cookie=response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');completeOnboardingForTest(instance.ctx.db,user.user.id);
   }
     await t.test('os sete originais são publicados com índice, capa e categorias reais',async()=>{
-      const result=await request(clients.admin,'/api/contents');assert.equal(result.data.items.length,7);assert.equal(result.data.items.filter(i=>i.category==='produtos').length,5);assert.equal(result.data.items.filter(i=>i.category==='processos').length,2);
+      const result=await request(clients.admin,'/api/contents');assert.equal(result.data.items.length,knowledgeManifest.length);assert.equal(result.data.items.filter(i=>i.category==='produtos').length,5);assert.equal(result.data.items.filter(i=>i.category==='processos').length,2);assert.equal((await request(clients.pap,'/api/contents')).data.items.some(i=>i.id.startsWith('st1-bi-')),false);
       for(const original of knowledgeManifest){const detail=await request(clients.admin,'/api/contents/'+original.id);assert.equal(detail.data.asset.sha256,original.sha256);assert.deepEqual(detail.data.sections,original.sections);const pdf=await request(clients.admin,'/api/contents/'+original.id+'/file');assert.equal(createHash('sha256').update(pdf.bytes).digest('hex'),original.sha256);assert.equal((await request(clients.admin,'/api/contents/'+original.id+'/cover')).status,200);}
       assert.ok(result.data.items.some(i=>i.dahmas));
     });
@@ -35,7 +36,7 @@ test('A Central de Conhecimento mantém PDFs originais, categorias e acesso priv
       assert.equal((await request(clients.pap,'/api/admin/contents',{method:'POST',body:{title:'Sem autorização',category:'livros',kind:'text',tracks:['pap']}})).status,403);
     });
     await t.test('módulos têm nome e descrição configuráveis por Admin e seguem a visibilidade da conta',async()=>{
-      const modules=(await request(clients.admin,'/api/admin/modules')).data.items;assert.equal(modules.length,5);assert.equal((await request(clients.pap,'/api/modules')).data.items.length,1);assert.equal((await request(clients.noMaterials,'/api/modules')).status,403);assert.equal((await request(clients.pap,'/api/admin/modules',{method:'POST',body:{title:'Não autorizado',tracks:['pap']}})).status,403);
+      const modules=(await request(clients.admin,'/api/admin/modules')).data.items;assert.equal(modules.length,21);assert.equal((await request(clients.pap,'/api/modules')).data.items.length,1);assert.equal((await request(clients.noMaterials,'/api/modules')).status,403);assert.equal((await request(clients.pap,'/api/admin/modules',{method:'POST',body:{title:'Não autorizado',tracks:['pap']}})).status,403);
       const module=modules.find(m=>m.id==='vendas-pap');assert.equal((await request(clients.admin,'/api/admin/modules/'+module.id,{method:'PATCH',body:{revision:module.revision,description:'Descrição personalizada pelo Admin.'}})).status,200);assert.equal((await request(clients.pap,'/api/modules')).data.items[0].description,'Descrição personalizada pelo Admin.');assert.equal((await request(clients.admin,'/api/admin/modules/'+module.id,{method:'PATCH',body:{revision:module.revision,title:'Edição antiga'}})).status,409);
       const custom=(await request(clients.admin,'/api/admin/modules',{method:'POST',body:{title:'Leitura | PAP',description:'Módulo fictício desta validação.',tracks:['pap'],audience:['seller']}})).data;const material=(await request(clients.admin,'/api/admin/contents/st1-catalogo-pap')).data;assert.equal((await request(clients.admin,'/api/admin/contents/'+material.id,{method:'PATCH',body:{revision:material.revision,modules:['vendas-pap',custom.id]}})).status,200);assert.ok((await request(clients.pap,'/api/contents/'+material.id)).data.modules.includes(custom.id));assert.equal((await request(clients.super,'/api/modules')).data.items.some(m=>m.id===custom.id),false);
     });

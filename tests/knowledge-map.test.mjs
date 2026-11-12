@@ -9,6 +9,7 @@ import {createApp} from '../server.mjs';
 import {readProfile} from '../lib/access.mjs';
 import {materialVersion} from '../lib/readings.mjs';
 import {gradePractice} from '../lib/quizzes.mjs';
+import {completeOnboardingForTest} from './helpers/academy-fixtures.mjs';
 
 test('Mapa expansível projeta conteúdo e evidência, com paginação e escopo privado',async t=>{
   const dataDir=await mkdtemp(resolve(tmpdir(),'st1-map-')),baseURL='http://localhost:4256';
@@ -22,7 +23,7 @@ test('Mapa expansível projeta conteúdo e evidência, com paginação e escopo 
   const signup=async(key,role,permissions,sellerIds=[])=>{
     const invite=ctx.createInvitation({name:'QA Mapa '+key,email:key+'@map.example',role,tracks:['pap'],permissions,sellerIds});
     const r=await fetch(baseURL+'/api/auth/sign-up/email',{method:'POST',headers:{Origin:baseURL,'Content-Type':'application/json','x-academy-invite':new URL(invite.url).searchParams.get('convite'),Connection:'close'},body:JSON.stringify({name:'QA',email:key+'@map.example',password:randomBytes(24).toString('base64url')})});
-    assert.equal(r.status,200);const u=await r.json();return {id:u.user.id,cookie:r.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')};
+    assert.equal(r.status,200);const u=await r.json(),person={id:u.user.id,cookie:r.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')};completeOnboardingForTest(ctx.db,person.id);return person;
   };
   try{
     const admin=await signup('admin','admin'),seller=await signup('seller','seller'),reader=await signup('reader','seller',['materials']),outsider=await signup('outsider','seller'),supervisor=await signup('supervisor','supervisor',undefined,[seller.id]);

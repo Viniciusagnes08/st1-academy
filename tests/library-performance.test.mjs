@@ -6,13 +6,14 @@ import {resolve,dirname,basename} from 'node:path';
 import {randomBytes} from 'node:crypto';
 import {createApp} from '../server.mjs';
 import {readProfile} from '../lib/access.mjs';
+import {completeOnboardingForTest} from './helpers/academy-fixtures.mjs';
 
 test('Biblioteca usa leituras em lote e confere acesso e versão novamente a cada solicitação',async t=>{
   const dataDir=await mkdtemp(resolve(tmpdir(),'st1-library-performance-')),baseURL='http://localhost:4268';
   const {app,ctx}=await createApp({dataDir,baseURL,testMode:true,includeLibrary:false,googleConfig:{clientId:'',clientSecret:''}});
   const server=await new Promise(done=>{const s=app.listen(4268,'127.0.0.1',()=>done(s));});
   const request=async(who,path)=>{const response=await fetch(baseURL+path,{headers:{Origin:baseURL,Connection:'close',...(who?{Cookie:who.cookie}:{})}});return {status:response.status,data:await response.json()};};
-  const signup=async(key,role,permissions)=>{const email=key+'@batch.example',inv=ctx.createInvitation({name:'QA '+key,email,role,tracks:['pap'],permissions});const response=await fetch(baseURL+'/api/auth/sign-up/email',{method:'POST',headers:{Origin:baseURL,Connection:'close','Content-Type':'application/json','x-academy-invite':new URL(inv.url).searchParams.get('convite')},body:JSON.stringify({name:'QA',email,password:randomBytes(24).toString('base64url')})});assert.equal(response.status,200);return {id:(await response.json()).user.id,cookie:response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')};};
+  const signup=async(key,role,permissions)=>{const email=key+'@batch.example',inv=ctx.createInvitation({name:'QA '+key,email,role,tracks:['pap'],permissions});const response=await fetch(baseURL+'/api/auth/sign-up/email',{method:'POST',headers:{Origin:baseURL,Connection:'close','Content-Type':'application/json','x-academy-invite':new URL(inv.url).searchParams.get('convite')},body:JSON.stringify({name:'QA',email,password:randomBytes(24).toString('base64url')})});assert.equal(response.status,200);const person={id:(await response.json()).user.id,cookie:response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')};completeOnboardingForTest(ctx.db,person.id);return person;};
   try{
     const admin=await signup('admin','admin'),seller=await signup('seller','seller'),restricted=await signup('restricted','seller',['assessments']);
     const adminProfile=()=>readProfile(ctx.db,admin.id),sellerProfile=()=>readProfile(ctx.db,seller.id);

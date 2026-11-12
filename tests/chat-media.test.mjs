@@ -5,6 +5,7 @@ import {tmpdir} from 'node:os';
 import {resolve,sep,basename} from 'node:path';
 import {randomBytes} from 'node:crypto';
 import {createApp} from '../server.mjs';
+import {completeOnboardingForTest} from './helpers/academy-fixtures.mjs';
 
 test('Chat multimídia e perfis de colegas seguem o squad e as permissões reais',async t=>{
   const dataDir=await mkdtemp(resolve(tmpdir(),'st1-chat-media-')),baseURL='http://localhost:4200',instance=await createApp({dataDir,baseURL,testMode:true,includeLibrary:false}),ctx=instance.ctx;
@@ -16,7 +17,7 @@ test('Chat multimídia e perfis de colegas seguem o squad e as permissões reais
   };
   const signup=async(key,role,permissions)=>{
     const email=key+'@chat-qa.example',invite=ctx.createInvitation({name:'QA '+key,email,role,tracks:['pap'],permissions}),response=await fetch(baseURL+'/api/auth/sign-up/email',{method:'POST',headers:{Origin:baseURL,'Content-Type':'application/json','x-academy-invite':new URL(invite.url).searchParams.get('convite'),Connection:'close'},body:JSON.stringify({email,name:'QA',password:randomBytes(24).toString('base64url')})});
-    assert.equal(response.status,200);const data=await response.json();people[key]={id:data.user.id,cookie:response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')};
+    assert.equal(response.status,200);const data=await response.json();people[key]={id:data.user.id,cookie:response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')};completeOnboardingForTest(ctx.db,people[key].id);
   };
   const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+X2ioAAAAASUVORK5CYII=','base64');
   const wav=Buffer.alloc(44+16000);wav.write('RIFF');wav.writeUInt32LE(wav.length-8,4);wav.write('WAVE',8);wav.write('fmt ',12);wav.writeUInt32LE(16,16);wav.writeUInt16LE(1,20);wav.writeUInt16LE(1,22);wav.writeUInt32LE(8000,24);wav.writeUInt32LE(16000,28);wav.writeUInt16LE(2,32);wav.writeUInt16LE(16,34);wav.write('data',36);wav.writeUInt32LE(16000,40);

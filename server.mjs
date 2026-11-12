@@ -191,8 +191,10 @@ export async function createApp(options={}) {
         if(!certificate){
           const id=randomUUID();
           db.prepare('INSERT INTO academy_certificate(id,user_id,attempt_id,track_id,version,name,score,issued_at) VALUES(?,?,?,?,?,?,?,?)').run(id,req.member.user_id,attempt.id,attempt.track_id,attempt.version,req.member.name,result.score,issuedAt);
-          const payload={eventId:randomUUID(),eventType:'academia.trilha.aprovada',academyUserId:req.member.user_id,st1SalesUserId:req.member.external_user_id,trackId:attempt.track_id,version:attempt.version,score:result.score,criticalRulesPassed:true,certificateId:id,approvedAt:issuedAt};
-          db.prepare('INSERT INTO academy_outbox(id,certificate_id,event_type,payload_json,created_at) VALUES(?,?,?,?,?)').run(payload.eventId,id,payload.eventType,JSON.stringify(payload),issuedAt);
+          if(attempt.track_id!=='bi'){
+            const payload={eventId:randomUUID(),eventType:'academia.trilha.aprovada',academyUserId:req.member.user_id,st1SalesUserId:req.member.external_user_id,trackId:attempt.track_id,version:attempt.version,score:result.score,criticalRulesPassed:true,certificateId:id,approvedAt:issuedAt};
+            db.prepare('INSERT INTO academy_outbox(id,certificate_id,event_type,payload_json,created_at) VALUES(?,?,?,?,?)').run(payload.eventId,id,payload.eventType,JSON.stringify(payload),issuedAt);
+          }
           certificate=db.prepare('SELECT * FROM academy_certificate WHERE id=?').get(id);
           ctx.game.onCertificate(certificate);
         }

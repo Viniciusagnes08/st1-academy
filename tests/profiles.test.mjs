@@ -7,6 +7,7 @@ import {tmpdir} from 'node:os';
 import {resolve,sep,basename} from 'node:path';
 import {randomBytes} from 'node:crypto';
 import {createApp} from '../server.mjs';
+import {completeOnboardingForTest} from './helpers/academy-fixtures.mjs';
 test('Perfil pessoal usa progresso real, mantém privacidade e exige aprovação de squad',async t=>{
   const dataDir=await mkdtemp(resolve(tmpdir(),'st1-profile-')),baseURL='http://localhost:4193';let now=Date.now(),instance=await createApp({dataDir,baseURL,testMode:true,includeLearningFlows:false,clock:()=>now}),ctx=instance.ctx;
   const server=await new Promise(resolve=>{const value=instance.app.listen(4193,'127.0.0.1',()=>resolve(value));}),people={};
@@ -17,7 +18,7 @@ test('Perfil pessoal usa progresso real, mantém privacidade e exige aprovação
   };
   const signup=async(key,role)=>{
     const email=key+'@profile-qa.example',invitation=ctx.createInvitation({name:'QA '+key,email,role,tracks:['pap']});
-    const r=await fetch(baseURL+'/api/auth/sign-up/email',{method:'POST',headers:{Origin:baseURL,'Content-Type':'application/json','x-academy-invite':new URL(invitation.url).searchParams.get('convite'),Connection:'close'},body:JSON.stringify({name:'QA',email,password:randomBytes(24).toString('base64url')})});assert.equal(r.status,200);const value=await r.json();people[key]={id:value.user.id,cookie:r.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')};
+    const r=await fetch(baseURL+'/api/auth/sign-up/email',{method:'POST',headers:{Origin:baseURL,'Content-Type':'application/json','x-academy-invite':new URL(invitation.url).searchParams.get('convite'),Connection:'close'},body:JSON.stringify({name:'QA',email,password:randomBytes(24).toString('base64url')})});assert.equal(r.status,200);const value=await r.json();people[key]={id:value.user.id,cookie:r.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')};completeOnboardingForTest(ctx.db,people[key].id);
   };
   const profile=async who=>(await request(who,'/api/profile')).data;
   try{

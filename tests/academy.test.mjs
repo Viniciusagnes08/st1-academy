@@ -10,6 +10,7 @@ import {createHash,randomBytes} from 'node:crypto';
 import {createApp} from '../server.mjs';
 import {grade} from '../lib/grading.mjs';
 import {createContext} from '../lib/context.mjs';
+import {completeOnboardingForTest} from './helpers/academy-fixtures.mjs';
 
 test('A avaliação registra identidade, exige 80% e regras críticas, e emite uma única conquista por trilha',async t=>{
   const directory=await mkdtemp(resolve(tmpdir(),'st1-academia-test-'));
@@ -31,6 +32,7 @@ test('A avaliação registra identidade, exige 80% e regras críticas, e emite u
     const response=await request(client,'/api/auth/sign-up/email',{method:'POST',body:{name:'Nome adulterado',email,password:randomBytes(24).toString('base64url')},headers:{'x-academy-invite':token}});
     assert.equal(response.status,200,JSON.stringify(response.data));
     assert.equal(response.data.user.name,name);
+    completeOnboardingForTest(ctx.db,response.data.user.id);
     return token;
   };
   const answersFor=attempt=>Object.fromEntries(attempt.questions.map(q=>{const original=ctx.bank.tracks.find(t=>t.id===attempt.trackId).questions.find(original=>original.id===q.id);return [q.id,original.answer];}));
@@ -87,17 +89,17 @@ test('A avaliação registra identidade, exige 80% e regras críticas, e emite u
       const response=await request(clients.other,`/api/attempts/${attempt.id}/finish`,{method:'POST',body:{answers,revision:0,score:100,approved:true}});assert.equal(response.data.score,95);assert.equal(response.data.approved,false);assert.equal(response.data.certificate,undefined);
     });
     await t.test('conquistas e integração não duplicam e nada é enviado ao ST1 Sales',async()=>{
-      assert.equal(ctx.db.prepare('SELECT count(*) n FROM academy_certificate').get().n,5);assert.equal(ctx.db.prepare('SELECT count(*) n FROM academy_outbox').get().n,5);
-      const report=await request(clients.admin,'/api/admin/report');assert.equal(report.data.st1SalesConnected,false);assert.equal(report.data.pendingIntegrations,5);
+      const salesTracks=ctx.bank.tracks.filter(track=>track.id!=='bi').length;assert.equal(ctx.db.prepare('SELECT count(*) n FROM academy_certificate').get().n,ctx.bank.tracks.length);assert.equal(ctx.db.prepare('SELECT count(*) n FROM academy_outbox').get().n,salesTracks);
+      const report=await request(clients.admin,'/api/admin/report');assert.equal(report.data.st1SalesConnected,false);assert.equal(report.data.pendingIntegrations,salesTracks);
       const csv=await request(clients.admin,'/api/admin/report.csv');assert.equal(csv.status,200);assert.match(csv.bytes.toString(),/Vendedor de teste/);
     });
     await new Promise(resolve=>server.close(resolve));ctx.db.close();
     const restarted=await createApp({dataDir:directory,baseURL,testMode:true,includeLearningFlows:false});ctx=restarted.ctx;
     server=await new Promise(resolve=>{const server=restarted.app.listen(4186,'127.0.0.1',()=>resolve(server));});
     await t.test('dados, sessões, certificado e respostas persistem depois de reiniciar',async()=>{
-      const profile=await request(clients.seller,'/api/me');assert.equal(profile.status,200);assert.equal(profile.data.certificates.length,5);
+      const profile=await request(clients.seller,'/api/me');assert.equal(profile.status,200);assert.equal(profile.data.certificates.length,ctx.bank.tracks.length);
       const pdf=await request(clients.seller,`/api/certificates/${firstCertificate.id}/pdf`);assert.equal(pdf.status,200);
-      assert.equal(ctx.db.prepare('SELECT count(*) n FROM academy_attempt').get().n,11);
+      assert.equal(ctx.db.prepare('SELECT count(*) n FROM academy_attempt').get().n,ctx.bank.tracks.length*2+1);
     });
     await t.test('banco de teste não pode ser aberto como produção',async()=>{
       await assert.rejects(createContext({dataDir:directory,baseURL,testMode:false}),/outro ambiente/);

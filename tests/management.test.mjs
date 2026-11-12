@@ -9,13 +9,14 @@ import {createApp} from '../server.mjs';
 import {readProfile} from '../lib/access.mjs';
 import {createManagementService} from '../lib/management.mjs';
 import {recognitionPdf} from '../lib/recognition-artifacts.mjs';
+import {completeOnboardingForTest} from './helpers/academy-fixtures.mjs';
 
 test('CRUDs da Academy preservam histórico e emitem reconhecimentos com evidência',async t=>{
   const dataDir=await mkdtemp(resolve(tmpdir(),'st1-crud-')),baseURL='http://localhost:4195',people={};
   let now=Date.now();const {app,ctx}=await createApp({dataDir,baseURL,testMode:true,includeLibrary:false,clock:()=>now});
   const server=await new Promise(resolve=>{const s=app.listen(4195,'127.0.0.1',()=>resolve(s));});
   const req=async(who,path,{method='GET',body,headers={}}={})=>{const r=await fetch(baseURL+path,{method,headers:{Origin:baseURL,Connection:'close',...(who?.cookie?{Cookie:who.cookie}:{}),...(body?{'Content-Type':'application/json'}:{}),...headers},...(body?{body:JSON.stringify(body)}:{})});const bytes=Buffer.from(await r.arrayBuffer());let data;try{data=JSON.parse(bytes);}catch{}return {status:r.status,data,bytes,headers:r.headers};};
-  const enroll=async(key,role)=>{const email=key+'@crud.example',invite=ctx.createInvitation({name:'QA '+key,email,role,tracks:['pap']}),r=await req(null,'/api/auth/sign-up/email',{method:'POST',headers:{'x-academy-invite':new URL(invite.url).searchParams.get('convite')},body:{name:'Untrusted name',email,password:randomBytes(24).toString('base64url')}});assert.equal(r.status,200);people[key]={id:r.data.user.id,cookie:r.headers.getSetCookie().map(v=>v.split(';')[0]).join('; ')};};
+  const enroll=async(key,role)=>{const email=key+'@crud.example',invite=ctx.createInvitation({name:'QA '+key,email,role,tracks:['pap']}),r=await req(null,'/api/auth/sign-up/email',{method:'POST',headers:{'x-academy-invite':new URL(invite.url).searchParams.get('convite')},body:{name:'Untrusted name',email,password:randomBytes(24).toString('base64url')}});assert.equal(r.status,200);people[key]={id:r.data.user.id,cookie:r.headers.getSetCookie().map(v=>v.split(';')[0]).join('; ')};completeOnboardingForTest(ctx.db,people[key].id);};
   const path=(e,id)=>'/api/admin/manage/'+e+(id?'/'+id:'');
   const create=async(e,body)=>{const r=await req(people.admin,path(e),{method:'POST',body});assert.equal(r.status,201,JSON.stringify(r.data));return r.data;};
   const get=async(e,id)=>(await req(people.admin,path(e,id))).data;

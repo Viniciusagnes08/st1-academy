@@ -7,6 +7,7 @@ import {tmpdir} from 'node:os';
 import {resolve} from 'node:path';
 import {randomBytes} from 'node:crypto';
 import {createApp} from '../server.mjs';
+import {completeOnboardingForTest} from './helpers/academy-fixtures.mjs';
 
 test('Estudo declarado acompanha a conta, a versão e a visibilidade sem aprovar provas',async t=>{
   const dataDir=await mkdtemp(resolve(tmpdir(),'st1-material-study-')),baseURL='http://localhost:4201';
@@ -21,7 +22,7 @@ test('Estudo declarado acompanha a conta, a versão e a visibilidade sem aprovar
     for(const [name,role,tracks,permissions] of [['admin','admin',['pap']],['seller','seller',['pap']],['peer','seller',['pap']],['supervisor','supervisor',['pap']],['digital','seller',['digital']],['restricted','seller',['pap'],['assessments']]]){
       const invite=instance.ctx.createInvitation({name:'Teste estudo '+name,email:name+'@study.example',role,tracks,permissions});
       const response=await fetch(baseURL+'/api/auth/sign-up/email',{method:'POST',headers:{Origin:baseURL,'Content-Type':'application/json','x-academy-invite':new URL(invite.url).searchParams.get('convite'),Connection:'close'},body:JSON.stringify({name:'Teste estudo',email:name+'@study.example',password:randomBytes(24).toString('base64url')})});
-      assert.equal(response.status,200);clients[name]={cookie:response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')};
+      assert.equal(response.status,200);const user=await response.json();clients[name]={id:user.user.id,cookie:response.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ')};completeOnboardingForTest(instance.ctx.db,user.user.id);
     }
     const pdfId='st1-catalogo-pap',path='/api/contents/'+pdfId,study=(await request(clients.seller,path)).data.study;
     await t.test('conclusão é explícita e privada; chegar à última página não conclui o estudo',async()=>{

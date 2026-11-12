@@ -3075,6 +3075,635 @@
           "answer": "pme_20_1"
         }
       ]
+    },
+    {
+      "id": "bi",
+      "name": "BI e Power BI",
+      "badge": "Analista BI ST1",
+      "color": "#ff7700",
+      "description": "Dados, Power Query, modelagem, DAX, visualização, segurança, desempenho e publicação.",
+      "version": "1.0",
+      "estimatedMinutes": 45,
+      "materials": [
+        "bi-m01.pdf",
+        "bi-m02.pdf",
+        "bi-m03.pdf",
+        "bi-m04.pdf",
+        "bi-m05.pdf",
+        "bi-m06.pdf",
+        "bi-m07.pdf",
+        "bi-m08.pdf",
+        "bi-m09.pdf",
+        "bi-m10.pdf",
+        "bi-m11.pdf",
+        "bi-m12.pdf",
+        "bi-m13.pdf",
+        "bi-m14.pdf",
+        "bi-m15.pdf",
+        "bi-m16.pdf"
+      ],
+      "questions": [
+        {
+          "id": "bi-final-01",
+          "stem": "Qual definição torna um indicador verificável?",
+          "explanation": "A definição precisa permitir reproduzir a população e o cálculo.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": true,
+          "topic": "Fundamentos de BI e leitura de indicadores",
+          "options": [
+            {
+              "id": "bi-final-01-1",
+              "text": "Somente uma cor e uma meta."
+            },
+            {
+              "id": "bi-final-01-2",
+              "text": "A posição do cartão na página."
+            },
+            {
+              "id": "bi-final-01-3",
+              "text": "Fórmula população período fonte e responsável."
+            },
+            {
+              "id": "bi-final-01-4",
+              "text": "Somente um nome curto."
+            }
+          ],
+          "answer": "bi-final-01-3"
+        },
+        {
+          "id": "bi-final-02",
+          "stem": "Regiões converteram 9 de 10 e 10 de 100 leads. Qual é a conversão conjunta?",
+          "explanation": "Some numeradores e denominadores: 19 dividido por 110.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": true,
+          "topic": "Fundamentos de BI e leitura de indicadores",
+          "options": [
+            {
+              "id": "bi-final-02-1",
+              "text": "50%."
+            },
+            {
+              "id": "bi-final-02-2",
+              "text": "90%."
+            },
+            {
+              "id": "bi-final-02-3",
+              "text": "100%."
+            },
+            {
+              "id": "bi-final-02-4",
+              "text": "17,27%."
+            }
+          ],
+          "answer": "bi-final-02-4"
+        },
+        {
+          "id": "bi-final-03",
+          "stem": "Qual componente guarda tabelas relacionamentos e medidas?",
+          "explanation": "O modelo organiza a camada analítica reutilizável.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Ambiente fontes e modos de conexão",
+          "options": [
+            {
+              "id": "bi-final-03-1",
+              "text": "Assinatura de e-mail."
+            },
+            {
+              "id": "bi-final-03-2",
+              "text": "Modelo semântico."
+            },
+            {
+              "id": "bi-final-03-3",
+              "text": "Tema visual."
+            },
+            {
+              "id": "bi-final-03-4",
+              "text": "Dashboard de blocos."
+            }
+          ],
+          "answer": "bi-final-03-2"
+        },
+        {
+          "id": "bi-final-04",
+          "stem": "DirectQuery torna qualquer banco rápido?",
+          "explanation": "Latência, concorrência e consultas da origem afetam o desempenho.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Ambiente fontes e modos de conexão",
+          "options": [
+            {
+              "id": "bi-final-04-1",
+              "text": "Sim; copia tudo para memória."
+            },
+            {
+              "id": "bi-final-04-2",
+              "text": "Sim; desativa os filtros."
+            },
+            {
+              "id": "bi-final-04-3",
+              "text": "Não; a consulta continua dependendo da origem e do modelo."
+            },
+            {
+              "id": "bi-final-04-4",
+              "text": "Sim; elimina toda latência."
+            }
+          ],
+          "answer": "bi-final-04-3"
+        },
+        {
+          "id": "bi-final-05",
+          "stem": "O perfil mostra qualidade em uma amostra. O que falta para concluir sobre toda a fonte?",
+          "explanation": "Problemas podem existir fora da amostra inicial.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Limpeza perfil e padronização no Power Query",
+          "options": [
+            {
+              "id": "bi-final-05-1",
+              "text": "Avaliar o conjunto inteiro e suas regras."
+            },
+            {
+              "id": "bi-final-05-2",
+              "text": "Mudar a cor das colunas."
+            },
+            {
+              "id": "bi-final-05-3",
+              "text": "Ocultar as linhas vazias."
+            },
+            {
+              "id": "bi-final-05-4",
+              "text": "Criar um dashboard."
+            }
+          ],
+          "answer": "bi-final-05-1"
+        },
+        {
+          "id": "bi-final-06",
+          "stem": "Uma dimensão possui duas correspondências para uma chave de contrato. Qual risco da expansão da mesclagem?",
+          "explanation": "Verifique a multiplicidade antes de expandir uma junção.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": true,
+          "topic": "Limpeza perfil e padronização no Power Query",
+          "options": [
+            {
+              "id": "bi-final-06-1",
+              "text": "Criar uma medida semiaditiva."
+            },
+            {
+              "id": "bi-final-06-2",
+              "text": "Multiplicar linhas e valores do contrato."
+            },
+            {
+              "id": "bi-final-06-3",
+              "text": "Reduzir sempre a tabela a uma linha."
+            },
+            {
+              "id": "bi-final-06-4",
+              "text": "Corrigir automaticamente a duplicidade."
+            }
+          ],
+          "answer": "bi-final-06-2"
+        },
+        {
+          "id": "bi-final-07",
+          "stem": "Em uma expressão M, o que define o valor devolvido após as etapas let?",
+          "explanation": "let define valores; in escolhe o resultado da expressão.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Power Query M parâmetros e fontes complexas",
+          "options": [
+            {
+              "id": "bi-final-07-1",
+              "text": "A primeira cor da tabela."
+            },
+            {
+              "id": "bi-final-07-2",
+              "text": "A licença do serviço."
+            },
+            {
+              "id": "bi-final-07-3",
+              "text": "O tamanho do arquivo."
+            },
+            {
+              "id": "bi-final-07-4",
+              "text": "A expressão após in."
+            }
+          ],
+          "answer": "bi-final-07-4"
+        },
+        {
+          "id": "bi-final-08",
+          "stem": "O que query folding procura fazer?",
+          "explanation": "A tradução depende do conector e das transformações.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Power Query M parâmetros e fontes complexas",
+          "options": [
+            {
+              "id": "bi-final-08-1",
+              "text": "Transferir operações suportadas para execução na fonte."
+            },
+            {
+              "id": "bi-final-08-2",
+              "text": "Copiar todos os dados para uma imagem."
+            },
+            {
+              "id": "bi-final-08-3",
+              "text": "Remover todas as relações."
+            },
+            {
+              "id": "bi-final-08-4",
+              "text": "Desativar autenticação."
+            }
+          ],
+          "answer": "bi-final-08-1"
+        },
+        {
+          "id": "bi-final-09",
+          "stem": "Em um modelo estrela, qual tabela descreve entidades para filtrar e agrupar?",
+          "explanation": "Dimensões fornecem contexto aos fatos.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Modelagem dimensional e modelo semântico",
+          "options": [
+            {
+              "id": "bi-final-09-1",
+              "text": "Tabela de log do navegador."
+            },
+            {
+              "id": "bi-final-09-2",
+              "text": "Dashboard."
+            },
+            {
+              "id": "bi-final-09-3",
+              "text": "Dimensão."
+            },
+            {
+              "id": "bi-final-09-4",
+              "text": "Arquivo de tema."
+            }
+          ],
+          "answer": "bi-final-09-3"
+        },
+        {
+          "id": "bi-final-10",
+          "stem": "Qual desenho inicial deixa o caminho de filtro mais previsível?",
+          "explanation": "Direção bidirecional exige necessidade e testes específicos.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Modelagem dimensional e modelo semântico",
+          "options": [
+            {
+              "id": "bi-final-10-1",
+              "text": "Todos os relacionamentos bidirecionais."
+            },
+            {
+              "id": "bi-final-10-2",
+              "text": "Fatos ligados diretamente entre si sem análise."
+            },
+            {
+              "id": "bi-final-10-3",
+              "text": "Ausência de qualquer dimensão."
+            },
+            {
+              "id": "bi-final-10-4",
+              "text": "Dimensão para fato com direção única quando atende ao requisito."
+            }
+          ],
+          "answer": "bi-final-10-4"
+        },
+        {
+          "id": "bi-final-11",
+          "stem": "Qual cálculo muda conforme mês região e canal selecionados?",
+          "explanation": "Medidas respondem ao contexto da consulta.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "DAX medidas colunas e cálculos básicos",
+          "options": [
+            {
+              "id": "bi-final-11-1",
+              "text": "Um nome de arquivo."
+            },
+            {
+              "id": "bi-final-11-2",
+              "text": "Uma medida avaliada no contexto de filtro."
+            },
+            {
+              "id": "bi-final-11-3",
+              "text": "Uma imagem estática do resultado."
+            },
+            {
+              "id": "bi-final-11-4",
+              "text": "Uma coluna Import recalculada a cada clique."
+            }
+          ],
+          "answer": "bi-final-11-2"
+        },
+        {
+          "id": "bi-final-12",
+          "stem": "Por que usar DIVIDE em uma taxa?",
+          "explanation": "O resultado alternativo deve conservar o significado do indicador.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "DAX medidas colunas e cálculos básicos",
+          "options": [
+            {
+              "id": "bi-final-12-1",
+              "text": "Para forçar qualquer taxa a 100%."
+            },
+            {
+              "id": "bi-final-12-2",
+              "text": "Para ocultar a origem."
+            },
+            {
+              "id": "bi-final-12-3",
+              "text": "Para definir um comportamento seguro quando o denominador é zero ou branco."
+            },
+            {
+              "id": "bi-final-12-4",
+              "text": "Para conceder licença."
+            }
+          ],
+          "answer": "bi-final-12-3"
+        },
+        {
+          "id": "bi-final-13",
+          "stem": "O total de uma matriz com uma medida geralmente representa o quê?",
+          "explanation": "A regra da medida determina o total; taxas não devem ser somadas automaticamente.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": true,
+          "topic": "Contexto de filtro e DAX aplicado",
+          "options": [
+            {
+              "id": "bi-final-13-1",
+              "text": "A reavaliação da medida no contexto do total."
+            },
+            {
+              "id": "bi-final-13-2",
+              "text": "Sempre a soma visual das porcentagens."
+            },
+            {
+              "id": "bi-final-13-3",
+              "text": "Sempre zero."
+            },
+            {
+              "id": "bi-final-13-4",
+              "text": "Somente o valor da primeira linha."
+            }
+          ],
+          "answer": "bi-final-13-1"
+        },
+        {
+          "id": "bi-final-14",
+          "stem": "Qual função solicita interseção com filtros existentes?",
+          "explanation": "KEEPFILTERS altera o comportamento de substituição do filtro aplicado.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Contexto de filtro e DAX aplicado",
+          "options": [
+            {
+              "id": "bi-final-14-1",
+              "text": "CONCATENATE."
+            },
+            {
+              "id": "bi-final-14-2",
+              "text": "KEEPFILTERS."
+            },
+            {
+              "id": "bi-final-14-3",
+              "text": "REMOVEFILTERS."
+            },
+            {
+              "id": "bi-final-14-4",
+              "text": "CALENDARAUTO."
+            }
+          ],
+          "answer": "bi-final-14-2"
+        },
+        {
+          "id": "bi-final-15",
+          "stem": "Qual requisito é adequado a uma tabela de datas para inteligência temporal clássica?",
+          "explanation": "A tabela precisa representar o calendário de análise de forma íntegra.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": true,
+          "topic": "Calendário comparações e inteligência temporal",
+          "options": [
+            {
+              "id": "bi-final-15-1",
+              "text": "Somente nomes de mês sem ano."
+            },
+            {
+              "id": "bi-final-15-2",
+              "text": "Datas duplicadas de cada contrato."
+            },
+            {
+              "id": "bi-final-15-3",
+              "text": "Uma única data fixa."
+            },
+            {
+              "id": "bi-final-15-4",
+              "text": "Datas únicas contínuas e sem branco no intervalo necessário."
+            }
+          ],
+          "answer": "bi-final-15-4"
+        },
+        {
+          "id": "bi-final-16",
+          "stem": "O primeiro ano não possui ano anterior. Como interpretar a comparação?",
+          "explanation": "Ausência de base não é igualdade entre períodos.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Calendário comparações e inteligência temporal",
+          "options": [
+            {
+              "id": "bi-final-16-1",
+              "text": "Referência anterior ausente, com resultado e mensagem apropriados."
+            },
+            {
+              "id": "bi-final-16-2",
+              "text": "Crescimento comprovado de 0%."
+            },
+            {
+              "id": "bi-final-16-3",
+              "text": "Queda comprovada de 100% em qualquer caso."
+            },
+            {
+              "id": "bi-final-16-4",
+              "text": "Resultado sempre igual a 1."
+            }
+          ],
+          "answer": "bi-final-16-1"
+        },
+        {
+          "id": "bi-final-17",
+          "stem": "Uma meta de 100 foi repetida em 30 dias. Qual é a meta mensal original?",
+          "explanation": "A repetição não cria 30 metas distintas; corrija a estrutura.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Fundamentos de BI e leitura de indicadores",
+          "options": [
+            {
+              "id": "bi-final-17-1",
+              "text": "3000."
+            },
+            {
+              "id": "bi-final-17-2",
+              "text": "30."
+            },
+            {
+              "id": "bi-final-17-3",
+              "text": "130."
+            },
+            {
+              "id": "bi-final-17-4",
+              "text": "100."
+            }
+          ],
+          "answer": "bi-final-17-4"
+        },
+        {
+          "id": "bi-final-18",
+          "stem": "Desabilitar a carga de uma consulta de estágio significa o quê?",
+          "explanation": "Carga e dependência de transformação são conceitos diferentes.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Limpeza perfil e padronização no Power Query",
+          "options": [
+            {
+              "id": "bi-final-18-1",
+              "text": "Todas as referências são quebradas."
+            },
+            {
+              "id": "bi-final-18-2",
+              "text": "Ela pode continuar servindo de dependência sem virar tabela carregada."
+            },
+            {
+              "id": "bi-final-18-3",
+              "text": "Ela nunca mais é avaliada."
+            },
+            {
+              "id": "bi-final-18-4",
+              "text": "Ela é apagada da origem."
+            }
+          ],
+          "answer": "bi-final-18-2"
+        },
+        {
+          "id": "bi-final-19",
+          "stem": "Uma ponte muitos para muitos deve representar o quê?",
+          "explanation": "A ponte modela uma relação real e precisa de teste de filtros.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Modelagem dimensional e modelo semântico",
+          "options": [
+            {
+              "id": "bi-final-19-1",
+              "text": "Qualquer duplicidade não investigada."
+            },
+            {
+              "id": "bi-final-19-2",
+              "text": "Um modo de ocultar erros de dimensão."
+            },
+            {
+              "id": "bi-final-19-3",
+              "text": "Uma soma de todas as metas."
+            },
+            {
+              "id": "bi-final-19-4",
+              "text": "Um vínculo legítimo com grão e chaves definidos."
+            }
+          ],
+          "answer": "bi-final-19-4"
+        },
+        {
+          "id": "bi-final-20",
+          "stem": "Como este curso trata churn mensal quando vários meses estão no contexto?",
+          "explanation": "Um indicador mensal não deve ganhar uma regra acumulada sem contrato.",
+          "source": {
+            "file": "bi-m16.pdf",
+            "page": 1
+          },
+          "critical": false,
+          "topic": "Contexto de filtro e DAX aplicado",
+          "options": [
+            {
+              "id": "bi-final-20-1",
+              "text": "Multiplica o saldo por 24."
+            },
+            {
+              "id": "bi-final-20-2",
+              "text": "Retorna branco até haver uma regra distinta para o agregado."
+            },
+            {
+              "id": "bi-final-20-3",
+              "text": "Soma todas as taxas mensais."
+            },
+            {
+              "id": "bi-final-20-4",
+              "text": "Mostra sempre 0%."
+            }
+          ],
+          "answer": "bi-final-20-2"
+        }
+      ]
     }
   ],
   "sourceRevision": "central-1e01a357",

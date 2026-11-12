@@ -11,12 +11,13 @@ import {readProfile} from '../lib/access.mjs';
 import {defaultPermissions} from '../lib/access.mjs';
 import {foundationLessons} from '../content/foundations.mjs';
 import {renderLessonReading} from '../public/assets/lesson-reading.js';
+import {completeOnboardingForTest} from './helpers/academy-fixtures.mjs';
 
 test('Referências viram aulas e pré-requisitos sem sobrescrever curadoria ou progresso',async t=>{
   const dataDir=await mkdtemp(resolve(tmpdir(),'st1-foundations-')),baseURL='http://localhost:4261';
   const {app,ctx}=await createApp({dataDir,baseURL,testMode:true,includeLibrary:false,googleConfig:{clientId:'',clientSecret:''}});
   const server=await new Promise(done=>{const s=app.listen(4261,'127.0.0.1',()=>done(s));});
-  const signup=async(key,role)=>{const email=key+'@foundations.example',inv=ctx.createInvitation({name:'QA Formação '+key,email,role,tracks:['pap']});const r=await fetch(baseURL+'/api/auth/sign-up/email',{method:'POST',headers:{Origin:baseURL,'Content-Type':'application/json','x-academy-invite':new URL(inv.url).searchParams.get('convite'),Connection:'close'},body:JSON.stringify({name:'QA Formação',email,password:randomBytes(24).toString('base64url')})});assert.equal(r.status,200);const data=await r.json();return readProfile(ctx.db,data.user.id);};
+  const signup=async(key,role)=>{const email=key+'@foundations.example',inv=ctx.createInvitation({name:'QA Formação '+key,email,role,tracks:['pap']});const r=await fetch(baseURL+'/api/auth/sign-up/email',{method:'POST',headers:{Origin:baseURL,'Content-Type':'application/json','x-academy-invite':new URL(inv.url).searchParams.get('convite'),Connection:'close'},body:JSON.stringify({name:'QA Formação',email,password:randomBytes(24).toString('base64url')})});assert.equal(r.status,200);const data=await r.json();completeOnboardingForTest(ctx.db,data.user.id);return readProfile(ctx.db,data.user.id);};
   try{
     const admin=await signup('admin','admin'),seller=await signup('seller','seller'),supervisor=await signup('supervisor','supervisor');
     ctx.modules.seed(admin.user_id);importKnowledgeLibrary(ctx.db,admin.user_id,ctx.access.audit);
