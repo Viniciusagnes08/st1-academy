@@ -321,18 +321,30 @@ export async function createApp(options={}) {
   const libraryItems=viewer=>{const flags=ctx.learningFlows.materialFlags(viewer),visible=ctx.contents.visible(viewer),tags=ctx.management.tagsForMany('contents',visible.map(item=>item.id));return visible.map(item=>({...item,flow:flags.get(item.id)||null,study:ctx.readings.detailStudy(viewer,item.id),tags:tags.get(item.id)||[]}));};
   app.get('/api/contents',member,contentAction((req,res)=>res.json({items:libraryItems(req.member)})));
   app.get('/api/library',member,contentAction((req,res)=>res.json({items:libraryItems(req.member),modules:ctx.modules.visible(req.member),reading:ctx.readings.latest(req.member),recent:ctx.readings.recent(req.member)})));
+  app.get('/api/saved-contents',member,contentAction((req,res)=>res.json(ctx.contentEngagement.saved(req.member))));
   app.get('/api/contents/:id',member,contentAction((req,res)=>{const item=ctx.contents.detail(req.member,req.params.id);res.json({...item,study:ctx.readings.forItem(req.member,item),tags:ctx.management.tagsFor('contents',req.params.id)});}));
+  app.get('/api/contents/:id/engagement',member,contentAction((req,res)=>res.json(ctx.contentEngagement.detail(req.member,req.params.id))));
+  app.put('/api/contents/:id/engagement/reaction',member,contentAction((req,res)=>res.json(ctx.contentEngagement.react(req.member,req.params.id,req.body.emoji))));
+  app.put('/api/contents/:id/engagement/saved',member,contentAction((req,res)=>res.json(ctx.contentEngagement.save(req.member,req.params.id,req.body.saved))));
+  app.post('/api/contents/:id/engagement/comments',member,contentAction((req,res)=>res.status(201).json(ctx.contentEngagement.comment(req.member,req.params.id,req.body.body))));
+  app.delete('/api/contents/:id/engagement/comments/:commentId',member,contentAction((req,res)=>res.json(ctx.contentEngagement.removeComment(req.member,req.params.id,req.params.commentId))));
   app.get('/api/contents/:id/cover',member,contentAction((req,res)=>res.type('image/webp').send(ctx.contents.cover(req.member,req.params.id))));
   app.get('/api/contents/:id/file',member,contentAction((req,res)=>{
     const asset=ctx.contents.file(req.member,req.params.id);
-    res.type(asset.mime).setHeader('Content-Disposition',`${req.query.download==='1'?'attachment':'inline'}; filename*=UTF-8''${encodeURIComponent(asset.name)}`);
-    res.send(Buffer.from(asset.bytes));
+    const bytes=Buffer.from(asset.bytes),size=bytes.length;
+    res.type(asset.mime).set('Cache-Control','no-store').set('X-Content-Type-Options','nosniff').set('Accept-Ranges','bytes').setHeader('Content-Disposition',`${req.query.download==='1'?'attachment':'inline'}; filename*=UTF-8''${encodeURIComponent(asset.name)}`);
+    if(asset.mime.startsWith('video/')&&req.headers.range&&req.query.download!=='1'){
+      const range=/^bytes=(\d*)-(\d*)$/.exec(req.headers.range),start=range?(range[1]?Number(range[1]):size-Number(range[2])):NaN,end=range?(range[1]?(range[2]?Number(range[2]):size-1):size-1):NaN;
+      if(!range||!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start<0||start>=size||end<start)return res.status(416).set('Content-Range',`bytes */${size}`).end();
+      const last=Math.min(end,size-1);return res.status(206).set('Content-Range',`bytes ${start}-${last}/${size}`).set('Content-Length',String(last-start+1)).send(bytes.subarray(start,last+1));
+    }
+    res.set('Content-Length',String(size)).send(bytes);
   }));
   app.get('/api/admin/contents',member,admin,contentAction((req,res)=>res.json({items:ctx.contents.list()})));
   app.get('/api/admin/contents/:id',member,admin,contentAction((req,res)=>res.json(ctx.contents.detail(req.member,req.params.id,true))));
   app.post('/api/admin/contents',member,admin,contentAction((req,res)=>res.status(201).json(ctx.contents.create(req.member.user_id,req.body))));
   app.patch('/api/admin/contents/:id',member,admin,contentAction((req,res)=>res.json(ctx.contents.update(req.member.user_id,req.params.id,req.body))));
-  app.post('/api/admin/contents/:id/file',member,admin,express.raw({type:'application/octet-stream',limit:'25mb'}),contentAction((req,res)=>res.status(201).json(ctx.contents.upload(req.member.user_id,req.params.id,Number(req.headers['x-content-revision']),req.headers['x-file-name'],req.body))));
+  app.post('/api/admin/contents/:id/file',member,admin,express.raw({type:'application/octet-stream',limit:'40mb'}),contentAction((req,res)=>res.status(201).json(ctx.contents.upload(req.member.user_id,req.params.id,Number(req.headers['x-content-revision']),req.headers['x-file-name'],req.body))));
   app.post('/api/admin/invitations',member,admin,async(req,res)=>{
     try{const invitation=ctx.createInvitation({name:req.body.name,email:req.body.email,role:req.body.role??'seller',tracks:req.body.tracks,permissions:req.body.permissions,supervisorIds:req.body.supervisorIds,sellerIds:req.body.sellerIds,externalUserId:req.body.externalUserId,actorId:req.member.user_id});res.status(201).json(await deliverInvitation({...invitation,name:req.body.name,email:req.body.email}));}catch(error){res.status(400).json({message:error.message});}
   });
@@ -409,7 +421,7 @@ export async function createApp(options={}) {
     res.sendFile(resolve(projectRoot,'public/index.html'));
   });
   app.use(express.static(resolve(projectRoot,'public'),{index:'index.html',maxAge:0}));
-  app.use((error,req,res,next)=>{console.error('Falha na ST1 Academy:',error.message);if(!res.headersSent)res.status(error.status===413?413:500).json({message:error.status===413?'O arquivo ou conteúdo ultrapassa o limite permitido. Arquivos podem ter até 25 MB.':'Não foi possível concluir. Suas respostas salvas continuam disponíveis.'});});
+  app.use((error,req,res,next)=>{console.error('Falha na ST1 Academy:',error.message);if(!res.headersSent)res.status(error.status===413?413:500).json({message:error.status===413?'O arquivo ou conteúdo ultrapassa o limite permitido. Arquivos podem ter até 25 MB; vídeos MP4/WebM, até 40 MB.':'Não foi possível concluir. Suas respostas salvas continuam disponíveis.'});});
   return {app,ctx};
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
@@ -435,5 +447,4 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
   };
   process.on('SIGTERM',stop);process.on('SIGINT',stop);
 }
-
 

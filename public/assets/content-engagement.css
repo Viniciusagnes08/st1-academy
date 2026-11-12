@@ -1,0 +1,25 @@
+.content-video{margin:12px 0 26px;overflow:hidden;border:1px solid #ded9e5;border-radius:12px;background:#141417;box-shadow:0 14px 32px rgba(24,18,22,.12)}
+.content-video video{display:block;width:100%;max-height:72vh;aspect-ratio:16/9;background:#141417}
+.content-video-note{padding:11px 16px;color:#ddd3d7;font-size:11px}
+.content-engagement{margin:34px 0;padding:25px 27px;background:#fff;border:1px solid #e3dce3;border-radius:12px}
+.content-engagement-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+.content-engagement-heading h2{font-size:25px;line-height:1.2;letter-spacing:-.6px;margin:6px 0}
+.content-engagement-heading p{font-size:12px;color:#746b76;line-height:1.6;margin:0}
+.content-save-button{flex:none;min-height:38px;padding:8px 14px;border:1px solid #d6cad2;border-radius:7px;background:#fff;color:#5f4d58;font:700 12px Poppins,sans-serif;cursor:pointer}
+.content-save-button.is-saved{border-color:#efb276;background:#fff2e5;color:#a64b0a}
+.content-reactions{display:flex;flex-wrap:wrap;gap:8px;margin:21px 0 25px}
+.content-reactions button{display:flex;align-items:center;gap:7px;min-height:41px;padding:7px 11px;border:1px solid #ded8df;border-radius:8px;background:#faf9fa;color:#342f37;font:inherit;cursor:pointer}
+.content-reactions button:hover,.content-reactions button:focus-visible{border-color:#ec8b42;background:#fff8f1}
+.content-reactions button.is-selected{border-color:#f77716;background:#fff0e3;box-shadow:0 0 0 1px #f77716 inset}
+.content-reactions button span{font-size:20px;line-height:1}.content-reactions button strong{font-size:12px}.content-reactions button small{font-size:10px;color:#706878}
+.content-comments{padding-top:22px;border-top:1px solid #eee8ec}
+.content-comments-title{display:flex;align-items:center;justify-content:space-between;gap:14px}.content-comments-title h3{margin:0;font-size:17px}.content-comments-title h3 span{color:#b95711}.content-comments-title a{font-size:11px;color:#b95711;font-weight:700}
+.content-comments form{margin:18px 0 8px}.content-comments form label{display:block;margin-bottom:8px;font-size:11px;font-weight:700;color:#514953}
+.content-comments textarea{display:block;width:100%;min-height:96px;padding:12px 14px;border:1px solid #d5ccd5;border-radius:8px;background:#fbfafb;color:#252129;font:inherit;font-size:13px;resize:vertical;line-height:1.6}
+.content-comments textarea:focus{outline:2px solid #f8c9a7;border-color:#ef741d}
+.content-comments form>div{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:9px}.content-comments form small{font-size:10px;color:#817782}.content-comments form .button{min-height:39px;padding:9px 14px;font-size:11px}
+.content-comment-list{margin-top:22px}.content-comment{padding:16px 0;border-top:1px solid #eee8ec}.content-comment>div{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}.content-comment strong{font-size:12px}.content-comment time{font-size:10px;color:#867c88}.content-comment button{margin-left:auto;min-height:32px;border:0;background:none;color:#a95420;font:700 10px Poppins,sans-serif;cursor:pointer}.content-comment p{white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0 0;font-size:12px;line-height:1.7;color:#514953}.content-comment-empty{font-size:12px;color:#817782;line-height:1.6}
+.knowledge-saved-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}.knowledge-saved-head p{margin:0;font-size:12px;color:#756d77}.knowledge-saved-head a,.knowledge-saved-link{font-size:11px;color:#b95711;font-weight:700;text-decoration:none}
+.knowledge-saved-link{display:inline-flex;align-items:center;min-height:42px;white-space:nowrap}
+.knowledge-unsave{padding:8px 10px;border:0;background:none;color:#a95420;font:700 10px Poppins,sans-serif;cursor:pointer}
+@media(max-width:650px){.content-engagement{padding:20px 17px}.content-engagement-heading{flex-wrap:wrap}.content-save-button{min-height:42px}.content-reactions button small{display:none}.content-reactions button{min-height:43px}.content-comments form>div{flex-wrap:wrap}.content-comments form .button{min-height:43px}.knowledge-saved-head{align-items:flex-start;flex-direction:column}}

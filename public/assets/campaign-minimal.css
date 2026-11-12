@@ -1,0 +1,11 @@
+.campaign-automation-actions{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.campaign-automation-actions .button,.campaign-card-actions .button,.whatsapp-automation-card .whatsapp-template-fields .button{flex:0 0 auto;width:auto;min-height:36px;padding:7px 11px;border:1px solid #ded8df;border-radius:6px;background:#fff;color:#342e36;font-size:11px;line-height:1.2;font-weight:700;white-space:nowrap;box-shadow:none}
+.campaign-automation-actions .button:last-child:nth-child(odd){grid-column:auto}
+.campaign-automation-actions .button:hover,.campaign-card-actions .button:hover,.whatsapp-automation-card .whatsapp-template-fields .button:hover{border-color:#e17a30;background:#fff8f1;color:#a94a0c}
+.campaign-automation-actions .button:focus-visible,.campaign-card-actions .button:focus-visible,.whatsapp-automation-card .whatsapp-template-fields .button:focus-visible{outline:2px solid #ed8a43;outline-offset:2px}
+.campaign-automation-actions .button-primary,.campaign-card-actions .button-primary{border-color:#e16f1d;background:#f77716;color:#fff}
+.campaign-automation-actions .button-primary:hover,.campaign-card-actions .button-primary:hover{background:#d65f0e;color:#fff}
+.whatsapp-automation-card .whatsapp-template-fields .button{justify-self:start;align-self:end}
+.whatsapp-automation-card .campaign-card-actions{display:flex;flex-wrap:wrap}
+.whatsapp-automation-card .campaign-card-actions .button{width:auto}
+@media(max-width:480px){.campaign-automation-actions .button,.campaign-card-actions .button,.whatsapp-automation-card .whatsapp-template-fields .button{min-height:40px}}

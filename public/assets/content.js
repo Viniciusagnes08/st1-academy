@@ -2,7 +2,7 @@ import {createModulePanel} from './modules-panel.js?v=2.5.0';
 import {createKnowledgePanel,categoryNames} from './knowledge.js?v=20261103-dream-home';
 export function createContentPanel({api,esc,icon,main,commitView,tracks,user,hasAccess,toast,sourceUrl,materialLabel,engagement}){
   let items=[],selectedTrack='all',selectedStatus='all',search='',editor=null,saving=false,editorModules=[];
-  const statusName={draft:'Rascunho',published:'Publicado',archived:'Arquivado'},kindName={file:'Arquivo',text:'Texto',link:'Link / vídeo'};
+  const statusName={draft:'Rascunho',published:'Publicado',archived:'Arquivado'},kindName={file:'Arquivo ou vídeo',text:'Texto',link:'Link externo'};
   const trackName=id=>tracks().find(t=>t.id===id)?.name||id;
   const size=value=>value>=1048576?(value/1048576).toFixed(1).replace('.',',')+' MB':Math.ceil(value/1024)+' KB';
   const badgeList=ids=>ids.map(id=>`<span class="content-track channel-${esc(id)}">${esc(trackName(id))}</span>`).join('');
@@ -25,7 +25,7 @@ export function createContentPanel({api,esc,icon,main,commitView,tracks,user,has
   function fields(kind){
     if(kind==='text')return `<label for="content-body">Texto do conteúdo</label><textarea id="content-body" name="body" rows="11" maxlength="10000" placeholder="Escreva as orientações para o time...">${esc(editor.body||'')}</textarea><small>Até 10.000 caracteres. O texto aparece dentro da Academy.</small>`;
     if(kind==='link')return `<label for="content-url">Link do conteúdo ou vídeo</label><input type="url" id="content-url" name="url" maxlength="1200" placeholder="https://..." value="${esc(editor.url||'')}"><small>Use o endereço HTTPS de uma página, vídeo ou material.</small>`;
-    return `${editor.asset?`<div class="content-current-file">${icon('book')}<div><strong>${esc(editor.asset.name)}</strong><span>${size(editor.asset.size)} · arquivo atual</span></div><a href="/api/contents/${editor.id}/file" target="_blank" rel="noopener">Abrir</a></div>`:''}<label class="content-dropzone" data-content-dropzone for="content-file">${icon('download')}<strong>${editor.asset?'Selecione outro arquivo para atualizar':'Selecione ou arraste seu arquivo'}</strong><span id="content-file-label">PDF, PNG, JPG ou WebP · até 25 MB</span><input type="file" id="content-file" name="asset" accept=".pdf,.png,.jpg,.jpeg,.webp"></label>${editor.assetVersions?.length>1?`<details class="content-versions"><summary>Versões anteriores do arquivo</summary>${editor.assetVersions.filter(a=>a.id!==editor.asset.id).map(a=>`<div><span>${esc(a.name)}<small>${size(a.size)}</small></span><button type="button" data-content-restore="${a.id}">Restaurar</button></div>`).join('')}</details>`:''}`;
+    return `${editor.asset?`<div class="content-current-file">${icon('book')}<div><strong>${esc(editor.asset.name)}</strong><span>${size(editor.asset.size)} · arquivo atual</span></div><a href="/api/contents/${editor.id}/file" target="_blank" rel="noopener">Abrir</a></div>`:''}<label class="content-dropzone" data-content-dropzone for="content-file">${icon('download')}<strong>${editor.asset?'Selecione outro arquivo para atualizar':'Selecione ou arraste seu arquivo'}</strong><span id="content-file-label">PDF e imagens até 25 MB · vídeos MP4/WebM até 40 MB</span><input type="file" id="content-file" name="asset" accept=".pdf,.png,.jpg,.jpeg,.webp,.mp4,.m4v,.webm,video/mp4,video/webm"></label>${editor.assetVersions?.length>1?`<details class="content-versions"><summary>Versões anteriores do arquivo</summary>${editor.assetVersions.filter(a=>a.id!==editor.asset.id).map(a=>`<div><span>${esc(a.name)}<small>${size(a.size)}</small></span><button type="button" data-content-restore="${a.id}">Restaurar</button></div>`).join('')}</details>`:''}`;
   }
   async function edit(id){
     if(!isAdmin())return manager();
@@ -40,7 +40,7 @@ export function createContentPanel({api,esc,icon,main,commitView,tracks,user,has
     if(event.target.id==='content-status-filter'){selectedStatus=event.target.value;managerResults();}
     if(event.target.id==='content-publish-status'){const b=main.querySelector('#content-save');b.value=event.target.value;b.innerHTML=({'published':'Salvar e publicar','draft':'Salvar rascunho','archived':'Salvar alterações'}[b.value])+' '+icon('check');}
     if(event.target.name==='kind'&&!editor.id){editor.kind=event.target.value;document.querySelector('#content-kind-fields').innerHTML=fields(editor.kind);}
-    if(event.target.id==='content-file'){const f=event.target.files[0];document.querySelector('#content-file-label').textContent=f?`${f.name} · ${size(f.size)}`:'PDF, PNG, JPG ou WebP · até 25 MB';}
+    if(event.target.id==='content-file'){const f=event.target.files[0];document.querySelector('#content-file-label').textContent=f?`${f.name} · ${size(f.size)}`:'PDF e imagens até 25 MB · vídeos MP4/WebM até 40 MB';}
   });
   main.addEventListener('dragover',event=>{if(event.target.closest('[data-content-dropzone]'))event.preventDefault();});
   main.addEventListener('drop',event=>{if(!event.target.closest('[data-content-dropzone]'))return;event.preventDefault();const input=document.querySelector('#content-file');if(input&&event.dataTransfer.files.length===1){input.files=event.dataTransfer.files;input.dispatchEvent(new Event('change',{bubbles:true}));}});
@@ -57,7 +57,7 @@ export function createContentPanel({api,esc,icon,main,commitView,tracks,user,has
     const file=document.querySelector('#content-file')?.files[0];let id=form.elements.contentId.value,revision=Number(form.elements.revision.value);
     const submitButtons=[...form.querySelectorAll('button[type=submit]')],buttonLabels=submitButtons.map(b=>b.innerHTML);saving=true;submitButtons.forEach(b=>b.disabled=true);button.textContent=file?'Enviando arquivo...':'Salvando...';
     try{
-      if(!payload.tracks.length)throw new Error('Escolha pelo menos uma trilha.');if(file&&file.size>25*1048576)throw new Error('O arquivo pode ter até 25 MB.');
+      if(!payload.tracks.length)throw new Error('Escolha pelo menos uma trilha.');if(file&&file.size>(/\.(mp4|m4v|webm)$/i.test(file.name)?40:25)*1048576)throw new Error(/\.(mp4|m4v|webm)$/i.test(file.name)?'O vídeo pode ter até 40 MB.':'O arquivo pode ter até 25 MB.');
       if(payload.kind==='file'&&payload.status==='published'&&!file&&!editor.asset)throw new Error('Selecione um arquivo antes de publicar.');
       if(!id){const created=await api('/api/admin/contents',{method:'POST',body:{...payload,status:'draft'}});id=created.id;revision=created.revision;form.elements.contentId.value=id;form.elements.revision.value=revision;editor=created;}
       if(file){const response=await fetch(`/api/admin/contents/${id}/file`,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/octet-stream','x-file-name':encodeURIComponent(file.name),'x-content-revision':String(revision)},body:file});const result=await response.json();if(!response.ok)throw new Error(result.message||'Não foi possível enviar o arquivo.');revision=result.revision;editor=result;form.elements.revision.value=revision;}

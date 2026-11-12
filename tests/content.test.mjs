@@ -22,6 +22,7 @@ test('Conteúdos exigem Admin para gestão e respeitam material, trilha, públic
   for(const [name,role,tracks,permissions] of [['admin','admin',['pap']],['pap','seller',['pap']],['digital','seller',['digital']],['supervisor','supervisor',['pap']],['noMaterials','seller',['pap'],['assessments','conquests']]]){
     const invite=instance.ctx.createInvitation({name:'Teste de conteúdo '+name,email:name+'-content@example.test',role,tracks,permissions}),token=new URL(invite.url).searchParams.get('convite');clients[name]={cookie:''};
     assert.equal((await request(clients[name],'/api/auth/sign-up/email',{method:'POST',body:{name:'Teste',email:name+'-content@example.test',password:randomBytes(24).toString('base64url')},headers:{'x-academy-invite':token}})).status,200);
+    assert.equal((await request(clients[name],'/api/onboarding',{method:'POST',body:{sector:'PAP',role:'Vendedor(a)',goal:'Especialista',dream:'Crescer na ST1',challenges:['Abordagem'],squad:'Ainda não sei'}})).status,200);
   }
   const pdf=await PDFDocument.create();pdf.addPage([300,300]).drawText('ST1 - CONTEUDO DE TESTE');const pdfBytes=Buffer.from(await pdf.save());
   let content;
@@ -62,6 +63,29 @@ test('Conteúdos exigem Admin para gestão e respeitam material, trilha, públic
       assert.equal((await request(clients.admin,'/api/admin/contents/'+content.id,{method:'PATCH',body:{revision:content.revision-1,title:'Alteração desatualizada'}})).status,409);
       assert.equal(instance.ctx.db.prepare('SELECT count(*) n FROM academy_content_asset').get().n,1);
     });
+    await t.test('vídeo publicado toca dentro do acesso autorizado e responde a intervalos de bytes',async()=>{
+      const created=await request(clients.admin,'/api/admin/contents',{method:'POST',body:{title:'Aula em vídeo PAP',kind:'file',tracks:['pap'],audience:['seller'],status:'draft'}});assert.equal(created.status,201);
+      const videoBytes=Buffer.from([0,0,0,20,102,116,121,112,105,115,111,109,0,0,0,0,0,0,0,0]);
+      const uploaded=await upload(created.data.id,created.data.revision,videoBytes,'aula.mp4');assert.equal(uploaded.status,201);assert.equal(uploaded.data.asset.mime,'video/mp4');
+      assert.equal((await request(clients.admin,'/api/admin/contents/'+created.data.id,{method:'PATCH',body:{revision:uploaded.data.revision,status:'published'}})).status,200);
+      const part=await request(clients.pap,'/api/contents/'+created.data.id+'/file',{headers:{Range:'bytes=4-7'}});assert.equal(part.status,206);assert.equal(part.bytes.toString(),'ftyp');assert.equal(part.headers.get('content-range'),'bytes 4-7/20');
+      assert.equal((await request(clients.digital,'/api/contents/'+created.data.id+'/file',{headers:{Range:'bytes=0-3'}})).status,404);
+    });
+    await t.test('reações, salvos e comentários ficam no banco e respeitam o acesso ao material',async()=>{
+      const path='/api/contents/'+content.id+'/engagement',initial=await request(clients.pap,path);assert.equal(initial.status,200);assert.equal(initial.data.commentCount,0);
+      assert.equal((await request(clients.digital,path)).status,404);
+      assert.equal((await request(clients.pap,path+'/reaction',{method:'PUT',body:{emoji:'😈'}})).status,400);
+      const reacted=await request(clients.pap,path+'/reaction',{method:'PUT',body:{emoji:'👍'}});assert.equal(reacted.status,200);assert.equal(reacted.data.reactions.find(item=>item.emoji==='👍').count,1);
+      const saved=await request(clients.pap,path+'/saved',{method:'PUT',body:{saved:true}});assert.equal(saved.status,200);assert.equal(saved.data.saved,true);
+      assert.ok((await request(clients.pap,'/api/saved-contents')).data.items.some(item=>item.id===content.id));
+      assert.ok(!(await request(clients.digital,'/api/saved-contents')).data.items.some(item=>item.id===content.id));
+      const posted=await request(clients.pap,path+'/comments',{method:'POST',body:{body:'Gostei desta orientação.'}});assert.equal(posted.status,201);assert.equal(posted.data.commentCount,1);
+      const commentId=posted.data.comments[0].id;assert.equal((await request(clients.admin,path)).data.comments[0].body,'Gostei desta orientação.');
+      assert.equal((await request(clients.digital,path+'/comments/'+commentId,{method:'DELETE',body:{}})).status,404);
+      assert.equal((await request(clients.pap,path+'/comments/'+commentId,{method:'DELETE',body:{}})).data.commentCount,0);
+      assert.equal((await request(clients.admin,path+'/saved',{method:'PUT',body:{saved:true}})).status,200);
+      assert.equal((await request(clients.admin,path+'/comments',{method:'POST',body:{body:'Material aprovado para a equipe.'}})).status,201);
+    });
     await t.test('trocar o arquivo preserva versões e permite restaurar a versão original',async()=>{
       const original=content.asset.id,newPdf=Buffer.from('%PDF-1.7\nArquivo de teste da segunda versao\n%%EOF');
       const response=await upload(content.id,content.revision,newPdf,'Segunda versao.pdf');assert.equal(response.status,201);content=response.data;assert.equal(content.assetVersions.length,2);
@@ -71,7 +95,7 @@ test('Conteúdos exigem Admin para gestão e respeitam material, trilha, públic
       assert.equal((await request(clients.admin,'/api/admin/contents/'+another.id,{method:'PATCH',body:{revision:0,assetId:original}})).status,400);
     });
     await t.test('arquivar remove a leitura imediatamente e voltar a publicar preserva o arquivo',async()=>{
-      content=(await update({status:'archived'})).data;assert.equal((await request(clients.pap,'/api/contents/'+content.id+'/file')).status,404);assert.equal((await request(clients.pap,'/api/contents')).data.items.length,0);
+      content=(await update({status:'archived'})).data;assert.equal((await request(clients.pap,'/api/contents/'+content.id+'/file')).status,404);assert.ok(!(await request(clients.pap,'/api/contents')).data.items.some(item=>item.id===content.id));
       assert.equal((await request(clients.admin,'/api/admin/contents/'+content.id)).status,200);
       content=(await update({status:'published',audience:['seller','supervisor']})).data;assert.equal((await request(clients.supervisor,'/api/contents/'+content.id+'/file')).status,200);
     });
@@ -89,6 +113,8 @@ test('Conteúdos exigem Admin para gestão e respeitam material, trilha, públic
     await t.test('arquivos, versões e auditoria persistem no reinício sem criar aprovações ou certificados',async()=>{
       await new Promise(resolve=>server.close(resolve));instance.ctx.db.close();instance=await createApp({dataDir:directory,baseURL,testMode:true,includeLibrary:false});server=await listen();
       const response=await request(clients.admin,'/api/admin/contents/'+content.id);assert.equal(response.status,200);assert.equal(response.data.assetVersions.length,2);assert.deepEqual((await request(clients.admin,'/api/contents/'+content.id+'/file')).bytes,pdfBytes);
+      assert.ok((await request(clients.admin,'/api/saved-contents')).data.items.some(item=>item.id===content.id));
+      assert.equal((await request(clients.admin,'/api/contents/'+content.id+'/engagement')).data.comments[0].body,'Material aprovado para a equipe.');
       assert.ok(instance.ctx.db.prepare("SELECT count(*) n FROM academy_access_audit WHERE action LIKE 'content.%'").get().n>=8);
       assert.equal(instance.ctx.db.prepare('SELECT count(*) n FROM academy_certificate').get().n,0);assert.equal(instance.ctx.db.prepare('SELECT count(*) n FROM academy_outbox').get().n,0);
     });
