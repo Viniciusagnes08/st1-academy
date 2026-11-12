@@ -122,12 +122,12 @@
   }
   async function campaignPage(){
     if(state.user?.role!=='admin')return restricted('Campanhas são gerenciadas pelo Admin.','Esta área é exclusiva da gestão da ST1 Academy.',!state.user);
-    if(!state.campaignPanel){const {createCampaignPanel}=await import('/assets/campaigns.js?v=20261111-automation-pagination');state.campaignPanel=createCampaignPanel({api,esc,main,commitView,toast});}
+    if(!state.campaignPanel){const {createCampaignPanel}=await import('/assets/campaigns.js?v=20261112-campaign-crud');state.campaignPanel=createCampaignPanel({api,esc,main,commitView,toast});}
     await state.campaignPanel.render();
   }
   async function whatsappCampaignPage(){
     if(state.user?.role!=='admin')return restricted('Campanhas são gerenciadas pelo Admin.','Esta área é exclusiva da gestão da ST1 Academy.',!state.user);
-    if(!state.whatsappCampaignPanel){const {createWhatsAppCampaignPanel}=await import('/assets/whatsapp-campaigns.js?v=20261111-automation-pagination');state.whatsappCampaignPanel=createWhatsAppCampaignPanel({api,esc,main,commitView,toast});}
+    if(!state.whatsappCampaignPanel){const {createWhatsAppCampaignPanel}=await import('/assets/whatsapp-campaigns.js?v=20261112-campaign-crud');state.whatsappCampaignPanel=createWhatsAppCampaignPanel({api,esc,main,commitView,toast});}
     await state.whatsappCampaignPanel.render();
   }
   async function integrationsPage(){
@@ -254,4 +254,5 @@
   }
   init();
 })();
+
 
