@@ -82,3 +82,18 @@ test('campanhas manuais respeitam a cota dos automáticos e reagendam o envio co
   }finally{db.close();}
 });
 
+test('CRUD de e-mail edita e exclui somente campanhas em rascunho',()=>{
+  const db=new DatabaseSync(':memory:');
+  db.exec(`CREATE TABLE user(id TEXT PRIMARY KEY,name TEXT,email TEXT);CREATE TABLE academy_member(user_id TEXT PRIMARY KEY,role TEXT,enabled INTEGER);CREATE TABLE academy_onboarding(user_id TEXT PRIMARY KEY,answers_json TEXT NOT NULL,completed_at TEXT NOT NULL);INSERT INTO user VALUES('a','Ana Silva','ana@example.test');INSERT INTO academy_member VALUES('a','seller',1);INSERT INTO academy_onboarding VALUES('a','{"role":"Consultor(a)"}','2026-01-01');`);
+  const service=createCampaignService(db,{baseURL:'https://st1academy.tech'});
+  try{
+    const draft=service.create('admin-1',{title:'Rascunho inicial',subject:'Assunto inicial',body:'Mensagem inicial com conteúdo suficiente.',recipientIds:['a']});
+    const edited=service.update('admin-2',draft.id,{title:'Rascunho revisado',subject:'Assunto revisado',body:'Mensagem revisada e persistida corretamente.',audienceType:'role',audienceRole:'Consultor(a)',recipientIds:['a'],ctaLabel:'Abrir trilhas',ctaUrl:'/#trilhas'});
+    assert.equal(edited.title,'Rascunho revisado');assert.equal(edited.updatedBy,'admin-2');assert.ok(edited.updatedAt);assert.equal(edited.ctaUrl,'/#trilhas');
+    service.schedule(draft.id,new Date(Date.now()+120000).toISOString());
+    assert.throws(()=>service.update('admin-2',draft.id,{title:'Bloqueada'}),/Somente campanhas em rascunho/);assert.throws(()=>service.remove(draft.id),/Somente campanhas em rascunho/);
+    assert.equal(service.cancelSchedule(draft.id).status,'draft');service.remove(draft.id);assert.equal(service.list().campaigns.length,0);
+  }finally{db.close();}
+});
+
+
