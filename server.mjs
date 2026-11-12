@@ -86,11 +86,6 @@ export async function createApp(options={}) {
     if(!profile||profile.enabled!==1)return res.status(403).json({message:'Seu acesso está bloqueado. Procure o Admin da ST1 Academy.'});
     req.member=profile;
     if(!onboarding.read(profile.user_id)&&!['/api/onboarding','/api/bootstrap','/api/me'].includes(req.path))return res.status(403).json({code:'ONBOARDING_REQUIRED',message:'Conclua seu primeiro acesso antes de usar a Academy.'});
-    const learningNpsAction=req.path==='/api/learning-nps/pending'||req.method==='POST'&&/^\/api\/learning-nps\/[^/]+$/.test(req.path);
-    if(!['/api/bootstrap','/api/me'].includes(req.path)&&!learningNpsAction){
-      const pending=ctx.learningNps.pending(profile.user_id);
-      if(pending)return res.status(423).json({code:'LEARNING_NPS_REQUIRED',message:'Conclua sua avaliação de melhoria para continuar na ST1 Academy.'});
-    }
     next();
   };
   const admin=(req,res,next)=>req.member.role==='admin'?next():res.status(403).json({message:'Acesso exclusivo de Admin.'});
