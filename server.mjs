@@ -20,6 +20,7 @@ import {createEmailAutomationService} from './lib/email-automation-service.mjs';
 import {createWhatsAppCampaignService} from './lib/whatsapp-campaigns.mjs';
 import {createWhatsAppAutomationService} from './lib/whatsapp-automations.mjs';
 import {createWhatsAppReceipts} from './lib/whatsapp-receipts.mjs';
+import {createWhatsAppTemplateService} from './lib/whatsapp-templates.mjs';
 import {createIntegrationService} from './lib/integrations.mjs';
 import {createOnboardingService} from './lib/onboarding.mjs';
 
@@ -33,6 +34,7 @@ export async function createApp(options={}) {
   const campaigns=createCampaignService(db,{env:mailEnv,baseURL});
   const emailAutomations=createEmailAutomationService(db,{env:mailEnv,baseURL,mailerTransport:options.emailAutomationTransport,context:ctx});
   const whatsappReceipts=createWhatsAppReceipts(db,{env:whatsappEnv});
+  const whatsappTemplates=createWhatsAppTemplateService(db,{env:whatsappEnv});
   const whatsappCampaigns=createWhatsAppCampaignService(db,{env:whatsappEnv,sendTemplate:options.whatsappSender,receipts:whatsappReceipts});
   const whatsappAutomations=createWhatsAppAutomationService(db,{env:whatsappEnv,baseURL,context:ctx,sendTemplate:options.whatsappSender,receipts:whatsappReceipts});
   const deliverInvitation=async invitation=>{
@@ -372,6 +374,11 @@ export async function createApp(options={}) {
   app.post('/api/admin/campaigns/:id/send',member,admin,async(req,res)=>{try{res.json(await campaigns.send(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.get('/api/admin/whatsapp-campaigns',member,admin,(_,res)=>res.json(whatsappCampaigns.list()));
   app.get('/api/admin/whatsapp-automations',member,admin,(_,res)=>res.json(whatsappAutomations.list()));
+  app.get('/api/admin/whatsapp-templates',member,admin,(_,res)=>res.json(whatsappTemplates.list()));
+  app.post('/api/admin/whatsapp-templates/sync',member,admin,async(_,res)=>{try{res.json(await whatsappTemplates.sync());}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/whatsapp-templates',member,admin,(req,res)=>{try{res.status(201).json(whatsappTemplates.saveDraft(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
+  app.patch('/api/admin/whatsapp-templates/:id',member,admin,(req,res)=>{try{res.json(whatsappTemplates.saveDraft(req.member.user_id,req.body,req.params.id));}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/whatsapp-templates/:id/submit',member,admin,async(req,res)=>{try{res.json(await whatsappTemplates.submit(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.get('/api/admin/whatsapp-automations/templates',member,admin,async(_,res)=>{try{res.json(await whatsappAutomations.approvedTemplates());}catch(error){res.status(400).json({message:error.message});}});
   app.put('/api/admin/whatsapp-automations/:key',member,admin,(req,res)=>{try{res.json(whatsappAutomations.save(req.params.key,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/whatsapp-automations/activate-approved',member,admin,async(_,res)=>{try{res.json(await whatsappAutomations.activateApproved());}catch(error){res.status(400).json({message:error.message});}});
