@@ -10,9 +10,9 @@ test('three attempts per assessment and version; linked supervisor and admin gra
       CREATE TABLE user(id TEXT PRIMARY KEY,name TEXT NOT NULL,email TEXT NOT NULL);
       CREATE TABLE academy_member(user_id TEXT PRIMARY KEY REFERENCES user(id),role TEXT NOT NULL,enabled INTEGER NOT NULL,tracks_json TEXT NOT NULL,permissions_json TEXT NOT NULL);
       CREATE TABLE academy_supervision(supervisor_id TEXT NOT NULL,seller_id TEXT NOT NULL,PRIMARY KEY(supervisor_id,seller_id));
-      CREATE TABLE academy_attempt(id TEXT PRIMARY KEY,user_id TEXT NOT NULL,track_id TEXT NOT NULL,version TEXT NOT NULL);
+      CREATE TABLE academy_attempt(id TEXT PRIMARY KEY,user_id TEXT NOT NULL,track_id TEXT NOT NULL,version TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'complete');
       CREATE TABLE academy_quiz(id TEXT PRIMARY KEY,title TEXT NOT NULL,version INTEGER NOT NULL,tracks_json TEXT NOT NULL);
-      CREATE TABLE academy_quiz_attempt(id TEXT PRIMARY KEY,user_id TEXT NOT NULL,quiz_id TEXT NOT NULL,version INTEGER NOT NULL);
+      CREATE TABLE academy_quiz_attempt(id TEXT PRIMARY KEY,user_id TEXT NOT NULL,quiz_id TEXT NOT NULL,version INTEGER NOT NULL,status TEXT NOT NULL DEFAULT 'complete',expires_at TEXT);
     `);
     for(const [id,role] of [['admin','admin'],['supervisor','supervisor'],['otherSupervisor','supervisor'],['seller','seller'],['peer','seller']]){
       db.prepare('INSERT INTO user(id,name,email) VALUES(?,?,?)').run(id,id,id+'@example.test');
