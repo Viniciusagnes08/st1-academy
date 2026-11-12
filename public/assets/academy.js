@@ -136,7 +136,7 @@
   }
   async function whatsappCampaignPage(){
     if(state.user?.role!=='admin')return restricted('Campanhas são gerenciadas pelo Admin.','Esta área é exclusiva da gestão da ST1 Academy.',!state.user);
-    if(!state.whatsappCampaignPanel){const {createWhatsAppCampaignPanel}=await import('/assets/whatsapp-campaigns.js?v=20261112-campaign-metrics-template-manager');state.whatsappCampaignPanel=createWhatsAppCampaignPanel({api,esc,main,commitView,toast});}
+    if(!state.whatsappCampaignPanel){const {createWhatsAppCampaignPanel}=await import('/assets/whatsapp-campaigns.js?v=20261112-whatsapp-actions');state.whatsappCampaignPanel=createWhatsAppCampaignPanel({api,esc,main,commitView,toast});}
     await state.whatsappCampaignPanel.render();
   }
   async function integrationsPage(){
