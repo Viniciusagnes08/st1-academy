@@ -2,7 +2,7 @@
 export const biModules=[
   {
     "id": "st1-bi-m01",
-    "title": "M01 BI Fundamentos de BI e leitura de indicadores",
+    "title": "Fundamentos de BI e leitura de indicadores",
     "description": "Formação BI e Power BI | Iniciante | 4 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -16,7 +16,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m02",
-    "title": "M02 BI Ambiente fontes e modos de conexão",
+    "title": "Ambiente fontes e modos de conexão",
     "description": "Formação BI e Power BI | Iniciante | 5 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -30,7 +30,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m03",
-    "title": "M03 BI Limpeza perfil e padronização no Power Query",
+    "title": "Limpeza perfil e padronização no Power Query",
     "description": "Formação BI e Power BI | Iniciante | 6 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -44,7 +44,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m04",
-    "title": "M04 BI Power Query M parâmetros e fontes complexas",
+    "title": "Power Query M parâmetros e fontes complexas",
     "description": "Formação BI e Power BI | Intermediário | 6 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -58,7 +58,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m05",
-    "title": "M05 BI Modelagem dimensional e modelo semântico",
+    "title": "Modelagem dimensional e modelo semântico",
     "description": "Formação BI e Power BI | Intermediário | 7 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -72,7 +72,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m06",
-    "title": "M06 BI DAX medidas colunas e cálculos básicos",
+    "title": "DAX medidas colunas e cálculos básicos",
     "description": "Formação BI e Power BI | Intermediário | 6 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -86,7 +86,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m07",
-    "title": "M07 BI Contexto de filtro e DAX aplicado",
+    "title": "Contexto de filtro e DAX aplicado",
     "description": "Formação BI e Power BI | Intermediário | 7 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -100,7 +100,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m08",
-    "title": "M08 BI Calendário comparações e inteligência temporal",
+    "title": "Calendário comparações e inteligência temporal",
     "description": "Formação BI e Power BI | Intermediário | 6 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -114,7 +114,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m09",
-    "title": "M09 BI Relatórios experiência acessibilidade e mobile",
+    "title": "Relatórios experiência acessibilidade e mobile",
     "description": "Formação BI e Power BI | Intermediário | 6 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -128,7 +128,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m10",
-    "title": "M10 BI Cálculos visuais análise estatística e IA",
+    "title": "Cálculos visuais análise estatística e IA",
     "description": "Formação BI e Power BI | Intermediário | 5 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -142,7 +142,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m11",
-    "title": "M11 BI Publicação workspaces aplicativos e atualização",
+    "title": "Publicação workspaces aplicativos e atualização",
     "description": "Formação BI e Power BI | Intermediário | 6 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -156,7 +156,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m12",
-    "title": "M12 BI Segurança RLS e testes de acesso",
+    "title": "Segurança RLS e testes de acesso",
     "description": "Formação BI e Power BI | Avançado | 6 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -170,7 +170,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m13",
-    "title": "M13 BI Desempenho do modelo medidas e visuais",
+    "title": "Desempenho do modelo medidas e visuais",
     "description": "Formação BI e Power BI | Avançado | 6 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -184,7 +184,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m14",
-    "title": "M14 BI Modelagem e DAX de aprofundamento",
+    "title": "Modelagem e DAX de aprofundamento",
     "description": "Formação BI e Power BI | Avançado | 7 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -198,7 +198,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m15",
-    "title": "M15 BI Atualização incremental Fabric e ciclo de entrega",
+    "title": "Atualização incremental Fabric e ciclo de entrega",
     "description": "Formação BI e Power BI | Avançado | 6 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -212,7 +212,7 @@ export const biModules=[
   },
   {
     "id": "st1-bi-m16",
-    "title": "M16 BI Projeto aplicado ST1 e operação da solução",
+    "title": "Projeto aplicado ST1 e operação da solução",
     "description": "Formação BI e Power BI | Avançado | 7 horas planejadas. Três aulas e um laboratório aplicado.",
     "tracks": [
       "bi"
@@ -228,7 +228,7 @@ export const biModules=[
 export const biQuizzes=[
   {
     "id": "avaliacao-bi-m01",
-    "title": "BI M01 Fundamentos de BI e leitura de indicadores",
+    "title": "Avaliação BI · Fundamentos de BI e leitura de indicadores",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -485,7 +485,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m02",
-    "title": "BI M02 Ambiente fontes e modos de conexão",
+    "title": "Avaliação BI · Ambiente fontes e modos de conexão",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -742,7 +742,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m03",
-    "title": "BI M03 Limpeza perfil e padronização no Power Query",
+    "title": "Avaliação BI · Limpeza perfil e padronização no Power Query",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -999,7 +999,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m04",
-    "title": "BI M04 Power Query M parâmetros e fontes complexas",
+    "title": "Avaliação BI · Power Query M parâmetros e fontes complexas",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -1256,7 +1256,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m05",
-    "title": "BI M05 Modelagem dimensional e modelo semântico",
+    "title": "Avaliação BI · Modelagem dimensional e modelo semântico",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -1513,7 +1513,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m06",
-    "title": "BI M06 DAX medidas colunas e cálculos básicos",
+    "title": "Avaliação BI · DAX medidas colunas e cálculos básicos",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -1770,7 +1770,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m07",
-    "title": "BI M07 Contexto de filtro e DAX aplicado",
+    "title": "Avaliação BI · Contexto de filtro e DAX aplicado",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -2027,7 +2027,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m08",
-    "title": "BI M08 Calendário comparações e inteligência temporal",
+    "title": "Avaliação BI · Calendário comparações e inteligência temporal",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -2284,7 +2284,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m09",
-    "title": "BI M09 Relatórios experiência acessibilidade e mobile",
+    "title": "Avaliação BI · Relatórios experiência acessibilidade e mobile",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -2541,7 +2541,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m10",
-    "title": "BI M10 Cálculos visuais análise estatística e IA",
+    "title": "Avaliação BI · Cálculos visuais análise estatística e IA",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -2798,7 +2798,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m11",
-    "title": "BI M11 Publicação workspaces aplicativos e atualização",
+    "title": "Avaliação BI · Publicação workspaces aplicativos e atualização",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -3055,7 +3055,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m12",
-    "title": "BI M12 Segurança RLS e testes de acesso",
+    "title": "Avaliação BI · Segurança RLS e testes de acesso",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -3312,7 +3312,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m13",
-    "title": "BI M13 Desempenho do modelo medidas e visuais",
+    "title": "Avaliação BI · Desempenho do modelo medidas e visuais",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -3569,7 +3569,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m14",
-    "title": "BI M14 Modelagem e DAX de aprofundamento",
+    "title": "Avaliação BI · Modelagem e DAX de aprofundamento",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -3826,7 +3826,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m15",
-    "title": "BI M15 Atualização incremental Fabric e ciclo de entrega",
+    "title": "Avaliação BI · Atualização incremental Fabric e ciclo de entrega",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -4083,7 +4083,7 @@ export const biQuizzes=[
   },
   {
     "id": "avaliacao-bi-m16",
-    "title": "BI M16 Projeto aplicado ST1 e operação da solução",
+    "title": "Avaliação BI · Projeto aplicado ST1 e operação da solução",
     "description": "Avaliação do módulo com quatro alternativas e uma resposta correta.",
     "type": "flash",
     "status": "published",
@@ -4342,7 +4342,7 @@ export const biQuizzes=[
 export const biContents=[
   {
     "id": "st1-bi-m01-a01",
-    "title": "M01-A01 Da pergunta de negócio ao indicador",
+    "title": "Da pergunta de negócio ao indicador",
     "summary": "Transformar uma decisão em uma especificação verificável.",
     "category": "cursos",
     "scope": "general",
@@ -4358,14 +4358,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M01-A01.pdf",
-    "path": "Aluno/Aulas/M01-A01.pdf",
-    "sha256": "5b75db28aa927cb975880398e4de7876cb4430033c06f345b870f4872e555f46",
-    "bytes": 188696
+    "file": "bi-da-pergunta-de-negocio-ao-indicador.pdf",
+    "path": "Aluno/Aulas/bi-da-pergunta-de-negocio-ao-indicador.pdf",
+    "sha256": "f7152ae4e2379fde9bb263620b55f677ae11e09cb95e51dfe2f15051368c5646",
+    "bytes": 323100,
+    "pages": 3
   },
   {
     "id": "st1-bi-m01-a02",
-    "title": "M01-A02 Tabelas tipos e granularidade",
+    "title": "Tabelas tipos e granularidade",
     "summary": "Reconhecer o que uma linha representa antes de somar.",
     "category": "cursos",
     "scope": "general",
@@ -4381,14 +4382,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M01-A02.pdf",
-    "path": "Aluno/Aulas/M01-A02.pdf",
-    "sha256": "6b5e959da8340da38efb8140ec59f66ab99093f9edda5253e01381ff93c203f1",
-    "bytes": 165384
+    "file": "bi-tabelas-tipos-e-granularidade.pdf",
+    "path": "Aluno/Aulas/bi-tabelas-tipos-e-granularidade.pdf",
+    "sha256": "58492e5b166015d0d1a7dd0497230db12f0bf1c149fb8850dccc892271849d00",
+    "bytes": 299694,
+    "pages": 3
   },
   {
     "id": "st1-bi-m01-a03",
-    "title": "M01-A03 Qualidade evidência e interpretação",
+    "title": "Qualidade evidência e interpretação",
     "summary": "Interpretar um painel sem confundir correlação com causa.",
     "category": "cursos",
     "scope": "general",
@@ -4404,14 +4406,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M01-A03.pdf",
-    "path": "Aluno/Aulas/M01-A03.pdf",
-    "sha256": "2268d6571a73fd573e5f464d24311344fd056c8a8ce4b610ad19947d9ca31d49",
-    "bytes": 109780
+    "file": "bi-qualidade-evidencia-e-interpretacao.pdf",
+    "path": "Aluno/Aulas/bi-qualidade-evidencia-e-interpretacao.pdf",
+    "sha256": "2fb1c19e888244fea834b63a9d1208571cd3d8d224d8f7e444962f19bc32a382",
+    "bytes": 244235,
+    "pages": 3
   },
   {
     "id": "st1-bi-m01-lab",
-    "title": "M01 Laboratório Contrato de métricas e primeira conferência",
+    "title": "Laboratório · Contrato de métricas e primeira conferência",
     "summary": "Ficha com cinco métricas, suas populações, datas, fontes e responsáveis a definir pela gestão.",
     "category": "treinamentos",
     "scope": "general",
@@ -4427,14 +4430,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M01-LAB.pdf",
-    "path": "Aluno/Laboratorios/M01-LAB.pdf",
-    "sha256": "d7f578adfce5a1b730a1711f876d2c2419fda3c89f0ec4e8cb8f032042559f76",
-    "bytes": 109179
+    "file": "bi-laboratorio-contrato-de-metricas-e-primeira-conferencia.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-contrato-de-metricas-e-primeira-conferencia.pdf",
+    "sha256": "aea1e64d453b3f52e8b72b9d7f8666e8ea928886acfde488ee1b443b11bf9710",
+    "bytes": 244248,
+    "pages": 3
   },
   {
     "id": "st1-bi-m02-a01",
-    "title": "M02-A01 Preparar o ambiente e reconhecer os componentes",
+    "title": "Preparar o ambiente e reconhecer os componentes",
     "summary": "Abrir uma solução local e distinguir Desktop serviço e modelo.",
     "category": "cursos",
     "scope": "general",
@@ -4450,14 +4454,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M02-A01.pdf",
-    "path": "Aluno/Aulas/M02-A01.pdf",
-    "sha256": "d0acd58f16b9d3d67fe5d95dcdc37cf4c448cdc53824b7c4c9572f4922a3865d",
-    "bytes": 154426
+    "file": "bi-preparar-o-ambiente-e-reconhecer-os-componentes.pdf",
+    "path": "Aluno/Aulas/bi-preparar-o-ambiente-e-reconhecer-os-componentes.pdf",
+    "sha256": "0ae8764906eb2ac165432aa282a766927776d8a17872840809c398be5f9f4072",
+    "bytes": 289061,
+    "pages": 3
   },
   {
     "id": "st1-bi-m02-a02",
-    "title": "M02-A02 Conectar CSV Excel SQL e modelos compartilhados",
+    "title": "Conectar CSV Excel SQL e modelos compartilhados",
     "summary": "Escolher um conector e documentar as credenciais sem expô-las.",
     "category": "cursos",
     "scope": "general",
@@ -4473,14 +4478,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M02-A02.pdf",
-    "path": "Aluno/Aulas/M02-A02.pdf",
-    "sha256": "b26ff66a92dc485280b15080df924176be549a5133a65d8ce6fcccda7e5bb58d",
-    "bytes": 165741
+    "file": "bi-conectar-csv-excel-sql-e-modelos-compartilhados.pdf",
+    "path": "Aluno/Aulas/bi-conectar-csv-excel-sql-e-modelos-compartilhados.pdf",
+    "sha256": "37f6d8408f53a37bd4b7a27df0fc2c4ec60cbe6d461779489ce8e9e7899b3708",
+    "bytes": 300767,
+    "pages": 3
   },
   {
     "id": "st1-bi-m02-a03",
-    "title": "M02-A03 Import DirectQuery Direct Lake e conexão ao modelo",
+    "title": "Import DirectQuery Direct Lake e conexão ao modelo",
     "summary": "Justificar o modo de acesso por latência volume e operação.",
     "category": "cursos",
     "scope": "general",
@@ -4496,14 +4502,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M02-A03.pdf",
-    "path": "Aluno/Aulas/M02-A03.pdf",
-    "sha256": "dcfe08ffc2ce97a80e50f2241974bc5e446f2b79bacc45fb59351db0e677be54",
-    "bytes": 158670
+    "file": "bi-import-directquery-direct-lake-e-conexao-ao-modelo.pdf",
+    "path": "Aluno/Aulas/bi-import-directquery-direct-lake-e-conexao-ao-modelo.pdf",
+    "sha256": "37291a1c507d9055394ad2cdf921be9226b970c3bd4156d5147f91e7a78f4df2",
+    "bytes": 293620,
+    "pages": 3
   },
   {
     "id": "st1-bi-m02-lab",
-    "title": "M02 Laboratório Importação parametrizada da base ST1",
+    "title": "Laboratório · Importação parametrizada da base ST1",
     "summary": "PBIX de treinamento com consultas parametrizadas e sem credenciais no texto M.",
     "category": "treinamentos",
     "scope": "general",
@@ -4519,14 +4526,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M02-LAB.pdf",
-    "path": "Aluno/Laboratorios/M02-LAB.pdf",
-    "sha256": "dbbc95d755f4adc68657c72bf6a80cce8d9cb45c26958c40a50d10ac3fd7851f",
-    "bytes": 105243
+    "file": "bi-laboratorio-importacao-parametrizada-da-base-st1.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-importacao-parametrizada-da-base-st1.pdf",
+    "sha256": "b5ed608d22da160b71a9168b7d5d480de9da4c724c909e29d9b1c0bbdd5efd62",
+    "bytes": 240493,
+    "pages": 3
   },
   {
     "id": "st1-bi-m03-a01",
-    "title": "M03-A01 Inspecionar e tratar problemas de qualidade",
+    "title": "Inspecionar e tratar problemas de qualidade",
     "summary": "Construir uma regra de limpeza que preserve o significado.",
     "category": "cursos",
     "scope": "general",
@@ -4542,14 +4550,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M03-A01.pdf",
-    "path": "Aluno/Aulas/M03-A01.pdf",
-    "sha256": "994ed5af3ddf7170c5a56232dbd4ed1e1fdc97d79f612beb96350e95fff5e961",
-    "bytes": 174742
+    "file": "bi-inspecionar-e-tratar-problemas-de-qualidade.pdf",
+    "path": "Aluno/Aulas/bi-inspecionar-e-tratar-problemas-de-qualidade.pdf",
+    "sha256": "569b01803d7befc84c29ec076540c7b22d4a189bd35383b5d209a86404c50008",
+    "bytes": 309769,
+    "pages": 3
   },
   {
     "id": "st1-bi-m03-a02",
-    "title": "M03-A02 Transformar colunas e reorganizar tabelas",
+    "title": "Transformar colunas e reorganizar tabelas",
     "summary": "Reorganizar uma tabela para o nível de análise exigido.",
     "category": "cursos",
     "scope": "general",
@@ -4565,14 +4574,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M03-A02.pdf",
-    "path": "Aluno/Aulas/M03-A02.pdf",
-    "sha256": "893ec92ba881510136e989ee3419609eb5d8a966e2c8ffad07966cb02bd716de",
-    "bytes": 101136
+    "file": "bi-transformar-colunas-e-reorganizar-tabelas.pdf",
+    "path": "Aluno/Aulas/bi-transformar-colunas-e-reorganizar-tabelas.pdf",
+    "sha256": "13a1022fdd77c0d992a3c18d0acd1590afb5909725cec67240a8975d703718c8",
+    "bytes": 236227,
+    "pages": 3
   },
   {
     "id": "st1-bi-m03-a03",
-    "title": "M03-A03 Mesclar acrescentar e controlar a carga",
+    "title": "Mesclar acrescentar e controlar a carga",
     "summary": "Combinar tabelas sem multiplicar fatos.",
     "category": "cursos",
     "scope": "general",
@@ -4588,14 +4598,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M03-A03.pdf",
-    "path": "Aluno/Aulas/M03-A03.pdf",
-    "sha256": "2991384646a099d02f6db2f86f030d659167d0705f79ce1978375d3d3f13e5f7",
-    "bytes": 185640
+    "file": "bi-mesclar-acrescentar-e-controlar-a-carga.pdf",
+    "path": "Aluno/Aulas/bi-mesclar-acrescentar-e-controlar-a-carga.pdf",
+    "sha256": "bb797767a744c819a5503324a02d7959100923f1104b9cc03a521045b124081f",
+    "bytes": 320221,
+    "pages": 3
   },
   {
     "id": "st1-bi-m03-lab",
-    "title": "M03 Laboratório Auditoria de duplicidades datas e chaves",
+    "title": "Laboratório · Auditoria de duplicidades datas e chaves",
     "summary": "Consulta válida e três consultas de auditoria de duplicidade data e região.",
     "category": "treinamentos",
     "scope": "general",
@@ -4611,14 +4622,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M03-LAB.pdf",
-    "path": "Aluno/Laboratorios/M03-LAB.pdf",
-    "sha256": "1fd7211fd23d2d5d433a72f1653ed489ff27018078be3e04c6306a8435dbbc98",
-    "bytes": 109865
+    "file": "bi-laboratorio-auditoria-de-duplicidades-datas-e-chaves.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-auditoria-de-duplicidades-datas-e-chaves.pdf",
+    "sha256": "8619625f3b5c648e0ddc587f25ef997f33f769554a95cbcccd4d5acba8a3cddf",
+    "bytes": 245051,
+    "pages": 3
   },
   {
     "id": "st1-bi-m04-a01",
-    "title": "M04-A01 Ler e editar expressões M",
+    "title": "Ler e editar expressões M",
     "summary": "Explicar uma consulta let in e tratar erros de forma observável.",
     "category": "cursos",
     "scope": "general",
@@ -4634,14 +4646,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M04-A01.pdf",
-    "path": "Aluno/Aulas/M04-A01.pdf",
-    "sha256": "fac70120dabc4791a9f34b18b8ccee8ecc7b11c88a0d76bb626e4ef193e1ada0",
-    "bytes": 128682
+    "file": "bi-ler-e-editar-expressoes-m.pdf",
+    "path": "Aluno/Aulas/bi-ler-e-editar-expressoes-m.pdf",
+    "sha256": "f30c11325170a6f5ac9490cf44fac7e02d8e8c3f36813a32752794874c652a0c",
+    "bytes": 261847,
+    "pages": 3
   },
   {
     "id": "st1-bi-m04-a02",
-    "title": "M04-A02 Arquivos de pasta JSON e paginação de API",
+    "title": "Arquivos de pasta JSON e paginação de API",
     "summary": "Projetar uma ingestão repetível para fontes semiestruturadas.",
     "category": "cursos",
     "scope": "general",
@@ -4657,14 +4670,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M04-A02.pdf",
-    "path": "Aluno/Aulas/M04-A02.pdf",
-    "sha256": "52cb609064c7b2c16072d604eeafc6cc5211cc10022523eaffa23bf7c54faf24",
-    "bytes": 107066
+    "file": "bi-arquivos-de-pasta-json-e-paginacao-de-api.pdf",
+    "path": "Aluno/Aulas/bi-arquivos-de-pasta-json-e-paginacao-de-api.pdf",
+    "sha256": "1d83dd175640e4e1cdd355532ddab5f284c4e631668f08bfae248d676c184f08",
+    "bytes": 242506,
+    "pages": 3
   },
   {
     "id": "st1-bi-m04-a03",
-    "title": "M04-A03 Query folding e diagnóstico da preparação",
+    "title": "Query folding e diagnóstico da preparação",
     "summary": "Avaliar se a transformação pode ser executada na origem.",
     "category": "cursos",
     "scope": "general",
@@ -4680,14 +4694,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M04-A03.pdf",
-    "path": "Aluno/Aulas/M04-A03.pdf",
-    "sha256": "b95e9dfdacef08aadce181a4300edb0e8da763f0de379ec1191794e51ff4d914",
-    "bytes": 169200
+    "file": "bi-query-folding-e-diagnostico-da-preparacao.pdf",
+    "path": "Aluno/Aulas/bi-query-folding-e-diagnostico-da-preparacao.pdf",
+    "sha256": "dd9c08cd591b623fd330ece10c45d073e4fb56274106efd468f609da3668ffc4",
+    "bytes": 304372,
+    "pages": 3
   },
   {
     "id": "st1-bi-m04-lab",
-    "title": "M04 Laboratório Função M pasta metas largas e JSON",
+    "title": "Laboratório · Função M pasta metas largas e JSON",
     "summary": "Função M reutilizável, meta normalizada e amostra JSON com 20 leads.",
     "category": "treinamentos",
     "scope": "general",
@@ -4703,14 +4718,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M04-LAB.pdf",
-    "path": "Aluno/Laboratorios/M04-LAB.pdf",
-    "sha256": "a12643d4598c990b2e11cc358d3c3d0dbeb43d0e28e10abc8935c1141ee118c2",
-    "bytes": 103997
+    "file": "bi-laboratorio-funcao-m-pasta-metas-largas-e-json.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-funcao-m-pasta-metas-largas-e-json.pdf",
+    "sha256": "e0037de5f425798daf3eb26bd8487850e1db9210c180d9f1a332afe6c66ea2e4",
+    "bytes": 239649,
+    "pages": 3
   },
   {
     "id": "st1-bi-m05-a01",
-    "title": "M05-A01 Desenhar fatos dimensões e chaves",
+    "title": "Desenhar fatos dimensões e chaves",
     "summary": "Desenhar um modelo estrela com granularidades explícitas.",
     "category": "cursos",
     "scope": "general",
@@ -4726,14 +4742,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M05-A01.pdf",
-    "path": "Aluno/Aulas/M05-A01.pdf",
-    "sha256": "bb4724677b70da23666c07462b8137756be504bd8d28160af357b532c168a7b0",
-    "bytes": 178050
+    "file": "bi-desenhar-fatos-dimensoes-e-chaves.pdf",
+    "path": "Aluno/Aulas/bi-desenhar-fatos-dimensoes-e-chaves.pdf",
+    "sha256": "699f2b893b0743fa199a9dbf677af0a5f02c699c0e86c27705566c68316cd801",
+    "bytes": 312830,
+    "pages": 3
   },
   {
     "id": "st1-bi-m05-a02",
-    "title": "M05-A02 Relacionamentos direção e dimensões com papéis",
+    "title": "Relacionamentos direção e dimensões com papéis",
     "summary": "Prever como um filtro chega a uma medida.",
     "category": "cursos",
     "scope": "general",
@@ -4749,14 +4766,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M05-A02.pdf",
-    "path": "Aluno/Aulas/M05-A02.pdf",
-    "sha256": "cf1a15d7644479db4c80e803de3c0c3d7364869e9f9899356dff391ad041a7f1",
-    "bytes": 125637
+    "file": "bi-relacionamentos-direcao-e-dimensoes-com-papeis.pdf",
+    "path": "Aluno/Aulas/bi-relacionamentos-direcao-e-dimensoes-com-papeis.pdf",
+    "sha256": "aab468de0ee88d24b69b6d710dc3625f04b00e46f6c8606c876694195955bd72",
+    "bytes": 258948,
+    "pages": 3
   },
   {
     "id": "st1-bi-m05-a03",
-    "title": "M05-A03 Propriedades hierarquias e validação do modelo",
+    "title": "Propriedades hierarquias e validação do modelo",
     "summary": "Entregar campos compreensíveis e totais reconciliados.",
     "category": "cursos",
     "scope": "general",
@@ -4772,14 +4790,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M05-A03.pdf",
-    "path": "Aluno/Aulas/M05-A03.pdf",
-    "sha256": "41ed096168174a64ad8ab62f36a182c2a3f2390e13a48169df5247d324a8470e",
-    "bytes": 182557
+    "file": "bi-propriedades-hierarquias-e-validacao-do-modelo.pdf",
+    "path": "Aluno/Aulas/bi-propriedades-hierarquias-e-validacao-do-modelo.pdf",
+    "sha256": "eb2df0c09d454fa9392a6484abb770d6fccc6fd498047a99b1fac07316e55c16",
+    "bytes": 317321,
+    "pages": 3
   },
   {
     "id": "st1-bi-m05-lab",
-    "title": "M05 Laboratório Modelo estrela com calendário diário e mensal",
+    "title": "Laboratório · Modelo estrela com calendário diário e mensal",
     "summary": "Diagrama e PBIX com grãos explícitos e caminhos de filtro únicos.",
     "category": "treinamentos",
     "scope": "general",
@@ -4795,14 +4814,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M05-LAB.pdf",
-    "path": "Aluno/Laboratorios/M05-LAB.pdf",
-    "sha256": "64caa78e715941f425a90fa89b13f6aec057ecf0052c37911bf6c5ddaa944a40",
-    "bytes": 110156
+    "file": "bi-laboratorio-modelo-estrela-com-calendario-diario-e-mensal.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-modelo-estrela-com-calendario-diario-e-mensal.pdf",
+    "sha256": "e0c5a0336432e8db4ec4abc5d0802368f5585b22651c89c56b652e376c60d4d9",
+    "bytes": 245388,
+    "pages": 3
   },
   {
     "id": "st1-bi-m06-a01",
-    "title": "M06-A01 Escolher medida coluna calculada e tabela calculada",
+    "title": "Escolher medida coluna calculada e tabela calculada",
     "summary": "Escolher onde uma regra deve ser calculada e armazenada.",
     "category": "cursos",
     "scope": "general",
@@ -4818,14 +4838,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M06-A01.pdf",
-    "path": "Aluno/Aulas/M06-A01.pdf",
-    "sha256": "29fe3b2d1b7097ac306ea6014379da234a8938c749718dd260e33fac7d611ee8",
-    "bytes": 124102
+    "file": "bi-escolher-medida-coluna-calculada-e-tabela-calculada.pdf",
+    "path": "Aluno/Aulas/bi-escolher-medida-coluna-calculada-e-tabela-calculada.pdf",
+    "sha256": "0f5265b2e794230a37366e3541a4880126beaf10f58f15734aa0751879202114",
+    "bytes": 257222,
+    "pages": 3
   },
   {
     "id": "st1-bi-m06-a02",
-    "title": "M06-A02 Iteradores variáveis e divisão segura",
+    "title": "Iteradores variáveis e divisão segura",
     "summary": "Construir medidas que respeitem a unidade de cálculo.",
     "category": "cursos",
     "scope": "general",
@@ -4841,14 +4862,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M06-A02.pdf",
-    "path": "Aluno/Aulas/M06-A02.pdf",
-    "sha256": "39a0708d91ef18d2dd208bfe44076ef5296b8325047df17036565e9fa5f86296",
-    "bytes": 136867
+    "file": "bi-iteradores-variaveis-e-divisao-segura.pdf",
+    "path": "Aluno/Aulas/bi-iteradores-variaveis-e-divisao-segura.pdf",
+    "sha256": "0ca2a06b11ad6df5d0cc8a018fb7e361f8e14b76da41af4836321fc30e6aea21",
+    "bytes": 269897,
+    "pages": 3
   },
   {
     "id": "st1-bi-m06-a03",
-    "title": "M06-A03 Métricas comerciais com contrato de cálculo",
+    "title": "Métricas comerciais com contrato de cálculo",
     "summary": "Construir conversão meta e custo sem misturar conceitos.",
     "category": "cursos",
     "scope": "general",
@@ -4864,14 +4886,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M06-A03.pdf",
-    "path": "Aluno/Aulas/M06-A03.pdf",
-    "sha256": "56b902c4a66cf3663fc1f4342912aaa0e024d449c40b65805481580b33e64d24",
-    "bytes": 138403
+    "file": "bi-metricas-comerciais-com-contrato-de-calculo.pdf",
+    "path": "Aluno/Aulas/bi-metricas-comerciais-com-contrato-de-calculo.pdf",
+    "sha256": "ee38b88caa3a16c8a8c78a4fe0e5f5af1e026f00c9fe2a3242e90b01f904f17b",
+    "bytes": 271363,
+    "pages": 3
   },
   {
     "id": "st1-bi-m06-lab",
-    "title": "M06 Laboratório Biblioteca de medidas comerciais",
+    "title": "Laboratório · Biblioteca de medidas comerciais",
     "summary": "Medidas explícitas com nomes, formatos e descrições.",
     "category": "treinamentos",
     "scope": "general",
@@ -4887,14 +4910,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M06-LAB.pdf",
-    "path": "Aluno/Laboratorios/M06-LAB.pdf",
-    "sha256": "69abbde505e8621aa7edb3d5eda4e9047b27ba104bc4da71b79ffef5e1b3cb54",
-    "bytes": 115538
+    "file": "bi-laboratorio-biblioteca-de-medidas-comerciais.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-biblioteca-de-medidas-comerciais.pdf",
+    "sha256": "0b7b6e193ac270b1c4dca9777e3a85555df164777a7e576608123a03c1ffcf9d",
+    "bytes": 250389,
+    "pages": 3
   },
   {
     "id": "st1-bi-m07-a01",
-    "title": "M07-A01 Contexto de linha filtro e transição",
+    "title": "Contexto de linha filtro e transição",
     "summary": "Explicar por que uma medida muda entre linhas e total.",
     "category": "cursos",
     "scope": "general",
@@ -4910,14 +4934,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M07-A01.pdf",
-    "path": "Aluno/Aulas/M07-A01.pdf",
-    "sha256": "a9e18704717260f026d443c9e9237fd97b71f9a85ea5dcb296f235bdb51ad594",
-    "bytes": 164764
+    "file": "bi-contexto-de-linha-filtro-e-transicao.pdf",
+    "path": "Aluno/Aulas/bi-contexto-de-linha-filtro-e-transicao.pdf",
+    "sha256": "b58fba06dbc8fd7bae3e222c6b0e4c39d620283f2ee2d0cc5c438292ae80db54",
+    "bytes": 299353,
+    "pages": 3
   },
   {
     "id": "st1-bi-m07-a02",
-    "title": "M07-A02 CALCULATE REMOVEFILTERS e KEEPFILTERS",
+    "title": "CALCULATE REMOVEFILTERS e KEEPFILTERS",
     "summary": "Alterar somente o filtro necessário ao indicador.",
     "category": "cursos",
     "scope": "general",
@@ -4933,14 +4958,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M07-A02.pdf",
-    "path": "Aluno/Aulas/M07-A02.pdf",
-    "sha256": "842dc00839ac3ebc403702364b38ce668c14c206cb495f89b9cbbcc26ca0ba24",
-    "bytes": 136050
+    "file": "bi-calculate-removefilters-e-keepfilters.pdf",
+    "path": "Aluno/Aulas/bi-calculate-removefilters-e-keepfilters.pdf",
+    "sha256": "a289a6ac6aa6b72a2dd421030d2f369791d06460a881acd5f91a83d76ea6ee2f",
+    "bytes": 268865,
+    "pages": 3
   },
   {
     "id": "st1-bi-m07-a03",
-    "title": "M07-A03 ISINSCOPE ranking e medidas não aditivas",
+    "title": "ISINSCOPE ranking e medidas não aditivas",
     "summary": "Definir comportamento de detalhes subtotais e saldos.",
     "category": "cursos",
     "scope": "general",
@@ -4956,14 +4982,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M07-A03.pdf",
-    "path": "Aluno/Aulas/M07-A03.pdf",
-    "sha256": "1e3eb67c98bace456add07df382831d480a95c89a5799ea56194cc17e5e48e55",
-    "bytes": 129808
+    "file": "bi-isinscope-ranking-e-medidas-nao-aditivas.pdf",
+    "path": "Aluno/Aulas/bi-isinscope-ranking-e-medidas-nao-aditivas.pdf",
+    "sha256": "efc7e59707445810324079f2749ed1c0e6ad9b0ee156f6483d1aa4f75ab64c1c",
+    "bytes": 263235,
+    "pages": 3
   },
   {
     "id": "st1-bi-m07-lab",
-    "title": "M07 Laboratório Contexto participação e total de carteira",
+    "title": "Laboratório · Contexto participação e total de carteira",
     "summary": "Matriz com medidas de contexto e documentação dos totais.",
     "category": "treinamentos",
     "scope": "general",
@@ -4979,14 +5006,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M07-LAB.pdf",
-    "path": "Aluno/Laboratorios/M07-LAB.pdf",
-    "sha256": "4245f3006351b23c96be9be4b7967cca000b27b51738b67d8a3cc0c4f55c5883",
-    "bytes": 107021
+    "file": "bi-laboratorio-contexto-participacao-e-total-de-carteira.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-contexto-participacao-e-total-de-carteira.pdf",
+    "sha256": "1c7b642e026ecce74afb079b7f7fe62b395f9fb92f6e384c676ef417ca695222",
+    "bytes": 241716,
+    "pages": 3
   },
   {
     "id": "st1-bi-m08-a01",
-    "title": "M08-A01 Construir um calendário confiável",
+    "title": "Construir um calendário confiável",
     "summary": "Separar calendário civil fiscal e papel da data.",
     "category": "cursos",
     "scope": "general",
@@ -5002,14 +5030,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M08-A01.pdf",
-    "path": "Aluno/Aulas/M08-A01.pdf",
-    "sha256": "9686085e7f6656fb8d0101fe985020723f82fd093a72cb25c5bf8969e00a9a4a",
-    "bytes": 158271
+    "file": "bi-construir-um-calendario-confiavel.pdf",
+    "path": "Aluno/Aulas/bi-construir-um-calendario-confiavel.pdf",
+    "sha256": "e780d397851db009df6dfe1f5f4f360ee18a211a47adf71c02362999aed470a0",
+    "bytes": 293069,
+    "pages": 3
   },
   {
     "id": "st1-bi-m08-a02",
-    "title": "M08-A02 Acumulados YTD e comparação com ano anterior",
+    "title": "Acumulados YTD e comparação com ano anterior",
     "summary": "Criar medidas temporais e validar o primeiro período.",
     "category": "cursos",
     "scope": "general",
@@ -5025,14 +5054,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M08-A02.pdf",
-    "path": "Aluno/Aulas/M08-A02.pdf",
-    "sha256": "87bb93b2a9c661ad02bd48d4117f44374d32f027eddec3954a833d2a91a8d251",
-    "bytes": 125497
+    "file": "bi-acumulados-ytd-e-comparacao-com-ano-anterior.pdf",
+    "path": "Aluno/Aulas/bi-acumulados-ytd-e-comparacao-com-ano-anterior.pdf",
+    "sha256": "a4590ab71b89059f5abb656722e2ec8b192fd9dd764cdae04a48865f2135af5c",
+    "bytes": 258957,
+    "pages": 3
   },
   {
     "id": "st1-bi-m08-a03",
-    "title": "M08-A03 Coortes janelas móveis e metas proporcionais",
+    "title": "Coortes janelas móveis e metas proporcionais",
     "summary": "Escolher uma comparação compatível com a decisão.",
     "category": "cursos",
     "scope": "general",
@@ -5048,14 +5078,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M08-A03.pdf",
-    "path": "Aluno/Aulas/M08-A03.pdf",
-    "sha256": "f9068a6983c6614fc8306678dbf9cf3d71e15a5848884576bee149e118d3a534",
-    "bytes": 106565
+    "file": "bi-coortes-janelas-moveis-e-metas-proporcionais.pdf",
+    "path": "Aluno/Aulas/bi-coortes-janelas-moveis-e-metas-proporcionais.pdf",
+    "sha256": "b82eb19de88cba3d4e19738723fe70f74758cc77549460107bbf1d117bcc90bb",
+    "bytes": 241388,
+    "pages": 3
   },
   {
     "id": "st1-bi-m08-lab",
-    "title": "M08 Laboratório Inteligência temporal com casos de fronteira",
+    "title": "Laboratório · Inteligência temporal com casos de fronteira",
     "summary": "Medidas e matriz com evidências de janeiro junho dezembro e período sem referência.",
     "category": "treinamentos",
     "scope": "general",
@@ -5071,14 +5102,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M08-LAB.pdf",
-    "path": "Aluno/Laboratorios/M08-LAB.pdf",
-    "sha256": "ddd497225f0b58c67f30881e748a0b9523aa29a215051bbad4ef5acf119b14ac",
-    "bytes": 105994
+    "file": "bi-laboratorio-inteligencia-temporal-com-casos-de-fronteira.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-inteligencia-temporal-com-casos-de-fronteira.pdf",
+    "sha256": "f6213d7246d7c1b7253fab0300f07f57a9026a7786dc8f67733dad06bb53ac94",
+    "bytes": 241442,
+    "pages": 3
   },
   {
     "id": "st1-bi-m09-a01",
-    "title": "M09-A01 Escolher visuais e organizar a página",
+    "title": "Escolher visuais e organizar a página",
     "summary": "Desenhar uma página orientada à decisão do usuário.",
     "category": "cursos",
     "scope": "general",
@@ -5094,14 +5126,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M09-A01.pdf",
-    "path": "Aluno/Aulas/M09-A01.pdf",
-    "sha256": "a112ac7ee84db37b8635cba84db4107ebaacc3be7e08caae6660fffbadad3967",
-    "bytes": 217201
+    "file": "bi-escolher-visuais-e-organizar-a-pagina.pdf",
+    "path": "Aluno/Aulas/bi-escolher-visuais-e-organizar-a-pagina.pdf",
+    "sha256": "99060c21082404544eb07d3b5c845702c531505c5861dc15967912a5d5890592",
+    "bytes": 351979,
+    "pages": 3
   },
   {
     "id": "st1-bi-m09-a02",
-    "title": "M09-A02 Filtros interações drillthrough tooltips e bookmarks",
+    "title": "Filtros interações drillthrough tooltips e bookmarks",
     "summary": "Criar navegação previsível e conservar o contexto relevante.",
     "category": "cursos",
     "scope": "general",
@@ -5117,14 +5150,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M09-A02.pdf",
-    "path": "Aluno/Aulas/M09-A02.pdf",
-    "sha256": "0ddb2c2ac39736b98af274d3e8a638b99844e89d37641fc8c72f0cdbbe7bfb84",
-    "bytes": 147411
+    "file": "bi-filtros-interacoes-drillthrough-tooltips-e-bookmarks.pdf",
+    "path": "Aluno/Aulas/bi-filtros-interacoes-drillthrough-tooltips-e-bookmarks.pdf",
+    "sha256": "d7a46d263181f49629eb1644e048ffdcdb9bf26535edc0700edfa17a8ab0c8c0",
+    "bytes": 282499,
+    "pages": 3
   },
   {
     "id": "st1-bi-m09-a03",
-    "title": "M09-A03 Acessibilidade layout móvel e exportação",
+    "title": "Acessibilidade layout móvel e exportação",
     "summary": "Entregar uma leitura utilizável em diferentes condições.",
     "category": "cursos",
     "scope": "general",
@@ -5140,14 +5174,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M09-A03.pdf",
-    "path": "Aluno/Aulas/M09-A03.pdf",
-    "sha256": "e2954f85cbfe860159ba5eb66ab3016bfa6a7a69b275fd2a1d5eecf119f4b92b",
-    "bytes": 110276
+    "file": "bi-acessibilidade-layout-movel-e-exportacao.pdf",
+    "path": "Aluno/Aulas/bi-acessibilidade-layout-movel-e-exportacao.pdf",
+    "sha256": "f497af8d2806d79245d92d1b9442dccdac7adfb285172645a101daf41b5da271",
+    "bytes": 245415,
+    "pages": 3
   },
   {
     "id": "st1-bi-m09-lab",
-    "title": "M09 Laboratório Relatório executivo navegação e mobile",
+    "title": "Laboratório · Relatório executivo navegação e mobile",
     "summary": "Duas páginas navegáveis e layout móvel com experiência acessível.",
     "category": "treinamentos",
     "scope": "general",
@@ -5163,14 +5198,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M09-LAB.pdf",
-    "path": "Aluno/Laboratorios/M09-LAB.pdf",
-    "sha256": "dd53f2ea8d0125610db5b1f32a69f1ff68289a76e503d6dfe2722253e444f3c7",
-    "bytes": 109639
+    "file": "bi-laboratorio-relatorio-executivo-navegacao-e-mobile.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-relatorio-executivo-navegacao-e-mobile.pdf",
+    "sha256": "bb8139494d8061a818d859af85b7ff28d3ad5f514242b0c6e902c617e4aae4c4",
+    "bytes": 245052,
+    "pages": 3
   },
   {
     "id": "st1-bi-m10-a01",
-    "title": "M10-A01 Cálculos visuais eixo ordem e reinício",
+    "title": "Cálculos visuais eixo ordem e reinício",
     "summary": "Distinguir cálculo do visual de medida reutilizável do modelo.",
     "category": "cursos",
     "scope": "general",
@@ -5186,14 +5222,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M10-A01.pdf",
-    "path": "Aluno/Aulas/M10-A01.pdf",
-    "sha256": "a57119b0430a7cd1ebca701cd68aae17b1f139b4fd6de51a1cea3acb93c9bba3",
-    "bytes": 126005
+    "file": "bi-calculos-visuais-eixo-ordem-e-reinicio.pdf",
+    "path": "Aluno/Aulas/bi-calculos-visuais-eixo-ordem-e-reinicio.pdf",
+    "sha256": "ff704f780ce71d111a70957b077f22bbcbb83408dbfdb0395992eed95e6333fb",
+    "bytes": 259074,
+    "pages": 3
   },
   {
     "id": "st1-bi-m10-a02",
-    "title": "M10-A02 Dispersão tendências agrupamentos e previsão",
+    "title": "Dispersão tendências agrupamentos e previsão",
     "summary": "Usar recursos analíticos com hipóteses e limites claros.",
     "category": "cursos",
     "scope": "general",
@@ -5209,14 +5246,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M10-A02.pdf",
-    "path": "Aluno/Aulas/M10-A02.pdf",
-    "sha256": "1cfc1a562b0347c9e6437b0477e48834839434ebe8fd98fdc6990a60f49e744f",
-    "bytes": 105362
+    "file": "bi-dispersao-tendencias-agrupamentos-e-previsao.pdf",
+    "path": "Aluno/Aulas/bi-dispersao-tendencias-agrupamentos-e-previsao.pdf",
+    "sha256": "af8b79df2fb941eb272c4a0dfbaffb869396d4d0d1e80216dd62776a050f65da",
+    "bytes": 240064,
+    "pages": 3
   },
   {
     "id": "st1-bi-m10-a03",
-    "title": "M10-A03 Copilot narrativas e revisão humana",
+    "title": "Copilot narrativas e revisão humana",
     "summary": "Usar IA como apoio com validação de métricas e permissões.",
     "category": "cursos",
     "scope": "general",
@@ -5232,14 +5270,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M10-A03.pdf",
-    "path": "Aluno/Aulas/M10-A03.pdf",
-    "sha256": "08eb7141ba6510de286c09cec49b18fd8e52752fedb953971ebb1cc8d8e011ac",
-    "bytes": 185440
+    "file": "bi-copilot-narrativas-e-revisao-humana.pdf",
+    "path": "Aluno/Aulas/bi-copilot-narrativas-e-revisao-humana.pdf",
+    "sha256": "acb556f9c324efbb462f8f3442753ecc7d4cad74509b174912813f2604a0c51f",
+    "bytes": 319930,
+    "pages": 3
   },
   {
     "id": "st1-bi-m10-lab",
-    "title": "M10 Laboratório Análise e cálculos no visual",
+    "title": "Laboratório · Análise e cálculos no visual",
     "summary": "Visual acumulado, média móvel e narrativa revisada.",
     "category": "treinamentos",
     "scope": "general",
@@ -5255,14 +5294,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M10-LAB.pdf",
-    "path": "Aluno/Laboratorios/M10-LAB.pdf",
-    "sha256": "5e35e6293c3ed389063654ce5f31783adbb127bc20203b95bbdb8ddc2c6a9970",
-    "bytes": 113145
+    "file": "bi-laboratorio-analise-e-calculos-no-visual.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-analise-e-calculos-no-visual.pdf",
+    "sha256": "f92b50253ad9bfe63b1f5b31b26a85a89c9275436114fd53e80f5edceeed9939",
+    "bytes": 247810,
+    "pages": 3
   },
   {
     "id": "st1-bi-m11-a01",
-    "title": "M11-A01 Publicar com responsabilidades e distribuição definidas",
+    "title": "Publicar com responsabilidades e distribuição definidas",
     "summary": "Distinguir publicação de disponibilidade para o público correto.",
     "category": "cursos",
     "scope": "general",
@@ -5278,14 +5318,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M11-A01.pdf",
-    "path": "Aluno/Aulas/M11-A01.pdf",
-    "sha256": "97f8449327ea0dc34c5c203718086202f19237d333c93b1060f34610e5410720",
-    "bytes": 167085
+    "file": "bi-publicar-com-responsabilidades-e-distribuicao-definidas.pdf",
+    "path": "Aluno/Aulas/bi-publicar-com-responsabilidades-e-distribuicao-definidas.pdf",
+    "sha256": "3e27732dff4bfcf46fa6b65f668bd48e7e5fc13fc3face075d88e13e9a53d97d",
+    "bytes": 302117,
+    "pages": 3
   },
   {
     "id": "st1-bi-m11-a02",
-    "title": "M11-A02 Gateway credenciais e agendamento",
+    "title": "Gateway credenciais e agendamento",
     "summary": "Planejar a atualização e reconhecer quando um gateway é necessário.",
     "category": "cursos",
     "scope": "general",
@@ -5301,14 +5342,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M11-A02.pdf",
-    "path": "Aluno/Aulas/M11-A02.pdf",
-    "sha256": "6bebf0bc39104dc747325f0208d58e78fa7c7429c26bdd90a5c2263848ae6205",
-    "bytes": 114222
+    "file": "bi-gateway-credenciais-e-agendamento.pdf",
+    "path": "Aluno/Aulas/bi-gateway-credenciais-e-agendamento.pdf",
+    "sha256": "dc56758c9d2137034591a87d96e0a16607ae9916a10f0257e526cd1c91528cb0",
+    "bytes": 249309,
+    "pages": 3
   },
   {
     "id": "st1-bi-m11-a03",
-    "title": "M11-A03 Dashboards alertas assinaturas e conteúdo confiável",
+    "title": "Dashboards alertas assinaturas e conteúdo confiável",
     "summary": "Selecionar mecanismos de acompanhamento com suas limitações.",
     "category": "cursos",
     "scope": "general",
@@ -5324,14 +5366,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M11-A03.pdf",
-    "path": "Aluno/Aulas/M11-A03.pdf",
-    "sha256": "e1f95ae8cedfc2523c4c20e7fd23a7d7d8ad88fce126d74de6dd674568417a4d",
-    "bytes": 204162
+    "file": "bi-dashboards-alertas-assinaturas-e-conteudo-confiavel.pdf",
+    "path": "Aluno/Aulas/bi-dashboards-alertas-assinaturas-e-conteudo-confiavel.pdf",
+    "sha256": "e053ae9539d66036e25aa6a979d0919cb24e78b303ff968231ab41e9b351ea5d",
+    "bytes": 338950,
+    "pages": 3
   },
   {
     "id": "st1-bi-m11-lab",
-    "title": "M11 Laboratório Publicação e atualização controladas",
+    "title": "Laboratório · Publicação e atualização controladas",
     "summary": "Checklist de publicação com evidências; sem serviço, plano operacional preenchido e estado não executado.",
     "category": "treinamentos",
     "scope": "general",
@@ -5347,14 +5390,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M11-LAB.pdf",
-    "path": "Aluno/Laboratorios/M11-LAB.pdf",
-    "sha256": "716f1d4b036c725ca36db3e188e4994b8bb7861a3300719a375b6784b8cc29d3",
-    "bytes": 102979
+    "file": "bi-laboratorio-publicacao-e-atualizacao-controladas.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-publicacao-e-atualizacao-controladas.pdf",
+    "sha256": "9c09e887f95226c1103447f96e30e32ab2befea30a470308232d525a811e9927",
+    "bytes": 238397,
+    "pages": 3
   },
   {
     "id": "st1-bi-m12-a01",
-    "title": "M12-A01 Permissões de item workspace Build e RLS",
+    "title": "Permissões de item workspace Build e RLS",
     "summary": "Separar acesso ao conteúdo de restrição das linhas.",
     "category": "cursos",
     "scope": "general",
@@ -5370,14 +5414,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M12-A01.pdf",
-    "path": "Aluno/Aulas/M12-A01.pdf",
-    "sha256": "06f9b9a5848caf12661ee1bd4d2e86326f3b9a0e322cc831939dc96c411f8688",
-    "bytes": 147417
+    "file": "bi-permissoes-de-item-workspace-build-e-rls.pdf",
+    "path": "Aluno/Aulas/bi-permissoes-de-item-workspace-build-e-rls.pdf",
+    "sha256": "2d4daf50a119e5d61ef6cce03a9f262f526b1da32c17a8c4e226bb760497d651",
+    "bytes": 282510,
+    "pages": 3
   },
   {
     "id": "st1-bi-m12-a02",
-    "title": "M12-A02 Implementar RLS estática e dinâmica",
+    "title": "Implementar RLS estática e dinâmica",
     "summary": "Criar uma regra que filtre a dimensão e negue acessos sem vínculo.",
     "category": "cursos",
     "scope": "general",
@@ -5393,14 +5438,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M12-A02.pdf",
-    "path": "Aluno/Aulas/M12-A02.pdf",
-    "sha256": "dd21eebddfbbc66c8aa04a397a770a9382cc26187910e26e66b2db53fbe5696c",
-    "bytes": 141582
+    "file": "bi-implementar-rls-estatica-e-dinamica.pdf",
+    "path": "Aluno/Aulas/bi-implementar-rls-estatica-e-dinamica.pdf",
+    "sha256": "f1467b051aca161868a2f47d58d23fcf8ee5cdef6d274fbe35daa484f757a858",
+    "bytes": 275075,
+    "pages": 3
   },
   {
     "id": "st1-bi-m12-a03",
-    "title": "M12-A03 Testar publicação revogação e limites da segurança",
+    "title": "Testar publicação revogação e limites da segurança",
     "summary": "Concluir a validação com evidências positivas e negativas.",
     "category": "cursos",
     "scope": "general",
@@ -5416,14 +5462,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M12-A03.pdf",
-    "path": "Aluno/Aulas/M12-A03.pdf",
-    "sha256": "8a911017df72c39f55a3ea031fb175a538e68e4f1914fbcb46d4a28fb1bb6ea7",
-    "bytes": 139068
+    "file": "bi-testar-publicacao-revogacao-e-limites-da-seguranca.pdf",
+    "path": "Aluno/Aulas/bi-testar-publicacao-revogacao-e-limites-da-seguranca.pdf",
+    "sha256": "9ef4158bdd925a68d5d9872f062f3ffa558a6d7e5130db5ec2b21dff52d8c61e",
+    "bytes": 274129,
+    "pages": 3
   },
   {
     "id": "st1-bi-m12-lab",
-    "title": "M12 Laboratório RLS dinâmica com teste negativo",
+    "title": "Laboratório · RLS dinâmica com teste negativo",
     "summary": "Regra preservada no arquivo de projeto e matriz de quatro testes com esperado e observado.",
     "category": "treinamentos",
     "scope": "general",
@@ -5439,14 +5486,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M12-LAB.pdf",
-    "path": "Aluno/Laboratorios/M12-LAB.pdf",
-    "sha256": "5cd6015b9b7b11f3ee0d418692906f981da37e72a3734f5edd95002bffb4e78f",
-    "bytes": 97798
+    "file": "bi-laboratorio-rls-dinamica-com-teste-negativo.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-rls-dinamica-com-teste-negativo.pdf",
+    "sha256": "9cf18c886187f57af7c2118678484d07dbc9d424947f64e9ee23418ebaac1365",
+    "bytes": 233199,
+    "pages": 3
   },
   {
     "id": "st1-bi-m13-a01",
-    "title": "M13-A01 Reduzir volume cardinalidade e trabalho desnecessário",
+    "title": "Reduzir volume cardinalidade e trabalho desnecessário",
     "summary": "Identificar o custo antes de modificar a solução.",
     "category": "cursos",
     "scope": "general",
@@ -5462,14 +5510,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M13-A01.pdf",
-    "path": "Aluno/Aulas/M13-A01.pdf",
-    "sha256": "890b4d4aca79acc4b67149b31a330a61c9601b5a5ca4cc9b68930f337d0d6e92",
-    "bytes": 158250
+    "file": "bi-reduzir-volume-cardinalidade-e-trabalho-desnecessario.pdf",
+    "path": "Aluno/Aulas/bi-reduzir-volume-cardinalidade-e-trabalho-desnecessario.pdf",
+    "sha256": "58e3176cea9effd7482e0214865164a308debbe646ef41c3e74463269691dc6f",
+    "bytes": 292856,
+    "pages": 3
   },
   {
     "id": "st1-bi-m13-a02",
-    "title": "M13-A02 Performance Analyzer e consulta DAX",
+    "title": "Performance Analyzer e consulta DAX",
     "summary": "Investigar um visual usando evidência reproduzível.",
     "category": "cursos",
     "scope": "general",
@@ -5485,14 +5534,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M13-A02.pdf",
-    "path": "Aluno/Aulas/M13-A02.pdf",
-    "sha256": "f84c0a3662bcc79afe9e7de1997a5299bbca277e74705f1443cf8df02fe439d7",
-    "bytes": 163256
+    "file": "bi-performance-analyzer-e-consulta-dax.pdf",
+    "path": "Aluno/Aulas/bi-performance-analyzer-e-consulta-dax.pdf",
+    "sha256": "804df08e133b1f2bd823193600bcd88e2476809f99aed9462e9035c54779d7e3",
+    "bytes": 298179,
+    "pages": 3
   },
   {
     "id": "st1-bi-m13-a03",
-    "title": "M13-A03 Otimizar DAX e validar regressões",
+    "title": "Otimizar DAX e validar regressões",
     "summary": "Melhorar uma medida sem mudar seu contrato.",
     "category": "cursos",
     "scope": "general",
@@ -5508,14 +5558,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M13-A03.pdf",
-    "path": "Aluno/Aulas/M13-A03.pdf",
-    "sha256": "291c44d8047f8e76795604a5dcb36740cfef704c4aec460a564e4da89d99ebea",
-    "bytes": 163294
+    "file": "bi-otimizar-dax-e-validar-regressoes.pdf",
+    "path": "Aluno/Aulas/bi-otimizar-dax-e-validar-regressoes.pdf",
+    "sha256": "3196d0155f0f2f719fbaaec04ff97707d6d95afda9a8c0518c85e2a478586165",
+    "bytes": 297827,
+    "pages": 3
   },
   {
     "id": "st1-bi-m13-lab",
-    "title": "M13 Laboratório Diagnóstico e melhoria de desempenho",
+    "title": "Laboratório · Diagnóstico e melhoria de desempenho",
     "summary": "Relatório de investigação com dados antes e depois; ganho não é obrigatório quando a conclusão é fundamentada.",
     "category": "treinamentos",
     "scope": "general",
@@ -5531,14 +5582,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M13-LAB.pdf",
-    "path": "Aluno/Laboratorios/M13-LAB.pdf",
-    "sha256": "2d56d8b02e97b414406f9bb00ed2011ecd162c26981d5517331cbf4efb8a8a8d",
-    "bytes": 114030
+    "file": "bi-laboratorio-diagnostico-e-melhoria-de-desempenho.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-diagnostico-e-melhoria-de-desempenho.pdf",
+    "sha256": "a38a5e555567a0e6876ea40a23a6c777ddf67fb57503bc2d4af606b579a4abda",
+    "bytes": 249313,
+    "pages": 3
   },
   {
     "id": "st1-bi-m14-a01",
-    "title": "M14-A01 Pontes histórico SCD e granularidades diferentes",
+    "title": "Pontes histórico SCD e granularidades diferentes",
     "summary": "Projetar vínculos e histórico sem ambiguidade.",
     "category": "cursos",
     "scope": "general",
@@ -5554,14 +5606,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M14-A01.pdf",
-    "path": "Aluno/Aulas/M14-A01.pdf",
-    "sha256": "f3893e61ce786b758b1001fa3d7115e91ed6255e56ddf4ae6d86e8380a3f0f5d",
-    "bytes": 105408
+    "file": "bi-pontes-historico-scd-e-granularidades-diferentes.pdf",
+    "path": "Aluno/Aulas/bi-pontes-historico-scd-e-granularidades-diferentes.pdf",
+    "sha256": "1bb96c58ba1ccce5434dab202d26a9a29793210bced2071b23cf24cdf2f2db59",
+    "bytes": 240630,
+    "pages": 3
   },
   {
     "id": "st1-bi-m14-a02",
-    "title": "M14-A02 TREATAS tabelas virtuais e cenários desconectados",
+    "title": "TREATAS tabelas virtuais e cenários desconectados",
     "summary": "Aplicar filtros virtuais com domínio e comportamento definidos.",
     "category": "cursos",
     "scope": "general",
@@ -5577,14 +5630,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M14-A02.pdf",
-    "path": "Aluno/Aulas/M14-A02.pdf",
-    "sha256": "5a7e381ba60672f48bcc252077edbcef3e573fc9963d331ae54cdf770847c7c9",
-    "bytes": 127144
+    "file": "bi-treatas-tabelas-virtuais-e-cenarios-desconectados.pdf",
+    "path": "Aluno/Aulas/bi-treatas-tabelas-virtuais-e-cenarios-desconectados.pdf",
+    "sha256": "151dc3171ca3370eeab8bb2568065489124cbd1fd98587b1ddf6fb32f6cc2bb3",
+    "bytes": 260610,
+    "pages": 3
   },
   {
     "id": "st1-bi-m14-a03",
-    "title": "M14-A03 Grupos de cálculo formatos dinâmicos e semiaditividade",
+    "title": "Grupos de cálculo formatos dinâmicos e semiaditividade",
     "summary": "Reduzir repetição preservando o comportamento das medidas.",
     "category": "cursos",
     "scope": "general",
@@ -5600,14 +5654,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M14-A03.pdf",
-    "path": "Aluno/Aulas/M14-A03.pdf",
-    "sha256": "ae82ff858aa93fce5cf2c3055c7b164b59be6419c0d3eda4bb8752bf625a4551",
-    "bytes": 126730
+    "file": "bi-grupos-de-calculo-formatos-dinamicos-e-semiaditividade.pdf",
+    "path": "Aluno/Aulas/bi-grupos-de-calculo-formatos-dinamicos-e-semiaditividade.pdf",
+    "sha256": "b612a94009dc92b3c361d59ef1bffadfb335758a48c28960463b45c041b606ed",
+    "bytes": 260036,
+    "pages": 3
   },
   {
     "id": "st1-bi-m14-lab",
-    "title": "M14 Laboratório Cenários histórico e grupos de cálculo",
+    "title": "Laboratório · Cenários histórico e grupos de cálculo",
     "summary": "Cópia avançada e especificação das decisões de histórico e cenário.",
     "category": "treinamentos",
     "scope": "general",
@@ -5623,14 +5678,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M14-LAB.pdf",
-    "path": "Aluno/Laboratorios/M14-LAB.pdf",
-    "sha256": "d51b44c9324a39b20403c1e96ae30017109c1a4ffb0293825311715bb3d914a2",
-    "bytes": 103546
+    "file": "bi-laboratorio-cenarios-historico-e-grupos-de-calculo.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-cenarios-historico-e-grupos-de-calculo.pdf",
+    "sha256": "9897df7d8efe4a92651651bc74eae6ee1078f54d54eb776ba40559aae4438eda",
+    "bytes": 238657,
+    "pages": 3
   },
   {
     "id": "st1-bi-m15-a01",
-    "title": "M15-A01 Atualização incremental partições e dados tardios",
+    "title": "Atualização incremental partições e dados tardios",
     "summary": "Definir uma política de atualização verificável.",
     "category": "cursos",
     "scope": "general",
@@ -5646,14 +5702,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M15-A01.pdf",
-    "path": "Aluno/Aulas/M15-A01.pdf",
-    "sha256": "58a7ad612e78193f033ba04b48f598e6d7f7637aacb9b70266fe07aeb2e8dcb8",
-    "bytes": 131699
+    "file": "bi-atualizacao-incremental-particoes-e-dados-tardios.pdf",
+    "path": "Aluno/Aulas/bi-atualizacao-incremental-particoes-e-dados-tardios.pdf",
+    "sha256": "fdc15219fe4ce5f4ca42a4312a958be3acbcb7622f6fe20a1d76a8c86f60e26c",
+    "bytes": 265255,
+    "pages": 3
   },
   {
     "id": "st1-bi-m15-a02",
-    "title": "M15-A02 Direct Lake modelos compostos e arquitetura Fabric",
+    "title": "Direct Lake modelos compostos e arquitetura Fabric",
     "summary": "Avaliar uma arquitetura de maior escala sem depender de nomes.",
     "category": "cursos",
     "scope": "general",
@@ -5669,14 +5726,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M15-A02.pdf",
-    "path": "Aluno/Aulas/M15-A02.pdf",
-    "sha256": "4a47b06607fdd7529f4db9645e528e75aeead44e582d89c585e9aa7319ed8fb7",
-    "bytes": 172707
+    "file": "bi-direct-lake-modelos-compostos-e-arquitetura-fabric.pdf",
+    "path": "Aluno/Aulas/bi-direct-lake-modelos-compostos-e-arquitetura-fabric.pdf",
+    "sha256": "6295e4f91051b68a5112b18f5e00b952ff896f6ad8dc0932076c0c292291c098",
+    "bytes": 307680,
+    "pages": 3
   },
   {
     "id": "st1-bi-m15-a03",
-    "title": "M15-A03 PBIP Git revisão implantação e rollback",
+    "title": "PBIP Git revisão implantação e rollback",
     "summary": "Preparar uma entrega versionada e operável.",
     "category": "cursos",
     "scope": "general",
@@ -5692,14 +5750,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M15-A03.pdf",
-    "path": "Aluno/Aulas/M15-A03.pdf",
-    "sha256": "3bf4bd5793cfbe4facc8ff97e5e53c832cd8e0f668e2c17bc7ac4645338faba1",
-    "bytes": 113200
+    "file": "bi-pbip-git-revisao-implantacao-e-rollback.pdf",
+    "path": "Aluno/Aulas/bi-pbip-git-revisao-implantacao-e-rollback.pdf",
+    "sha256": "7353443c65957e6e7329f70e4a2639113a1a59f861507e33862689a0420ac0d2",
+    "bytes": 248402,
+    "pages": 3
   },
   {
     "id": "st1-bi-m15-lab",
-    "title": "M15 Laboratório Incremental arquitetura e entrega versionada",
+    "title": "Laboratório · Incremental arquitetura e entrega versionada",
     "summary": "Decisão de arquitetura, casos de partição e plano de entrega.",
     "category": "treinamentos",
     "scope": "general",
@@ -5715,14 +5774,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M15-LAB.pdf",
-    "path": "Aluno/Laboratorios/M15-LAB.pdf",
-    "sha256": "2b9cb460f48d2cc18d79183db563ca02b6e8a524b4901eac1d5ee0a4051f346f",
-    "bytes": 112481
+    "file": "bi-laboratorio-incremental-arquitetura-e-entrega-versionada.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-incremental-arquitetura-e-entrega-versionada.pdf",
+    "sha256": "0ff0701fb0e2f94ff48900612e2653cb804a502593fec1eca1fe5f14ced45732",
+    "bytes": 247718,
+    "pages": 3
   },
   {
     "id": "st1-bi-m16-a01",
-    "title": "M16-A01 Especificar e construir a solução comercial",
+    "title": "Especificar e construir a solução comercial",
     "summary": "Conectar requisito preparação modelo e experiência em um projeto.",
     "category": "cursos",
     "scope": "general",
@@ -5738,14 +5798,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M16-A01.pdf",
-    "path": "Aluno/Aulas/M16-A01.pdf",
-    "sha256": "d315db1cf67ee010a7679fbffeb64f59408c49dac3d8ed9efba004d6aa48f2ed",
-    "bytes": 183216
+    "file": "bi-especificar-e-construir-a-solucao-comercial.pdf",
+    "path": "Aluno/Aulas/bi-especificar-e-construir-a-solucao-comercial.pdf",
+    "sha256": "a95474afe864ceef646c2c4bc9eca08efdb8244ca1d1fbfcec306de584e2ec01",
+    "bytes": 318257,
+    "pages": 3
   },
   {
     "id": "st1-bi-m16-a02",
-    "title": "M16-A02 Homologar números acesso e desempenho",
+    "title": "Homologar números acesso e desempenho",
     "summary": "Executar uma matriz de aceite reproduzível.",
     "category": "cursos",
     "scope": "general",
@@ -5761,14 +5822,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M16-A02.pdf",
-    "path": "Aluno/Aulas/M16-A02.pdf",
-    "sha256": "39a1f0a5a263e5935671c861d88dd49d351c7891a62c495baf950b0ef93b4363",
-    "bytes": 164357
+    "file": "bi-homologar-numeros-acesso-e-desempenho.pdf",
+    "path": "Aluno/Aulas/bi-homologar-numeros-acesso-e-desempenho.pdf",
+    "sha256": "f63a6180d1c7da4258e36a86a28db0960ee76cb35aa51498decaeab6499e9acd",
+    "bytes": 299200,
+    "pages": 3
   },
   {
     "id": "st1-bi-m16-a03",
-    "title": "M16-A03 Documentar operar e continuar evoluindo",
+    "title": "Documentar operar e continuar evoluindo",
     "summary": "Transferir a solução com responsáveis e procedimentos claros.",
     "category": "cursos",
     "scope": "general",
@@ -5784,14 +5846,15 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M16-A03.pdf",
-    "path": "Aluno/Aulas/M16-A03.pdf",
-    "sha256": "0f0c6d9f46f9b233be92a8bc7712a343dc5c06b476687f38d9567ffe898b26d1",
-    "bytes": 179894
+    "file": "bi-documentar-operar-e-continuar-evoluindo.pdf",
+    "path": "Aluno/Aulas/bi-documentar-operar-e-continuar-evoluindo.pdf",
+    "sha256": "2e234eecd7bd96851afcc70c2150a528c0f01d9ed3c3900a81e4a4d8e825b76a",
+    "bytes": 314637,
+    "pages": 3
   },
   {
     "id": "st1-bi-m16-lab",
-    "title": "M16 Laboratório Projeto completo e defesa com evidências",
+    "title": "Laboratório · Projeto completo e defesa com evidências",
     "summary": "Projeto completo com arquivos, dicionário, evidências e avaliação de critérios.",
     "category": "treinamentos",
     "scope": "general",
@@ -5807,9 +5870,10 @@ export const biContents=[
     ],
     "kind": "file",
     "status": "published",
-    "file": "M16-LAB.pdf",
-    "path": "Aluno/Laboratorios/M16-LAB.pdf",
-    "sha256": "40fcc030e7afb5053eeca4fdae9cddcaece2a5fddc6e3bbe4636fe65d8f30e5d",
-    "bytes": 111364
+    "file": "bi-laboratorio-projeto-completo-e-defesa-com-evidencias.pdf",
+    "path": "Aluno/Laboratorios/bi-laboratorio-projeto-completo-e-defesa-com-evidencias.pdf",
+    "sha256": "0501bb2df964cb53473ce6563c5753b615961e282011f446ca8fc7998d0a24fd",
+    "bytes": 246790,
+    "pages": 3
   }
 ];

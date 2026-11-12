@@ -1,0 +1,520 @@
+{
+  "contents": {
+    "st1-bi-m01": {
+      "title": "M01 BI Fundamentos de BI e leitura de indicadores",
+      "file": "bi-m01.pdf",
+      "summary": "Formação BI e Power BI | Iniciante | 4 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "72a124c9b5f688a2bc625826af9757146b03ed71cca234d44e4529aa150f19d3"
+    },
+    "st1-bi-m02": {
+      "title": "M02 BI Ambiente fontes e modos de conexão",
+      "file": "bi-m02.pdf",
+      "summary": "Formação BI e Power BI | Iniciante | 5 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "590be1a580dbe27104c0b80330c3ffa179ca9e7eec06e8ac20e18f0526730d99"
+    },
+    "st1-bi-m03": {
+      "title": "M03 BI Limpeza perfil e padronização no Power Query",
+      "file": "bi-m03.pdf",
+      "summary": "Formação BI e Power BI | Iniciante | 6 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "a7e98948a6fc95a26664a1bba5fbc97c3f268c417b444dc153b70b6697c6569f"
+    },
+    "st1-bi-m04": {
+      "title": "M04 BI Power Query M parâmetros e fontes complexas",
+      "file": "bi-m04.pdf",
+      "summary": "Formação BI e Power BI | Intermediário | 6 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "7f31162647c9526da6eb65ee91ef461534eb4968f146252132df94a282e33849"
+    },
+    "st1-bi-m05": {
+      "title": "M05 BI Modelagem dimensional e modelo semântico",
+      "file": "bi-m05.pdf",
+      "summary": "Formação BI e Power BI | Intermediário | 7 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "a34f0760f4a102eefdf6f1df59b35c160bf484e0ee2eeac44c1fd55e58c96c46"
+    },
+    "st1-bi-m06": {
+      "title": "M06 BI DAX medidas colunas e cálculos básicos",
+      "file": "bi-m06.pdf",
+      "summary": "Formação BI e Power BI | Intermediário | 6 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "3cd14d3ad9a622110b68be8b13bf2c422d2316b3c66da0bc833083fbc4a23198"
+    },
+    "st1-bi-m07": {
+      "title": "M07 BI Contexto de filtro e DAX aplicado",
+      "file": "bi-m07.pdf",
+      "summary": "Formação BI e Power BI | Intermediário | 7 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "eb36b332199cd1a6f37a66baddd182e839b2640ba29cb3ed4f6ce7fd7a661e88"
+    },
+    "st1-bi-m08": {
+      "title": "M08 BI Calendário comparações e inteligência temporal",
+      "file": "bi-m08.pdf",
+      "summary": "Formação BI e Power BI | Intermediário | 6 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "3e9950d484a65e215f737e403caa4365f061bace916a6cb86c68d2860df3fe4b"
+    },
+    "st1-bi-m09": {
+      "title": "M09 BI Relatórios experiência acessibilidade e mobile",
+      "file": "bi-m09.pdf",
+      "summary": "Formação BI e Power BI | Intermediário | 6 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "3ef7d6eff3ec9697fccebe74273b9f46c42dd3d677afc2e749d817704581d565"
+    },
+    "st1-bi-m10": {
+      "title": "M10 BI Cálculos visuais análise estatística e IA",
+      "file": "bi-m10.pdf",
+      "summary": "Formação BI e Power BI | Intermediário | 5 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "240985726b7e097d43bba57eb3aedd489657a9ae9aa2d7e2c500bed85dc6ba6e"
+    },
+    "st1-bi-m11": {
+      "title": "M11 BI Publicação workspaces aplicativos e atualização",
+      "file": "bi-m11.pdf",
+      "summary": "Formação BI e Power BI | Intermediário | 6 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "a0fcfe93512884f679fd8482b8f45e298b72ccab16ee7b9bf3969ff072330079"
+    },
+    "st1-bi-m12": {
+      "title": "M12 BI Segurança RLS e testes de acesso",
+      "file": "bi-m12.pdf",
+      "summary": "Formação BI e Power BI | Avançado | 6 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "4651c6ae1cb768047a5545d46b3cc874326db73df54fac31d2738f6963afd308"
+    },
+    "st1-bi-m13": {
+      "title": "M13 BI Desempenho do modelo medidas e visuais",
+      "file": "bi-m13.pdf",
+      "summary": "Formação BI e Power BI | Avançado | 6 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "02ea4820ed0e164879fb1174ccabb4a21c779722915b51893989447962502a49"
+    },
+    "st1-bi-m14": {
+      "title": "M14 BI Modelagem e DAX de aprofundamento",
+      "file": "bi-m14.pdf",
+      "summary": "Formação BI e Power BI | Avançado | 7 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "ea4e08f397b4064077cf89258aab1e9710dda3a6ac81c374506dc21e0cd5fc8e"
+    },
+    "st1-bi-m15": {
+      "title": "M15 BI Atualização incremental Fabric e ciclo de entrega",
+      "file": "bi-m15.pdf",
+      "summary": "Formação BI e Power BI | Avançado | 6 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "d83a0a2e7ccdc556f5e72a9c679e3fe36c8d47dc0da827bc58d21b7fab736ee0"
+    },
+    "st1-bi-m16": {
+      "title": "M16 BI Projeto aplicado ST1 e operação da solução",
+      "file": "bi-m16.pdf",
+      "summary": "Formação BI e Power BI | Avançado | 7 horas planejadas. Três aulas e um laboratório aplicado.",
+      "sha256": "7a36d38acd376aa9e4c3b06c06e97be7967facdb4c38d85468654ad0a50ba9d2"
+    },
+    "st1-bi-m01-a01": {
+      "title": "M01-A01 Da pergunta de negócio ao indicador",
+      "file": "M01-A01.pdf",
+      "summary": "Transformar uma decisão em uma especificação verificável.",
+      "sha256": "5b75db28aa927cb975880398e4de7876cb4430033c06f345b870f4872e555f46"
+    },
+    "st1-bi-m01-a02": {
+      "title": "M01-A02 Tabelas tipos e granularidade",
+      "file": "M01-A02.pdf",
+      "summary": "Reconhecer o que uma linha representa antes de somar.",
+      "sha256": "6b5e959da8340da38efb8140ec59f66ab99093f9edda5253e01381ff93c203f1"
+    },
+    "st1-bi-m01-a03": {
+      "title": "M01-A03 Qualidade evidência e interpretação",
+      "file": "M01-A03.pdf",
+      "summary": "Interpretar um painel sem confundir correlação com causa.",
+      "sha256": "2268d6571a73fd573e5f464d24311344fd056c8a8ce4b610ad19947d9ca31d49"
+    },
+    "st1-bi-m01-lab": {
+      "title": "M01 Laboratório Contrato de métricas e primeira conferência",
+      "file": "M01-LAB.pdf",
+      "summary": "Ficha com cinco métricas, suas populações, datas, fontes e responsáveis a definir pela gestão.",
+      "sha256": "d7f578adfce5a1b730a1711f876d2c2419fda3c89f0ec4e8cb8f032042559f76"
+    },
+    "st1-bi-m02-a01": {
+      "title": "M02-A01 Preparar o ambiente e reconhecer os componentes",
+      "file": "M02-A01.pdf",
+      "summary": "Abrir uma solução local e distinguir Desktop serviço e modelo.",
+      "sha256": "d0acd58f16b9d3d67fe5d95dcdc37cf4c448cdc53824b7c4c9572f4922a3865d"
+    },
+    "st1-bi-m02-a02": {
+      "title": "M02-A02 Conectar CSV Excel SQL e modelos compartilhados",
+      "file": "M02-A02.pdf",
+      "summary": "Escolher um conector e documentar as credenciais sem expô-las.",
+      "sha256": "b26ff66a92dc485280b15080df924176be549a5133a65d8ce6fcccda7e5bb58d"
+    },
+    "st1-bi-m02-a03": {
+      "title": "M02-A03 Import DirectQuery Direct Lake e conexão ao modelo",
+      "file": "M02-A03.pdf",
+      "summary": "Justificar o modo de acesso por latência volume e operação.",
+      "sha256": "dcfe08ffc2ce97a80e50f2241974bc5e446f2b79bacc45fb59351db0e677be54"
+    },
+    "st1-bi-m02-lab": {
+      "title": "M02 Laboratório Importação parametrizada da base ST1",
+      "file": "M02-LAB.pdf",
+      "summary": "PBIX de treinamento com consultas parametrizadas e sem credenciais no texto M.",
+      "sha256": "dbbc95d755f4adc68657c72bf6a80cce8d9cb45c26958c40a50d10ac3fd7851f"
+    },
+    "st1-bi-m03-a01": {
+      "title": "M03-A01 Inspecionar e tratar problemas de qualidade",
+      "file": "M03-A01.pdf",
+      "summary": "Construir uma regra de limpeza que preserve o significado.",
+      "sha256": "994ed5af3ddf7170c5a56232dbd4ed1e1fdc97d79f612beb96350e95fff5e961"
+    },
+    "st1-bi-m03-a02": {
+      "title": "M03-A02 Transformar colunas e reorganizar tabelas",
+      "file": "M03-A02.pdf",
+      "summary": "Reorganizar uma tabela para o nível de análise exigido.",
+      "sha256": "893ec92ba881510136e989ee3419609eb5d8a966e2c8ffad07966cb02bd716de"
+    },
+    "st1-bi-m03-a03": {
+      "title": "M03-A03 Mesclar acrescentar e controlar a carga",
+      "file": "M03-A03.pdf",
+      "summary": "Combinar tabelas sem multiplicar fatos.",
+      "sha256": "2991384646a099d02f6db2f86f030d659167d0705f79ce1978375d3d3f13e5f7"
+    },
+    "st1-bi-m03-lab": {
+      "title": "M03 Laboratório Auditoria de duplicidades datas e chaves",
+      "file": "M03-LAB.pdf",
+      "summary": "Consulta válida e três consultas de auditoria de duplicidade data e região.",
+      "sha256": "1fd7211fd23d2d5d433a72f1653ed489ff27018078be3e04c6306a8435dbbc98"
+    },
+    "st1-bi-m04-a01": {
+      "title": "M04-A01 Ler e editar expressões M",
+      "file": "M04-A01.pdf",
+      "summary": "Explicar uma consulta let in e tratar erros de forma observável.",
+      "sha256": "fac70120dabc4791a9f34b18b8ccee8ecc7b11c88a0d76bb626e4ef193e1ada0"
+    },
+    "st1-bi-m04-a02": {
+      "title": "M04-A02 Arquivos de pasta JSON e paginação de API",
+      "file": "M04-A02.pdf",
+      "summary": "Projetar uma ingestão repetível para fontes semiestruturadas.",
+      "sha256": "52cb609064c7b2c16072d604eeafc6cc5211cc10022523eaffa23bf7c54faf24"
+    },
+    "st1-bi-m04-a03": {
+      "title": "M04-A03 Query folding e diagnóstico da preparação",
+      "file": "M04-A03.pdf",
+      "summary": "Avaliar se a transformação pode ser executada na origem.",
+      "sha256": "b95e9dfdacef08aadce181a4300edb0e8da763f0de379ec1191794e51ff4d914"
+    },
+    "st1-bi-m04-lab": {
+      "title": "M04 Laboratório Função M pasta metas largas e JSON",
+      "file": "M04-LAB.pdf",
+      "summary": "Função M reutilizável, meta normalizada e amostra JSON com 20 leads.",
+      "sha256": "a12643d4598c990b2e11cc358d3c3d0dbeb43d0e28e10abc8935c1141ee118c2"
+    },
+    "st1-bi-m05-a01": {
+      "title": "M05-A01 Desenhar fatos dimensões e chaves",
+      "file": "M05-A01.pdf",
+      "summary": "Desenhar um modelo estrela com granularidades explícitas.",
+      "sha256": "bb4724677b70da23666c07462b8137756be504bd8d28160af357b532c168a7b0"
+    },
+    "st1-bi-m05-a02": {
+      "title": "M05-A02 Relacionamentos direção e dimensões com papéis",
+      "file": "M05-A02.pdf",
+      "summary": "Prever como um filtro chega a uma medida.",
+      "sha256": "cf1a15d7644479db4c80e803de3c0c3d7364869e9f9899356dff391ad041a7f1"
+    },
+    "st1-bi-m05-a03": {
+      "title": "M05-A03 Propriedades hierarquias e validação do modelo",
+      "file": "M05-A03.pdf",
+      "summary": "Entregar campos compreensíveis e totais reconciliados.",
+      "sha256": "41ed096168174a64ad8ab62f36a182c2a3f2390e13a48169df5247d324a8470e"
+    },
+    "st1-bi-m05-lab": {
+      "title": "M05 Laboratório Modelo estrela com calendário diário e mensal",
+      "file": "M05-LAB.pdf",
+      "summary": "Diagrama e PBIX com grãos explícitos e caminhos de filtro únicos.",
+      "sha256": "64caa78e715941f425a90fa89b13f6aec057ecf0052c37911bf6c5ddaa944a40"
+    },
+    "st1-bi-m06-a01": {
+      "title": "M06-A01 Escolher medida coluna calculada e tabela calculada",
+      "file": "M06-A01.pdf",
+      "summary": "Escolher onde uma regra deve ser calculada e armazenada.",
+      "sha256": "29fe3b2d1b7097ac306ea6014379da234a8938c749718dd260e33fac7d611ee8"
+    },
+    "st1-bi-m06-a02": {
+      "title": "M06-A02 Iteradores variáveis e divisão segura",
+      "file": "M06-A02.pdf",
+      "summary": "Construir medidas que respeitem a unidade de cálculo.",
+      "sha256": "39a0708d91ef18d2dd208bfe44076ef5296b8325047df17036565e9fa5f86296"
+    },
+    "st1-bi-m06-a03": {
+      "title": "M06-A03 Métricas comerciais com contrato de cálculo",
+      "file": "M06-A03.pdf",
+      "summary": "Construir conversão meta e custo sem misturar conceitos.",
+      "sha256": "56b902c4a66cf3663fc1f4342912aaa0e024d449c40b65805481580b33e64d24"
+    },
+    "st1-bi-m06-lab": {
+      "title": "M06 Laboratório Biblioteca de medidas comerciais",
+      "file": "M06-LAB.pdf",
+      "summary": "Medidas explícitas com nomes, formatos e descrições.",
+      "sha256": "69abbde505e8621aa7edb3d5eda4e9047b27ba104bc4da71b79ffef5e1b3cb54"
+    },
+    "st1-bi-m07-a01": {
+      "title": "M07-A01 Contexto de linha filtro e transição",
+      "file": "M07-A01.pdf",
+      "summary": "Explicar por que uma medida muda entre linhas e total.",
+      "sha256": "a9e18704717260f026d443c9e9237fd97b71f9a85ea5dcb296f235bdb51ad594"
+    },
+    "st1-bi-m07-a02": {
+      "title": "M07-A02 CALCULATE REMOVEFILTERS e KEEPFILTERS",
+      "file": "M07-A02.pdf",
+      "summary": "Alterar somente o filtro necessário ao indicador.",
+      "sha256": "842dc00839ac3ebc403702364b38ce668c14c206cb495f89b9cbbcc26ca0ba24"
+    },
+    "st1-bi-m07-a03": {
+      "title": "M07-A03 ISINSCOPE ranking e medidas não aditivas",
+      "file": "M07-A03.pdf",
+      "summary": "Definir comportamento de detalhes subtotais e saldos.",
+      "sha256": "1e3eb67c98bace456add07df382831d480a95c89a5799ea56194cc17e5e48e55"
+    },
+    "st1-bi-m07-lab": {
+      "title": "M07 Laboratório Contexto participação e total de carteira",
+      "file": "M07-LAB.pdf",
+      "summary": "Matriz com medidas de contexto e documentação dos totais.",
+      "sha256": "4245f3006351b23c96be9be4b7967cca000b27b51738b67d8a3cc0c4f55c5883"
+    },
+    "st1-bi-m08-a01": {
+      "title": "M08-A01 Construir um calendário confiável",
+      "file": "M08-A01.pdf",
+      "summary": "Separar calendário civil fiscal e papel da data.",
+      "sha256": "9686085e7f6656fb8d0101fe985020723f82fd093a72cb25c5bf8969e00a9a4a"
+    },
+    "st1-bi-m08-a02": {
+      "title": "M08-A02 Acumulados YTD e comparação com ano anterior",
+      "file": "M08-A02.pdf",
+      "summary": "Criar medidas temporais e validar o primeiro período.",
+      "sha256": "87bb93b2a9c661ad02bd48d4117f44374d32f027eddec3954a833d2a91a8d251"
+    },
+    "st1-bi-m08-a03": {
+      "title": "M08-A03 Coortes janelas móveis e metas proporcionais",
+      "file": "M08-A03.pdf",
+      "summary": "Escolher uma comparação compatível com a decisão.",
+      "sha256": "f9068a6983c6614fc8306678dbf9cf3d71e15a5848884576bee149e118d3a534"
+    },
+    "st1-bi-m08-lab": {
+      "title": "M08 Laboratório Inteligência temporal com casos de fronteira",
+      "file": "M08-LAB.pdf",
+      "summary": "Medidas e matriz com evidências de janeiro junho dezembro e período sem referência.",
+      "sha256": "ddd497225f0b58c67f30881e748a0b9523aa29a215051bbad4ef5acf119b14ac"
+    },
+    "st1-bi-m09-a01": {
+      "title": "M09-A01 Escolher visuais e organizar a página",
+      "file": "M09-A01.pdf",
+      "summary": "Desenhar uma página orientada à decisão do usuário.",
+      "sha256": "a112ac7ee84db37b8635cba84db4107ebaacc3be7e08caae6660fffbadad3967"
+    },
+    "st1-bi-m09-a02": {
+      "title": "M09-A02 Filtros interações drillthrough tooltips e bookmarks",
+      "file": "M09-A02.pdf",
+      "summary": "Criar navegação previsível e conservar o contexto relevante.",
+      "sha256": "0ddb2c2ac39736b98af274d3e8a638b99844e89d37641fc8c72f0cdbbe7bfb84"
+    },
+    "st1-bi-m09-a03": {
+      "title": "M09-A03 Acessibilidade layout móvel e exportação",
+      "file": "M09-A03.pdf",
+      "summary": "Entregar uma leitura utilizável em diferentes condições.",
+      "sha256": "e2954f85cbfe860159ba5eb66ab3016bfa6a7a69b275fd2a1d5eecf119f4b92b"
+    },
+    "st1-bi-m09-lab": {
+      "title": "M09 Laboratório Relatório executivo navegação e mobile",
+      "file": "M09-LAB.pdf",
+      "summary": "Duas páginas navegáveis e layout móvel com experiência acessível.",
+      "sha256": "dd53f2ea8d0125610db5b1f32a69f1ff68289a76e503d6dfe2722253e444f3c7"
+    },
+    "st1-bi-m10-a01": {
+      "title": "M10-A01 Cálculos visuais eixo ordem e reinício",
+      "file": "M10-A01.pdf",
+      "summary": "Distinguir cálculo do visual de medida reutilizável do modelo.",
+      "sha256": "a57119b0430a7cd1ebca701cd68aae17b1f139b4fd6de51a1cea3acb93c9bba3"
+    },
+    "st1-bi-m10-a02": {
+      "title": "M10-A02 Dispersão tendências agrupamentos e previsão",
+      "file": "M10-A02.pdf",
+      "summary": "Usar recursos analíticos com hipóteses e limites claros.",
+      "sha256": "1cfc1a562b0347c9e6437b0477e48834839434ebe8fd98fdc6990a60f49e744f"
+    },
+    "st1-bi-m10-a03": {
+      "title": "M10-A03 Copilot narrativas e revisão humana",
+      "file": "M10-A03.pdf",
+      "summary": "Usar IA como apoio com validação de métricas e permissões.",
+      "sha256": "08eb7141ba6510de286c09cec49b18fd8e52752fedb953971ebb1cc8d8e011ac"
+    },
+    "st1-bi-m10-lab": {
+      "title": "M10 Laboratório Análise e cálculos no visual",
+      "file": "M10-LAB.pdf",
+      "summary": "Visual acumulado, média móvel e narrativa revisada.",
+      "sha256": "5e35e6293c3ed389063654ce5f31783adbb127bc20203b95bbdb8ddc2c6a9970"
+    },
+    "st1-bi-m11-a01": {
+      "title": "M11-A01 Publicar com responsabilidades e distribuição definidas",
+      "file": "M11-A01.pdf",
+      "summary": "Distinguir publicação de disponibilidade para o público correto.",
+      "sha256": "97f8449327ea0dc34c5c203718086202f19237d333c93b1060f34610e5410720"
+    },
+    "st1-bi-m11-a02": {
+      "title": "M11-A02 Gateway credenciais e agendamento",
+      "file": "M11-A02.pdf",
+      "summary": "Planejar a atualização e reconhecer quando um gateway é necessário.",
+      "sha256": "6bebf0bc39104dc747325f0208d58e78fa7c7429c26bdd90a5c2263848ae6205"
+    },
+    "st1-bi-m11-a03": {
+      "title": "M11-A03 Dashboards alertas assinaturas e conteúdo confiável",
+      "file": "M11-A03.pdf",
+      "summary": "Selecionar mecanismos de acompanhamento com suas limitações.",
+      "sha256": "e1f95ae8cedfc2523c4c20e7fd23a7d7d8ad88fce126d74de6dd674568417a4d"
+    },
+    "st1-bi-m11-lab": {
+      "title": "M11 Laboratório Publicação e atualização controladas",
+      "file": "M11-LAB.pdf",
+      "summary": "Checklist de publicação com evidências; sem serviço, plano operacional preenchido e estado não executado.",
+      "sha256": "716f1d4b036c725ca36db3e188e4994b8bb7861a3300719a375b6784b8cc29d3"
+    },
+    "st1-bi-m12-a01": {
+      "title": "M12-A01 Permissões de item workspace Build e RLS",
+      "file": "M12-A01.pdf",
+      "summary": "Separar acesso ao conteúdo de restrição das linhas.",
+      "sha256": "06f9b9a5848caf12661ee1bd4d2e86326f3b9a0e322cc831939dc96c411f8688"
+    },
+    "st1-bi-m12-a02": {
+      "title": "M12-A02 Implementar RLS estática e dinâmica",
+      "file": "M12-A02.pdf",
+      "summary": "Criar uma regra que filtre a dimensão e negue acessos sem vínculo.",
+      "sha256": "dd21eebddfbbc66c8aa04a397a770a9382cc26187910e26e66b2db53fbe5696c"
+    },
+    "st1-bi-m12-a03": {
+      "title": "M12-A03 Testar publicação revogação e limites da segurança",
+      "file": "M12-A03.pdf",
+      "summary": "Concluir a validação com evidências positivas e negativas.",
+      "sha256": "8a911017df72c39f55a3ea031fb175a538e68e4f1914fbcb46d4a28fb1bb6ea7"
+    },
+    "st1-bi-m12-lab": {
+      "title": "M12 Laboratório RLS dinâmica com teste negativo",
+      "file": "M12-LAB.pdf",
+      "summary": "Regra preservada no arquivo de projeto e matriz de quatro testes com esperado e observado.",
+      "sha256": "5cd6015b9b7b11f3ee0d418692906f981da37e72a3734f5edd95002bffb4e78f"
+    },
+    "st1-bi-m13-a01": {
+      "title": "M13-A01 Reduzir volume cardinalidade e trabalho desnecessário",
+      "file": "M13-A01.pdf",
+      "summary": "Identificar o custo antes de modificar a solução.",
+      "sha256": "890b4d4aca79acc4b67149b31a330a61c9601b5a5ca4cc9b68930f337d0d6e92"
+    },
+    "st1-bi-m13-a02": {
+      "title": "M13-A02 Performance Analyzer e consulta DAX",
+      "file": "M13-A02.pdf",
+      "summary": "Investigar um visual usando evidência reproduzível.",
+      "sha256": "f84c0a3662bcc79afe9e7de1997a5299bbca277e74705f1443cf8df02fe439d7"
+    },
+    "st1-bi-m13-a03": {
+      "title": "M13-A03 Otimizar DAX e validar regressões",
+      "file": "M13-A03.pdf",
+      "summary": "Melhorar uma medida sem mudar seu contrato.",
+      "sha256": "291c44d8047f8e76795604a5dcb36740cfef704c4aec460a564e4da89d99ebea"
+    },
+    "st1-bi-m13-lab": {
+      "title": "M13 Laboratório Diagnóstico e melhoria de desempenho",
+      "file": "M13-LAB.pdf",
+      "summary": "Relatório de investigação com dados antes e depois; ganho não é obrigatório quando a conclusão é fundamentada.",
+      "sha256": "2d56d8b02e97b414406f9bb00ed2011ecd162c26981d5517331cbf4efb8a8a8d"
+    },
+    "st1-bi-m14-a01": {
+      "title": "M14-A01 Pontes histórico SCD e granularidades diferentes",
+      "file": "M14-A01.pdf",
+      "summary": "Projetar vínculos e histórico sem ambiguidade.",
+      "sha256": "f3893e61ce786b758b1001fa3d7115e91ed6255e56ddf4ae6d86e8380a3f0f5d"
+    },
+    "st1-bi-m14-a02": {
+      "title": "M14-A02 TREATAS tabelas virtuais e cenários desconectados",
+      "file": "M14-A02.pdf",
+      "summary": "Aplicar filtros virtuais com domínio e comportamento definidos.",
+      "sha256": "5a7e381ba60672f48bcc252077edbcef3e573fc9963d331ae54cdf770847c7c9"
+    },
+    "st1-bi-m14-a03": {
+      "title": "M14-A03 Grupos de cálculo formatos dinâmicos e semiaditividade",
+      "file": "M14-A03.pdf",
+      "summary": "Reduzir repetição preservando o comportamento das medidas.",
+      "sha256": "ae82ff858aa93fce5cf2c3055c7b164b59be6419c0d3eda4bb8752bf625a4551"
+    },
+    "st1-bi-m14-lab": {
+      "title": "M14 Laboratório Cenários histórico e grupos de cálculo",
+      "file": "M14-LAB.pdf",
+      "summary": "Cópia avançada e especificação das decisões de histórico e cenário.",
+      "sha256": "d51b44c9324a39b20403c1e96ae30017109c1a4ffb0293825311715bb3d914a2"
+    },
+    "st1-bi-m15-a01": {
+      "title": "M15-A01 Atualização incremental partições e dados tardios",
+      "file": "M15-A01.pdf",
+      "summary": "Definir uma política de atualização verificável.",
+      "sha256": "58a7ad612e78193f033ba04b48f598e6d7f7637aacb9b70266fe07aeb2e8dcb8"
+    },
+    "st1-bi-m15-a02": {
+      "title": "M15-A02 Direct Lake modelos compostos e arquitetura Fabric",
+      "file": "M15-A02.pdf",
+      "summary": "Avaliar uma arquitetura de maior escala sem depender de nomes.",
+      "sha256": "4a47b06607fdd7529f4db9645e528e75aeead44e582d89c585e9aa7319ed8fb7"
+    },
+    "st1-bi-m15-a03": {
+      "title": "M15-A03 PBIP Git revisão implantação e rollback",
+      "file": "M15-A03.pdf",
+      "summary": "Preparar uma entrega versionada e operável.",
+      "sha256": "3bf4bd5793cfbe4facc8ff97e5e53c832cd8e0f668e2c17bc7ac4645338faba1"
+    },
+    "st1-bi-m15-lab": {
+      "title": "M15 Laboratório Incremental arquitetura e entrega versionada",
+      "file": "M15-LAB.pdf",
+      "summary": "Decisão de arquitetura, casos de partição e plano de entrega.",
+      "sha256": "2b9cb460f48d2cc18d79183db563ca02b6e8a524b4901eac1d5ee0a4051f346f"
+    },
+    "st1-bi-m16-a01": {
+      "title": "M16-A01 Especificar e construir a solução comercial",
+      "file": "M16-A01.pdf",
+      "summary": "Conectar requisito preparação modelo e experiência em um projeto.",
+      "sha256": "d315db1cf67ee010a7679fbffeb64f59408c49dac3d8ed9efba004d6aa48f2ed"
+    },
+    "st1-bi-m16-a02": {
+      "title": "M16-A02 Homologar números acesso e desempenho",
+      "file": "M16-A02.pdf",
+      "summary": "Executar uma matriz de aceite reproduzível.",
+      "sha256": "39a1f0a5a263e5935671c861d88dd49d351c7891a62c495baf950b0ef93b4363"
+    },
+    "st1-bi-m16-a03": {
+      "title": "M16-A03 Documentar operar e continuar evoluindo",
+      "file": "M16-A03.pdf",
+      "summary": "Transferir a solução com responsáveis e procedimentos claros.",
+      "sha256": "0f0c6d9f46f9b233be92a8bc7712a343dc5c06b476687f38d9567ffe898b26d1"
+    },
+    "st1-bi-m16-lab": {
+      "title": "M16 Laboratório Projeto completo e defesa com evidências",
+      "file": "M16-LAB.pdf",
+      "summary": "Projeto completo com arquivos, dicionário, evidências e avaliação de critérios.",
+      "sha256": "40fcc030e7afb5053eeca4fdae9cddcaece2a5fddc6e3bbe4636fe65d8f30e5d"
+    }
+  },
+  "modules": {
+    "st1-bi-m01": "M01 BI Fundamentos de BI e leitura de indicadores",
+    "st1-bi-m02": "M02 BI Ambiente fontes e modos de conexão",
+    "st1-bi-m03": "M03 BI Limpeza perfil e padronização no Power Query",
+    "st1-bi-m04": "M04 BI Power Query M parâmetros e fontes complexas",
+    "st1-bi-m05": "M05 BI Modelagem dimensional e modelo semântico",
+    "st1-bi-m06": "M06 BI DAX medidas colunas e cálculos básicos",
+    "st1-bi-m07": "M07 BI Contexto de filtro e DAX aplicado",
+    "st1-bi-m08": "M08 BI Calendário comparações e inteligência temporal",
+    "st1-bi-m09": "M09 BI Relatórios experiência acessibilidade e mobile",
+    "st1-bi-m10": "M10 BI Cálculos visuais análise estatística e IA",
+    "st1-bi-m11": "M11 BI Publicação workspaces aplicativos e atualização",
+    "st1-bi-m12": "M12 BI Segurança RLS e testes de acesso",
+    "st1-bi-m13": "M13 BI Desempenho do modelo medidas e visuais",
+    "st1-bi-m14": "M14 BI Modelagem e DAX de aprofundamento",
+    "st1-bi-m15": "M15 BI Atualização incremental Fabric e ciclo de entrega",
+    "st1-bi-m16": "M16 BI Projeto aplicado ST1 e operação da solução"
+  },
+  "quizzes": {
+    "avaliacao-bi-m01": "BI M01 Fundamentos de BI e leitura de indicadores",
+    "avaliacao-bi-m02": "BI M02 Ambiente fontes e modos de conexão",
+    "avaliacao-bi-m03": "BI M03 Limpeza perfil e padronização no Power Query",
+    "avaliacao-bi-m04": "BI M04 Power Query M parâmetros e fontes complexas",
+    "avaliacao-bi-m05": "BI M05 Modelagem dimensional e modelo semântico",
+    "avaliacao-bi-m06": "BI M06 DAX medidas colunas e cálculos básicos",
+    "avaliacao-bi-m07": "BI M07 Contexto de filtro e DAX aplicado",
+    "avaliacao-bi-m08": "BI M08 Calendário comparações e inteligência temporal",
+    "avaliacao-bi-m09": "BI M09 Relatórios experiência acessibilidade e mobile",
+    "avaliacao-bi-m10": "BI M10 Cálculos visuais análise estatística e IA",
+    "avaliacao-bi-m11": "BI M11 Publicação workspaces aplicativos e atualização",
+    "avaliacao-bi-m12": "BI M12 Segurança RLS e testes de acesso",
+    "avaliacao-bi-m13": "BI M13 Desempenho do modelo medidas e visuais",
+    "avaliacao-bi-m14": "BI M14 Modelagem e DAX de aprofundamento",
+    "avaliacao-bi-m15": "BI M15 Atualização incremental Fabric e ciclo de entrega",
+    "avaliacao-bi-m16": "BI M16 Projeto aplicado ST1 e operação da solução"
+  }
+}
