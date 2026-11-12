@@ -230,8 +230,8 @@ export async function createApp(options={}) {
   const reportFor=viewer=>{
     const attempts=db.prepare("SELECT a.id,a.user_id,a.track_id,a.status,a.finished_at,a.started_at,a.result_json,u.name,u.email FROM academy_attempt a JOIN user u ON u.id=a.user_id ORDER BY a.started_at DESC").all().filter(a=>ctx.game.squads.canInspect(viewer,a.user_id)&&hasTrack(viewer,a.track_id)).map(a=>({...a,result:a.result_json?JSON.parse(a.result_json):null,result_json:undefined}));
     const users=db.prepare('SELECT u.id,u.name,u.email,m.role FROM academy_member m JOIN user u ON u.id=m.user_id').all().filter(u=>ctx.game.squads.canInspect(viewer,u.id));
-    const earned=db.prepare('SELECT user_id,track_id FROM academy_certificate').all().filter(c=>ctx.game.squads.canInspect(viewer,c.user_id)&&hasTrack(viewer,c.track_id));
-    return {attempts,users,certificates:earned.length,...(viewer.role==='admin'?{pendingIntegrations:db.prepare("SELECT count(*) n FROM academy_outbox WHERE status='pending'").get().n}:{}),st1SalesConnected:false};
+    const certificateRecords=db.prepare('SELECT c.id,c.user_id,c.track_id,c.version,c.score,c.issued_at,u.name,u.email FROM academy_certificate c JOIN user u ON u.id=c.user_id ORDER BY c.issued_at DESC').all().filter(c=>ctx.game.squads.canInspect(viewer,c.user_id)&&hasTrack(viewer,c.track_id));
+    return {attempts,users,certificates:certificateRecords.length,certificateRecords,...(viewer.role==='admin'?{pendingIntegrations:db.prepare("SELECT count(*) n FROM academy_outbox WHERE status='pending'").get().n}:{}),st1SalesConnected:false};
   };
   app.get('/api/admin/report',member,admin,(req,res)=>res.json(reportFor(req.member)));
   app.get('/api/team/report',member,team,(req,res)=>res.json(reportFor(req.member)));
