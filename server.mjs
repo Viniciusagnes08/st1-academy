@@ -203,6 +203,7 @@ export async function createApp(options={}) {
         result.certificate={id:certificate.id,trackId:certificate.track_id,score:certificate.score,issuedAt:certificate.issued_at};
       }
       db.prepare("UPDATE academy_attempt SET answers_json=?,result_json=?,status='complete',finished_at=?,revision=revision+1 WHERE id=? AND status='open'").run(JSON.stringify(req.body.answers),JSON.stringify(result),issuedAt,attempt.id);
+      ctx.learningNps.queue({userId:req.member.user_id,sourceType:'certification',sourceId:attempt.id,sourceVersion:String(attempt.version),title:bank.tracks.find(track=>track.id===attempt.track_id)?.name||attempt.track_id,context:'Prova de certificação'});
       db.exec('COMMIT');
     }catch(error){db.exec('ROLLBACK');throw error;}
     res.json(result);
@@ -235,6 +236,9 @@ export async function createApp(options={}) {
   };
   app.get('/api/admin/report',member,admin,(req,res)=>res.json(reportFor(req.member)));
   app.get('/api/team/report',member,team,(req,res)=>res.json(reportFor(req.member)));
+  app.get('/api/learning-nps/pending',member,agendaAction((req,res)=>res.json({item:ctx.learningNps.pending(req.member.user_id)})));
+  app.post('/api/learning-nps/:id',member,agendaAction((req,res)=>res.json(ctx.learningNps.submit(req.member,req.params.id,req.body))));
+  app.get('/api/learning-nps/report',member,admin,agendaAction((req,res)=>res.json(ctx.learningNps.report())));
   app.get('/api/admin/access',member,admin,(_,res)=>res.json(access.directory()));
   const contentAction=action=>(req,res)=>{try{const work=()=>action(req,res);if(req.method==='GET'&&/^\/api\/(?:bootstrap|library|contents(?:\/|$)|reading(?:\/|$)|learning-flows(?:\/|$)|(?:game|progress)\/(?:me|knowledge)$)/.test(req.path))withLearningReadBatch(ctx,work);else if(req.method==='GET'&&db.withReadScope)db.withReadScope(work);else work();}catch(error){res.status(error.status||400).json({message:error.message});}};
   app.get('/api/bootstrap',member,contentAction((req,res)=>res.json({user:memberPayload(req.member),catalog:{title:bank.title,version:appVersion,minimumPercent:bank.minimumPercent,criticalRequired:bank.criticalRequired,testMode,environment:ctx.runtime.environment,totalTracks:bank.tracks.length,tracks:bank.tracks.filter(track=>hasTrack(req.member,track.id)).map(track=>trackSummary(track,hasPermission(req.member,'materials')))}})));
@@ -279,9 +283,13 @@ export async function createApp(options={}) {
   app.get('/api/quizzes',member,contentAction((req,res)=>res.json({items:ctx.game.quizzes.list(req.member,req.query.type)})));
   app.get('/api/quizzes/:id',member,contentAction((req,res)=>res.json(ctx.game.quizzes.detail(req.member,req.params.id))));
   app.post('/api/quizzes/:id/start',member,contentAction((req,res)=>res.status(201).json(ctx.game.quizzes.start(req.member,req.params.id))));
-  app.get('/api/quiz-attempts/:id',member,contentAction((req,res)=>res.json(ctx.game.quizzes.get(req.member,req.params.id))));
-  app.put('/api/quiz-attempts/:id',member,contentAction((req,res)=>res.json(ctx.game.quizzes.update(req.member,req.params.id,req.body))));
-  app.post('/api/quiz-attempts/:id/finish',member,contentAction((req,res)=>res.json(ctx.game.quizzes.update(req.member,req.params.id,req.body,true))));
+  const learningNpsForQuiz=(req,value,before)=>{
+    if(before?.status!=='open'||value.status!=='complete')return;
+    ctx.learningNps.queue({userId:req.member.user_id,sourceType:'quiz',sourceId:req.params.id,sourceVersion:String(value.version),title:value.title,context:value.type==='checkpoint'?'Prova de etapa':'Prova relâmpago'});
+  };
+  app.get('/api/quiz-attempts/:id',member,contentAction((req,res)=>{const before=db.prepare('SELECT status FROM academy_quiz_attempt WHERE id=? AND user_id=?').get(req.params.id,req.member.user_id);const value=ctx.game.quizzes.get(req.member,req.params.id);learningNpsForQuiz(req,value,before);res.json(value);}));
+  app.put('/api/quiz-attempts/:id',member,contentAction((req,res)=>{const before=db.prepare('SELECT status FROM academy_quiz_attempt WHERE id=? AND user_id=?').get(req.params.id,req.member.user_id);const value=ctx.game.quizzes.update(req.member,req.params.id,req.body);learningNpsForQuiz(req,value,before);res.json(value);}));
+  app.post('/api/quiz-attempts/:id/finish',member,contentAction((req,res)=>{const before=db.prepare('SELECT status FROM academy_quiz_attempt WHERE id=? AND user_id=?').get(req.params.id,req.member.user_id);const value=ctx.game.quizzes.update(req.member,req.params.id,req.body,true);learningNpsForQuiz(req,value,before);res.json(value);}));
   app.get('/api/admin/quizzes',member,admin,contentAction((req,res)=>res.json({items:ctx.game.quizzes.adminList()})));
   app.get('/api/admin/quizzes/pool',member,admin,contentAction((req,res)=>res.json({tracks:ctx.game.quizzes.pool()})));
   app.get('/api/admin/quizzes/:id',member,admin,contentAction((req,res)=>res.json(ctx.game.quizzes.adminDetail(req.params.id))));
@@ -321,7 +329,7 @@ export async function createApp(options={}) {
   app.post('/api/contents/:id/progress/dismiss',member,contentAction((req,res)=>res.json(ctx.readings.dismiss(req.member,req.params.id))));
   app.get('/api/contents/:id/study',member,contentAction((req,res)=>res.json(ctx.readings.detailStudy(req.member,req.params.id))));
   app.post('/api/contents/:id/study/start',member,contentAction((req,res)=>res.json(ctx.readings.start(req.member,req.params.id,req.body))));
-  app.post('/api/contents/:id/study',member,contentAction((req,res)=>res.json(ctx.readings.complete(req.member,req.params.id,req.body))));
+  app.post('/api/contents/:id/study',member,contentAction((req,res)=>{const wasCompleted=ctx.readings.detailStudy(req.member,req.params.id).completed;const study=ctx.readings.complete(req.member,req.params.id,req.body);if(!wasCompleted&&study.completed){const item=ctx.contents.detail(req.member,req.params.id);ctx.learningNps.queue({userId:req.member.user_id,sourceType:'material',sourceId:item.id,sourceVersion:study.version+'@'+study.completedAt,title:item.title,context:'Conteúdo concluído'});}res.json(study);}));
   const libraryItems=viewer=>{const flags=ctx.learningFlows.materialFlags(viewer),visible=ctx.contents.visible(viewer),tags=ctx.management.tagsForMany('contents',visible.map(item=>item.id));return visible.map(item=>({...item,flow:flags.get(item.id)||null,study:ctx.readings.detailStudy(viewer,item.id),tags:tags.get(item.id)||[]}));};
   app.get('/api/contents',member,contentAction((req,res)=>res.json({items:libraryItems(req.member)})));
   app.get('/api/library',member,contentAction((req,res)=>res.json({items:libraryItems(req.member),modules:ctx.modules.visible(req.member),reading:ctx.readings.latest(req.member),recent:ctx.readings.recent(req.member)})));

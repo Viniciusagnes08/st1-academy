@@ -1,6 +1,6 @@
 import {createModulePanel} from './modules-panel.js?v=2.5.0';
-import {createKnowledgePanel,categoryNames} from './knowledge.js?v=20261103-dream-home';
-export function createContentPanel({api,esc,icon,main,commitView,tracks,user,hasAccess,toast,sourceUrl,materialLabel,engagement}){
+import {createKnowledgePanel,categoryNames} from './knowledge.js?v=20261112-learning-nps';
+export function createContentPanel({api,esc,icon,main,commitView,tracks,user,hasAccess,toast,sourceUrl,materialLabel,engagement,showLearningNps}){
   let items=[],selectedTrack='all',selectedStatus='all',search='',editor=null,saving=false,editorModules=[];
   const statusName={draft:'Rascunho',published:'Publicado',archived:'Arquivado'},kindName={file:'Arquivo ou vídeo',text:'Texto',link:'Link externo'};
   const trackName=id=>tracks().find(t=>t.id===id)?.name||id;
@@ -9,7 +9,7 @@ export function createContentPanel({api,esc,icon,main,commitView,tracks,user,has
   const isAdmin=()=>user()?.role==='admin';
   const pageTitle=(eyebrow,title,description,action='')=>`<section class="page-top"><div class="wrap content-heading"><div><span class="overline muted">${eyebrow}</span><h1>${title}</h1><p>${description}</p></div>${action}</div></section>`;
   const empty=text=>`<div class="content-empty">${icon('book')}<h2>${text}</h2><p>${isAdmin()?'Use Publicar conteúdo para cadastrar e publicar novos materiais.':'Os materiais publicados para suas trilhas vão aparecer aqui.'}</p></div>`;
-  const knowledge=createKnowledgePanel({api,esc,icon,main,commitView,tracks,user,hasAccess,toast,engagement});
+  const knowledge=createKnowledgePanel({api,esc,icon,main,commitView,tracks,user,hasAccess,toast,engagement,showLearningNps});
   const library=(category,module)=>knowledge.library(category,module);
   const modulePanel=createModulePanel({api,esc,icon,main,commitView,tracks,user,toast});
   function managerResults(){

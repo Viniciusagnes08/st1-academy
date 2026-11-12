@@ -1,0 +1,57 @@
+body.learning-nps-active{background:#f6f4f1}
+body.learning-nps-active .academy-shell{grid-template-columns:minmax(0,1fr)}
+body.learning-nps-active .academy-sidebar,body.learning-nps-active .academy-topbar,body.learning-nps-active .site-footer{display:none}
+body.learning-nps-active #main{min-height:100svh;padding:0;background:radial-gradient(ellipse at 50% -12%,#ffe8d1 0,transparent 48%),#f6f4f1}
+.learning-nps-page{min-height:100svh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;padding:42px 22px}
+.learning-nps-heading{width:min(100%,820px);text-align:center;margin-bottom:1px}
+.learning-nps-heading>.overline{color:#b7672a;font-size:10px;letter-spacing:1.7px;font-weight:700}
+.learning-nps-kicker{margin:21px 0 9px;color:#be6120;font-size:10px;font-weight:700;letter-spacing:1.5px}
+.learning-nps-heading h1{margin:0;color:#171719;font-size:clamp(30px,4vw,48px);line-height:1.12;letter-spacing:-1.7px}
+.learning-nps-heading>p:last-child{max-width:610px;margin:13px auto 0;color:#706b66;font-size:15px;line-height:1.7}
+.learning-nps-card{width:min(100%,820px);padding:clamp(20px,4vw,38px);background:white;border:1px solid #e4ddd5;border-radius:16px;box-shadow:0 18px 60px #251b1110}
+.learning-nps-item{display:flex;align-items:center;gap:15px;margin-bottom:29px;padding-bottom:22px;border-bottom:1px solid #eee8e2}
+.learning-nps-mark{width:50px;height:50px;flex:0 0 50px;display:grid;place-items:center;border-radius:12px;background:#19191c;color:#ff8b37;font-size:13px;font-weight:800;letter-spacing:-.5px}
+.learning-nps-item h2{margin:5px 0 3px;font-size:20px;line-height:1.35;letter-spacing:-.5px;color:#171719}
+.learning-nps-item p{margin:0;color:#81776f;font-size:13px}
+.learning-nps-rating{padding:0;border:0;margin:0}
+.learning-nps-rating>legend,.learning-nps-categories>legend{margin-bottom:15px;color:#212024;font-size:16px;font-weight:700;line-height:1.5}
+.learning-nps-scores{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:7px}
+.learning-nps-score{cursor:pointer}
+.learning-nps-score input{position:absolute;opacity:0;pointer-events:none}
+.learning-nps-score span{min-height:48px;display:grid;place-items:center;border:1px solid #e0d8d0;border-radius:9px;background:#fff;color:#252326;font-size:15px;font-weight:700;transition:background .15s,border-color .15s,color .15s,transform .15s}
+.learning-nps-score:hover span{border-color:#f77716;transform:translateY(-2px)}
+.learning-nps-score input:checked+span{background:#f77716;border-color:#f77716;color:white;box-shadow:0 4px 12px #f7771630}
+.learning-nps-score input:focus-visible+span{outline:3px solid #252326;outline-offset:3px}
+.learning-nps-scale{display:flex;justify-content:space-between;gap:14px;margin-top:10px;color:#877d73;font-size:11px}
+.learning-nps-improvements{margin-top:29px;padding-top:24px;border-top:1px solid #eee8e2}
+.learning-nps-question h3{margin:5px 0;font-size:20px;letter-spacing:-.4px}
+.learning-nps-question p{margin:0 0 17px;color:#716b66;font-size:13px;line-height:1.6}
+.learning-nps-categories{padding:0;border:0;margin:0 0 17px}
+.learning-nps-categories>legend{font-size:13px;margin-bottom:10px}
+.learning-nps-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.learning-nps-option{position:relative;cursor:pointer}
+.learning-nps-option input{position:absolute;opacity:0}
+.learning-nps-option span{min-height:43px;display:flex;align-items:center;padding:9px 11px;border:1px solid #e6dfd8;border-radius:8px;background:#fff;color:#45413e;font-size:12px;line-height:1.35;transition:border-color .15s,background .15s,color .15s}
+.learning-nps-option:hover span{border-color:#f3a46e}
+.learning-nps-option input:checked+span{border-color:#f77716;background:#fff4eb;color:#9d4e13;font-weight:700}
+.learning-nps-option input:focus-visible+span{outline:3px solid #252326;outline-offset:2px}
+.learning-nps-text-label{display:block;margin:0 0 7px;color:#242225;font-size:13px;font-weight:700}
+#learning-nps-improvement{width:100%;min-height:112px;resize:vertical;padding:13px 14px;border:1px solid #ddd5ce;border-radius:8px;color:#282523;background:#fff;font:inherit;font-size:13px;line-height:1.6}
+#learning-nps-improvement:focus{border-color:#f77716;outline:3px solid #f777162b}
+.learning-nps-text-meta{display:flex;justify-content:space-between;gap:10px;margin-top:7px;color:#8b8178;font-size:10px}
+.learning-nps-error{margin:18px 0 0;padding:11px 13px;border:1px solid #f0c2b8;border-radius:7px;background:#fff2ef;color:#a43929;font-size:13px;line-height:1.5}
+.learning-nps-actions{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:25px;padding-top:20px;border-top:1px solid #eee8e2}
+.learning-nps-actions>span{color:#81776f;font-size:11px;line-height:1.5}
+.learning-nps-actions .button{min-height:48px;padding-inline:23px;color:white;font-size:13px;white-space:nowrap}
+.learning-nps-actions .button:disabled{opacity:.48;cursor:not-allowed;filter:grayscale(.2)}
+.learning-nps-footnote{max-width:820px;margin:0;color:#8b8178;font-size:11px;line-height:1.6;text-align:center}
+.learning-nps-evidence{margin-top:28px;padding:24px;background:#fff;border:1px solid #e2d9ce;border-radius:12px}
+.learning-nps-summary{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:17px 0 22px}
+.learning-nps-summary>div{padding:15px 16px;border:1px solid #ebe3da;border-radius:9px;background:#fffaf4}
+.learning-nps-summary strong{display:block;color:#181719;font-size:24px;line-height:1.25}
+.learning-nps-summary span{display:block;margin-top:5px;color:#83766b;font-size:11px;line-height:1.4}
+.learning-nps-tags{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}
+.learning-nps-tags span{padding:5px 8px;border-radius:20px;background:#fff1e5;color:#a35318;font-size:10px}
+.learning-nps-feedback{max-width:520px;white-space:pre-wrap;line-height:1.6;color:#615951}
+.learning-nps-empty{padding:20px;border-radius:8px;background:#fbf8f5;color:#766d64;font-size:13px}
+@media(max-width:700px){.learning-nps-page{padding:27px 14px;align-items:stretch}.learning-nps-heading h1{font-size:32px}.learning-nps-heading>p:last-child{font-size:13px}.learning-nps-card{padding:20px 16px}.learning-nps-scores{gap:4px}.learning-nps-score span{min-height:40px;border-radius:7px;font-size:13px}.learning-nps-options{grid-template-columns:repeat(2,minmax(0,1fr))}.learning-nps-actions{align-items:stretch;flex-direction:column}.learning-nps-actions .button{width:100%}.learning-nps-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.learning-nps-summary>div:last-child{grid-column:1/-1}.learning-nps-scale{font-size:9px}}
