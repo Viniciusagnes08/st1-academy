@@ -352,6 +352,13 @@ export async function createApp(options={}) {
   app.post('/api/admin/invitations',member,admin,async(req,res)=>{
     try{const invitation=ctx.createInvitation({name:req.body.name,email:req.body.email,role:req.body.role??'seller',tracks:req.body.tracks,permissions:req.body.permissions,supervisorIds:req.body.supervisorIds,sellerIds:req.body.sellerIds,externalUserId:req.body.externalUserId,actorId:req.member.user_id});res.status(201).json(await deliverInvitation({...invitation,name:req.body.name,email:req.body.email}));}catch(error){res.status(400).json({message:error.message});}
   });
+  app.post('/api/admin/invitations/bulk',member,admin,async(req,res)=>{
+    try{
+      const invitations=ctx.createInvitations(req.body?.items,req.member.user_id),items=[];
+      for(let index=0;index<invitations.length;index+=5)items.push(...await Promise.all(invitations.slice(index,index+5).map(deliverInvitation)));
+      res.status(201).json({created:items.length,sent:items.filter(item=>item.delivery==='sent').length,notSent:items.filter(item=>item.delivery!=='sent').length,items});
+    }catch(error){res.status(400).json({message:error.message});}
+  });
   app.post('/api/admin/invitations/:id/resend',member,admin,async(req,res)=>{
     if(!invitationMailer)return res.status(503).json({message:'O envio de e-mail ainda não foi configurado no servidor.'});
     try{res.json(await deliverInvitation(ctx.renewInvitation(req.params.id,req.member.user_id)));}catch(error){res.status(400).json({message:error.message});}
@@ -401,8 +408,17 @@ export async function createApp(options={}) {
   app.locals.runEmailAutomations=emailAutomations.tick;
   app.locals.runDueWhatsAppCampaigns=whatsappCampaigns.runDue;
   app.locals.runWhatsAppAutomations=whatsappAutomations.tick;
+  app.post('/api/admin/members/bulk-status',member,admin,(req,res)=>{
+    try{res.json(access.setMembersEnabled(req.member.user_id,req.body?.userIds,req.body?.enabled));}catch(error){res.status(400).json({message:error.message});}
+  });
+  app.post('/api/admin/members/bulk-access',member,admin,(req,res)=>{
+    try{res.json(access.adjustMembersAccess(req.member.user_id,req.body?.userIds,req.body));}catch(error){res.status(400).json({message:error.message});}
+  });
   app.patch('/api/admin/members/:id',member,admin,(req,res)=>{
     try{res.json(access.updateMember(req.member.user_id,req.params.id,req.body));}catch(error){res.status(400).json({message:error.message});}
+  });
+  app.post('/api/admin/invitations/bulk-revoke',member,admin,(req,res)=>{
+    try{res.json(access.revokeInvitations(req.member.user_id,req.body?.invitationIds));}catch(error){res.status(400).json({message:error.message});}
   });
   app.patch('/api/admin/invitations/:id',member,admin,(req,res)=>{
     try{res.json(access.updateInvitation(req.member.user_id,req.params.id,req.body));}catch(error){res.status(400).json({message:error.message});}

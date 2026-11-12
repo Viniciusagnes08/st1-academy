@@ -120,7 +120,7 @@
   }
   async function accessPage(){
     if(state.user?.role!=='admin')return restricted('Acessos são gerenciados pelo Admin.','Vendedores e Supervisores usam somente as áreas liberadas para suas contas.',!state.user);
-    if(!state.accessPanel){const {createAccessPanel}=await import('/assets/access.js?v=20261110-welcome-mail');state.accessPanel=createAccessPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,refreshUser,toast});}
+    if(!state.accessPanel){const {createAccessPanel}=await import('/assets/access.js?v=20261112-access-bulk-import');state.accessPanel=createAccessPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,refreshUser,toast});}
     await state.accessPanel.render();
     try{const {items}=await api('/api/admin/onboarding');if(location.hash==='#acessos'){main.insertAdjacentHTML('beforeend',`<section class="wrap onboarding-admin"><span class="overline muted">DIAGNÓSTICO DE DESENVOLVIMENTO</span><h2>O que o time contou sobre seu percurso.</h2><p>Use estas respostas para revisar trilhas e permissões. Elas não alteram acessos automaticamente.</p><div class="onboarding-admin-grid">${items.map(item=>`<article><h3>${esc(item.name)}</h3><small>${esc(item.email)}</small><p><strong>Hoje:</strong> ${esc(item.answers.sector)} · ${esc(item.answers.role)}</p><p><strong>Próxima cadeira:</strong> ${esc(item.answers.goal)}</p><p><strong>Dificuldades:</strong> ${item.answers.challenges.map(esc).join(', ')}</p><p><strong>Squad informado:</strong> ${esc(item.answers.squad||'Não informado')}</p></article>`).join('')||'<p>Ninguém concluiu o diagnóstico ainda.</p>'}</div></section>`);}}catch(error){console.warn('Diagnóstico indisponível:',error.message);}
   }
