@@ -32,3 +32,17 @@ test('agendamento do WhatsApp só fica ativo com canal configurado',()=>{
   const db=new DatabaseSync(':memory:');db.exec(`CREATE TABLE user(id TEXT PRIMARY KEY,name TEXT,email TEXT);CREATE TABLE academy_member(user_id TEXT PRIMARY KEY,role TEXT,enabled INTEGER);CREATE TABLE academy_onboarding(user_id TEXT PRIMARY KEY,answers_json TEXT NOT NULL);CREATE TABLE academy_personal_profile(user_id TEXT PRIMARY KEY,phone TEXT NOT NULL DEFAULT '');INSERT INTO user VALUES('a','Ana Silva','ana@test.local');INSERT INTO academy_member VALUES('a','seller',1);INSERT INTO academy_personal_profile VALUES('a','98999999999');`);
   try{const service=createWhatsAppCampaignService(db,{env:{}});const draft=service.create('admin',{title:'Próxima trilha',templateName:'proxima_trilha',language:'pt_BR',preview:'Sua próxima trilha espera por você.',recipientIds:['a']});assert.equal(service.list().providerReady,false);assert.throws(()=>service.schedule(draft.id,new Date(Date.now()+120000).toISOString()),/conta WhatsApp Business/);assert.equal(service.list().campaigns[0].status,'draft');}finally{db.close();}
 });
+
+test('CRUD de WhatsApp edita e exclui somente campanhas em rascunho',()=>{
+  const db=new DatabaseSync(':memory:');db.exec(`CREATE TABLE user(id TEXT PRIMARY KEY,name TEXT,email TEXT);CREATE TABLE academy_member(user_id TEXT PRIMARY KEY,role TEXT,enabled INTEGER);CREATE TABLE academy_onboarding(user_id TEXT PRIMARY KEY,answers_json TEXT NOT NULL);CREATE TABLE academy_personal_profile(user_id TEXT PRIMARY KEY,phone TEXT NOT NULL DEFAULT '');INSERT INTO user VALUES('a','Ana Silva','ana@test.local');INSERT INTO academy_member VALUES('a','seller',1);INSERT INTO academy_onboarding VALUES('a','{"role":"Consultor(a)"}');INSERT INTO academy_personal_profile VALUES('a','98999999999');`);
+  const service=createWhatsAppCampaignService(db,{sendTemplate:async()=> 'wamid.test'});
+  try{
+    const draft=service.create('admin-1',{title:'Rascunho inicial',templateName:'modelo_inicial',language:'pt_BR',preview:'Mensagem inicial aprovada.',recipientIds:['a']});
+    const edited=service.update('admin-2',draft.id,{title:'Rascunho revisado',templateName:'modelo_revisado',language:'pt_BR',preview:'Mensagem revisada e persistida.',useFirstName:true,audienceType:'role',audienceRole:'Consultor(a)',recipientIds:['a']});
+    assert.equal(edited.templateName,'modelo_revisado');assert.equal(edited.updatedBy,'admin-2');assert.ok(edited.updatedAt);assert.equal(edited.useFirstName,true);
+    service.consent('admin-2','a',{optedIn:true,source:'Formulário de aceite'});service.schedule(draft.id,new Date(Date.now()+120000).toISOString());
+    assert.throws(()=>service.update('admin-2',draft.id,{title:'Bloqueada'}),/Somente campanhas em rascunho/);assert.throws(()=>service.remove(draft.id),/Somente campanhas em rascunho/);
+    assert.equal(service.cancelSchedule(draft.id).status,'draft');service.remove(draft.id);assert.equal(service.list().campaigns.length,0);
+  }finally{db.close();}
+});
+
