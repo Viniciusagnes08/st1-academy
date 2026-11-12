@@ -77,6 +77,18 @@ test('SMTP configurado ativa as vinte automações uma vez e preserva pausas do 
   }finally{db.close();}
 });
 
+test('Admin personaliza uma automação no banco e pode restaurar o modelo oficial',()=>{
+  const db=new DatabaseSync(':memory:');
+  const service=createEmailAutomationService(db,{baseURL:'https://st1academy.tech',clock:()=> '2026-11-12T10:00:00.000Z'});
+  try{
+    const original=service.list().items.find(item=>item.key==='welcome');
+    const saved=service.save('admin','welcome',{title:'Boas-vindas personalizadas',subject:`${original.subject} · ST1`,preheader:original.preheader,body:`${original.body}\n\nConteúdo personalizado para o time.`,ctaLabel:original.ctaLabel});
+    assert.equal(saved.customized,true);assert.equal(saved.title,'Boas-vindas personalizadas');assert.match(saved.subject,/ST1$/);
+    const persisted=service.list().items.find(item=>item.key==='welcome');assert.equal(persisted.body,saved.body);assert.equal(persisted.updatedAt,'2026-11-12T10:00:00.000Z');
+    const restored=service.restore('welcome');assert.equal(restored.customized,false);assert.equal(restored.title,original.title);assert.equal(db.prepare('SELECT count(*) n FROM academy_email_automation_override').get().n,0);
+  }finally{db.close();}
+});
+
 test('avisos editoriais exigem conteúdo publicado e o feedback privado só é aceito uma vez',()=>{
   const db=new DatabaseSync(':memory:');
   db.exec(`CREATE TABLE user(id TEXT PRIMARY KEY,name TEXT,email TEXT);
@@ -100,4 +112,5 @@ test('avisos editoriais exigem conteúdo publicado e o feedback privado só é a
     assert.equal(service.feedbackResults().total,1);assert.throws(()=>service.submitFeedback(feedbackToken,{useful:'Outra resposta',unclear:'Outra resposta',improve:'Outra resposta'}),/já foi enviado/);
   }finally{db.close();}
 });
+
 
