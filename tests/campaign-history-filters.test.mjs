@@ -25,11 +25,12 @@ test('filtra pelo período operacional mais recente',()=>{
   assert.equal(hasCampaignFilters({query:'ana',status:'all',period:'all'}),true);
 });
 
-test('pagina dez campanhas e limita a página solicitada',()=>{
+test('pagina doze campanhas e limita a página solicitada',()=>{
   const items=Array.from({length:23},(_,index)=>({id:String(index+1)}));
-  assert.deepEqual(paginateCampaigns(items,1).items.map(x=>x.id),['1','2','3','4','5','6','7','8','9','10']);
-  assert.deepEqual(paginateCampaigns(items,2).items.map(x=>x.id),['11','12','13','14','15','16','17','18','19','20']);
+  assert.deepEqual(paginateCampaigns(items,1).items.map(x=>x.id),['1','2','3','4','5','6','7','8','9','10','11','12']);
+  assert.deepEqual(paginateCampaigns(items,2).items.map(x=>x.id),['13','14','15','16','17','18','19','20','21','22','23']);
   const last=paginateCampaigns(items,9);
-  assert.equal(last.currentPage,3);
-  assert.deepEqual(last.items.map(x=>x.id),['21','22','23']);
+  assert.equal(last.currentPage,2);
+  assert.deepEqual(last.items.map(x=>x.id),['13','14','15','16','17','18','19','20','21','22','23']);
 });
+
