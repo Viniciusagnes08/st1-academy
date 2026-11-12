@@ -1,4 +1,4 @@
-import {paginateCampaigns} from './campaign-history-filters.js?v=20261111-automation-pagination';
+import {paginateCampaigns} from './campaign-history-filters.js?v=20261112-page-12';
 
 export function createWhatsAppAutomationPanel({api,esc,main,toast}){
   let data={items:[],providerReady:false,templatesReady:false,webhookReady:false};
@@ -24,3 +24,4 @@ export function createWhatsAppAutomationPanel({api,esc,main,toast}){
   }catch(error){toast(error.message);target.disabled=false;}});
   return {render};
 }
+
