@@ -2,7 +2,7 @@ import {createWhatsAppAutomationPanel} from './whatsapp-automations.js?v=2026111
 import {filterCampaigns,hasCampaignFilters,paginateCampaigns,summarizeWhatsAppCampaignMetrics} from './campaign-history-filters.js?v=20261112-campaign-metrics';
 
 export function createWhatsAppCampaignPanel({api,esc,main,commitView,toast}){
-  let data={campaigns:[],recipients:[],providerReady:false},composing=false,editingId=null,selectedIds=new Set(),audienceType='role',audienceRole='';
+  let data={campaigns:[],recipients:[],providerReady:false},automationData={items:[],providerReady:false,templatesReady:false,webhookReady:false},composing=false,editingId=null,selectedIds=new Set(),audienceType='role',audienceRole='';
   const historyFilters={query:'',status:'all',period:'all'};
   let historyPage=1;
   const roles=['Consultor(a)','Vendedor(a)','Líder','Supervisor(a)','Coordenador(a)','Gerente','Outro'];
