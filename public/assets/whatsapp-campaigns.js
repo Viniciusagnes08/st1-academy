@@ -1,5 +1,5 @@
-import {createWhatsAppAutomationPanel} from './whatsapp-automations.js?v=20261111-automation-pagination';
-import {filterCampaigns,hasCampaignFilters,paginateCampaigns} from './campaign-history-filters.js?v=20261111-campaign-pagination';
+import {createWhatsAppAutomationPanel} from './whatsapp-automations.js?v=20261112-page-12';
+import {filterCampaigns,hasCampaignFilters,paginateCampaigns} from './campaign-history-filters.js?v=20261112-page-12';
 
 export function createWhatsAppCampaignPanel({api,esc,main,commitView,toast}){
   let data={campaigns:[],recipients:[],providerReady:false},composing=false,editingId=null,selectedIds=new Set(),audienceType='role',audienceRole='';
