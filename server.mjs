@@ -349,6 +349,8 @@ export async function createApp(options={}) {
   app.post('/api/admin/campaigns/automations/:key/enable',member,admin,(req,res)=>{try{res.json(emailAutomations.activate(req.params.key));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/automations/:key/pause',member,admin,(req,res)=>{try{res.json(emailAutomations.pause(req.params.key));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns',member,admin,(req,res)=>{try{res.status(201).json(campaigns.create(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
+  app.patch('/api/admin/campaigns/:id',member,admin,(req,res)=>{try{res.json(campaigns.update(req.member.user_id,req.params.id,req.body));}catch(error){res.status(400).json({message:error.message});}});
+  app.delete('/api/admin/campaigns/:id',member,admin,(req,res)=>{try{campaigns.remove(req.params.id);res.json({ok:true});}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/:id/schedule',member,admin,(req,res)=>{try{res.json(campaigns.schedule(req.params.id,req.body.scheduledAt));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/:id/cancel-schedule',member,admin,(req,res)=>{try{res.json(campaigns.cancelSchedule(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/campaigns/:id/send',member,admin,async(req,res)=>{try{res.json(await campaigns.send(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
@@ -366,6 +368,8 @@ export async function createApp(options={}) {
   app.post('/api/admin/integrations/custom',member,admin,(req,res)=>{try{res.status(201).json(integrations.addCustom(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.delete('/api/admin/integrations/custom/:id',member,admin,(req,res)=>{try{integrations.removeCustom(req.params.id);res.sendStatus(204);}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/whatsapp-campaigns',member,admin,(req,res)=>{try{res.status(201).json(whatsappCampaigns.create(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
+  app.patch('/api/admin/whatsapp-campaigns/:id',member,admin,(req,res)=>{try{res.json(whatsappCampaigns.update(req.member.user_id,req.params.id,req.body));}catch(error){res.status(400).json({message:error.message});}});
+  app.delete('/api/admin/whatsapp-campaigns/:id',member,admin,(req,res)=>{try{whatsappCampaigns.remove(req.params.id);res.json({ok:true});}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/whatsapp-campaigns/consent/:userId',member,admin,(req,res)=>{try{res.json(whatsappCampaigns.consent(req.member.user_id,req.params.userId,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/whatsapp-campaigns/:id/schedule',member,admin,(req,res)=>{try{res.json(whatsappCampaigns.schedule(req.params.id,req.body.scheduledAt));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/whatsapp-campaigns/:id/cancel-schedule',member,admin,(req,res)=>{try{res.json(whatsappCampaigns.cancelSchedule(req.params.id));}catch(error){res.status(400).json({message:error.message});}});
@@ -429,4 +433,5 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
   };
   process.on('SIGTERM',stop);process.on('SIGINT',stop);
 }
+
 
