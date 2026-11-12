@@ -77,6 +77,17 @@ test('SMTP configurado ativa as vinte automações uma vez e preserva pausas do 
   }finally{db.close();}
 });
 
+test('lista de automações contabiliza só mensagens que chegaram à tentativa de envio',()=>{
+  const db=new DatabaseSync(':memory:');
+  const service=createEmailAutomationService(db,{baseURL:'https://st1academy.tech'});
+  try{
+    const insert=db.prepare('INSERT INTO academy_email_job(id,automation_key,user_id,entity_key,scheduled_at,status,token,created_at) VALUES(?,?,?,?,?,?,?,?)');
+    for(const status of ['accepted','failed','unknown','sending','pending','skipped'])insert.run(`job-${status}`,'welcome','u',`entity-${status}`,'2026-11-12T10:00:00.000Z',status,`token-${status}`,'2026-11-12T10:00:00.000Z');
+    const item=service.list().items.find(row=>row.key==='welcome');
+    assert.deepEqual({accepted:item.accepted,failed:item.failed,unknown:item.unknown,inProgress:item.inProgress,pending:item.pending,attempted:item.attempted},{accepted:1,failed:1,unknown:1,inProgress:1,pending:1,attempted:4});
+  }finally{db.close();}
+});
+
 test('Admin personaliza uma automação no banco e pode restaurar o modelo oficial',()=>{
   const db=new DatabaseSync(':memory:');
   const service=createEmailAutomationService(db,{baseURL:'https://st1academy.tech',clock:()=> '2026-11-12T10:00:00.000Z'});

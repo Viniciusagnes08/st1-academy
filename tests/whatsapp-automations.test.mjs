@@ -63,6 +63,19 @@ test('troca de modelo descarta fila antiga e campanha manual impõe intervalo',a
   }finally{db.close();}
 });
 
+test('contabiliza tentativas de WhatsApp sem duplicar envios em andamento',()=>{
+  const {db,service}=fixture();
+  try{
+    const insert=db.prepare('INSERT INTO academy_whatsapp_automation_job(id,automation_key,user_id,entity_key,phone,scheduled_at,status,message_id,created_at) VALUES(?,?,?,?,?,?,?,?,?)');
+    const time='2026-11-12T10:00:00.000Z';
+    for(const [id,status,messageId] of [['accepted','accepted','wamid.metric.accepted'],['failed-receipt','accepted','wamid.metric.failed'],['unknown','unknown',null],['sending','sending',null],['pending','pending',null]])insert.run(id,'welcome','a',`entity:${id}`,'5598999999999',time,status,messageId,time);
+    db.prepare("INSERT INTO academy_whatsapp_receipt(message_id,status,delivered_at,updated_at) VALUES('wamid.metric.accepted','delivered',?,?)").run(time,time);
+    db.prepare("INSERT INTO academy_whatsapp_receipt(message_id,status,failed_at,error,updated_at) VALUES('wamid.metric.failed','failed',?,'Rejeitada pela Meta',?)").run(time,time);
+    const item=service.list().items.find(row=>row.key==='welcome');
+    assert.deepEqual({attempted:item.attempted,accepted:item.accepted,delivered:item.delivered,failed:item.failed,unknown:item.unknown,inProgress:item.inProgress},{attempted:4,accepted:2,delivered:1,failed:1,unknown:1,inProgress:1});
+  }finally{db.close();}
+});
+
 test('webhook valida assinatura e registra entrega e leitura sem aceitar IDs estranhos',()=>{
   const {db,env,receipts}=fixture();
   try{

@@ -47,3 +47,55 @@ export function paginateCampaigns(campaigns,page=1,pageSize=12){
   return {items:campaigns.slice(start,start+size),currentPage,totalPages,start,total:campaigns.length};
 }
 
+const metricCount=value=>Number.isFinite(Number(value))?Math.max(0,Math.trunc(Number(value))):0;
+const list=value=>Array.isArray(value)?value:[];
+
+function automationTotals(items){
+  return list(items).reduce((total,item)=>{
+    const accepted=metricCount(item.accepted),failed=metricCount(item.failed),unknown=metricCount(item.unknown),inProgress=metricCount(item.inProgress);
+    total.attempted+=metricCount(item.attempted)||accepted+failed+unknown+inProgress;
+    total.accepted+=accepted;
+    total.failed+=failed+unknown+inProgress;
+    total.delivered+=metricCount(item.delivered);
+    total.read+=metricCount(item.read);
+    return total;
+  },{attempted:0,accepted:0,failed:0,delivered:0,read:0});
+}
+
+export function summarizeEmailCampaignMetrics(campaigns=[],automationItems=[]){
+  const rows=list(campaigns),deliveries=rows.flatMap(campaign=>list(campaign.deliveries));
+  const attempted=deliveries.filter(item=>['accepted','failed','sending','unknown'].includes(item.status)).length;
+  const accepted=deliveries.filter(item=>item.status==='accepted').length;
+  const failed=deliveries.filter(item=>['failed','sending','unknown'].includes(item.status)).length;
+  const automation=automationTotals(automationItems);
+  return {
+    campaignsCreated:rows.length,
+    campaignsCompleted:rows.filter(campaign=>campaign.status==='sent').length,
+    draftCampaigns:rows.filter(campaign=>campaign.status==='draft').length,
+    scheduledCampaigns:rows.filter(campaign=>campaign.status==='scheduled').length,
+    messagesAttempted:attempted+automation.attempted,
+    messagesAccepted:accepted+automation.accepted,
+    messagesUnconfirmed:failed+automation.failed
+  };
+}
+
+export function summarizeWhatsAppCampaignMetrics(campaigns=[],automationItems=[]){
+  const rows=list(campaigns),deliveries=rows.flatMap(campaign=>list(campaign.deliveries));
+  const attempted=deliveries.filter(item=>['accepted','failed','sending','unknown'].includes(item.status)||['delivered','read','failed'].includes(item.deliveryStatus)).length;
+  const accepted=deliveries.filter(item=>item.status==='accepted'||item.deliveredAt||item.readAt).length;
+  const delivered=deliveries.filter(item=>item.deliveredAt||['delivered','read'].includes(item.deliveryStatus)).length;
+  const read=deliveries.filter(item=>item.readAt||item.deliveryStatus==='read').length;
+  const failed=deliveries.filter(item=>item.status==='failed'||item.deliveryStatus==='failed'||['sending','unknown'].includes(item.status)).length;
+  const automation=automationTotals(automationItems);
+  return {
+    campaignsCreated:rows.length,
+    campaignsCompleted:rows.filter(campaign=>campaign.status==='sent').length,
+    draftCampaigns:rows.filter(campaign=>campaign.status==='draft').length,
+    scheduledCampaigns:rows.filter(campaign=>campaign.status==='scheduled').length,
+    messagesAttempted:attempted+automation.attempted,
+    messagesAccepted:accepted+automation.accepted,
+    messagesDelivered:delivered+automation.delivered,
+    messagesRead:read+automation.read,
+    messagesUnconfirmed:failed+automation.failed
+  };
+}

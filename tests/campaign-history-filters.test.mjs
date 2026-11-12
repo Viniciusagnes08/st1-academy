@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {filterCampaigns,hasCampaignFilters,paginateCampaigns} from '../public/assets/campaign-history-filters.js';
+import {filterCampaigns,hasCampaignFilters,paginateCampaigns,summarizeEmailCampaignMetrics,summarizeWhatsAppCampaignMetrics} from '../public/assets/campaign-history-filters.js';
 
 const now=Date.parse('2026-11-11T12:00:00Z');
 const campaigns=[
@@ -34,3 +34,23 @@ test('pagina doze campanhas e limita a página solicitada',()=>{
   assert.deepEqual(last.items.map(x=>x.id),['13','14','15','16','17','18','19','20','21','22','23']);
 });
 
+test('resume e-mail manual e automações sem contar rascunhos como tentativa',()=>{
+  const summary=summarizeEmailCampaignMetrics([
+    {status:'sent',deliveries:[{status:'accepted'},{status:'failed'},{status:'sending'}]},
+    {status:'draft',deliveries:[{status:'pending'}]},
+    {status:'scheduled',deliveries:[{status:'pending'}]}
+  ],[{attempted:5,accepted:3,failed:1,unknown:1,inProgress:0}]);
+  assert.deepEqual(summary,{campaignsCreated:3,campaignsCompleted:1,draftCampaigns:1,scheduledCampaigns:1,messagesAttempted:8,messagesAccepted:4,messagesUnconfirmed:4});
+});
+
+test('resume WhatsApp manual, automações e recibos de entrega/leitura',()=>{
+  const summary=summarizeWhatsAppCampaignMetrics([
+    {status:'sent',deliveries:[
+      {status:'accepted',deliveryStatus:'delivered',deliveredAt:'2026-11-11T10:00:00Z'},
+      {status:'accepted',deliveryStatus:'failed'},
+      {status:'sending',deliveryStatus:'sending'}
+    ]},
+    {status:'draft',deliveries:[{status:'pending'}]}
+  ],[{attempted:3,accepted:2,delivered:1,read:1,failed:0,unknown:1,inProgress:0}]);
+  assert.deepEqual(summary,{campaignsCreated:2,campaignsCompleted:1,draftCampaigns:1,scheduledCampaigns:0,messagesAttempted:6,messagesAccepted:4,messagesDelivered:2,messagesRead:1,messagesUnconfirmed:3});
+});

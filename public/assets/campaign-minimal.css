@@ -9,3 +9,6 @@
 .whatsapp-automation-card .campaign-card-actions{display:flex;flex-wrap:wrap}
 .whatsapp-automation-card .campaign-card-actions .button{width:auto}
 @media(max-width:480px){.campaign-automation-actions .button,.campaign-card-actions .button,.whatsapp-automation-card .whatsapp-template-fields .button{min-height:40px}}
+
+.campaign-overview>div small{display:block;margin-top:4px;color:#857b89;font-size:11px;line-height:1.4}
+.campaign-overview-note{margin:-8px 0 22px;color:#706678;font-size:12px;line-height:1.5}
