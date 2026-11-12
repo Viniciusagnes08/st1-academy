@@ -26,7 +26,7 @@ import {createOnboardingService} from './lib/onboarding.mjs';
 
 export async function createApp(options={}) {
   const ctx=await createContext(options);
-  const {db,auth,bank,baseURL,testMode,access}=ctx;
+  const {db,auth,bank,baseURL,testMode,access,attemptLimits}=ctx;
   const integrations=createIntegrationService(db,{secret:ctx.integrationKey,env:process.env});
   const mailEnv=options.mailEnv||integrations.effective(),whatsappEnv=options.whatsappEnv||integrations.effective();
   const invitationMailer=options.invitationMailer|| (async invitation=>{const mailer=createInvitationMailer(mailEnv);if(!mailer)throw new Error('SMTP indisponível.');return mailer(invitation);});
@@ -136,7 +136,7 @@ export async function createApp(options={}) {
     if(attempt.status==='open'){try{ctx.learningFlows.assertAccess(req.member,'certificate',attempt.track_id);}catch(error){res.status(error.status||400).json({message:error.message});return null;}}
     return attempt;
   };
-  const attemptPayload=attempt=>({id:attempt.id,trackId:attempt.track_id,version:attempt.version,status:attempt.status,revision:attempt.revision,answers:JSON.parse(attempt.answers_json),questions:JSON.parse(attempt.questions_private).map(publicQuestion),startedAt:attempt.started_at,result:attempt.result_json?JSON.parse(attempt.result_json):null});
+  const attemptPayload=attempt=>({id:attempt.id,trackId:attempt.track_id,version:attempt.version,status:attempt.status,revision:attempt.revision,answers:JSON.parse(attempt.answers_json),questions:JSON.parse(attempt.questions_private).map(publicQuestion),startedAt:attempt.started_at,result:attempt.result_json?JSON.parse(attempt.result_json):null,attemptLimit:attemptLimits.quota(attempt.user_id,'certificate',attempt.track_id,attempt.version)});
   const validateAnswers=(questions,answers,complete=false)=>{
     if(!answers||typeof answers!=='object'||Array.isArray(answers))throw new Error('Respostas inválidas.');
     for(const [id,answer] of Object.entries(answers)){
@@ -156,19 +156,26 @@ export async function createApp(options={}) {
     if(!invite)return res.status(404).json({message:'Convite inválido, utilizado ou vencido. Peça outro ao gestor.'});
     res.json({name:invite.name,email:invite.email,role:invite.role,expiresAt:invite.expires_at});
   });
-  const memberPayload=profile=>({m24Homologation:m24.canAccess(profile),id:profile.user_id,name:profile.name,email:profile.email,role:profile.role,avatarUrl:ctx.profiles.avatar(profile,profile.user_id),recognitions:ctx.management.recognitions(profile),tracks:profile.tracks,permissions:profile.permissions,certificates:hasPermission(profile,'conquests')?certificates(profile.user_id).filter(c=>hasTrack(profile,c.track_id)):[],attempts:hasPermission(profile,'assessments')?db.prepare('SELECT id,track_id,status,started_at,finished_at,result_json FROM academy_attempt WHERE user_id=? ORDER BY started_at DESC').all(profile.user_id).filter(a=>hasTrack(profile,a.track_id)).map(a=>({...a,result:a.result_json?JSON.parse(a.result_json):null,result_json:undefined})):[],testMode});
+  const memberPayload=profile=>({attemptLimits:Object.fromEntries(bank.tracks.filter(t=>hasTrack(profile,t.id)).map(t=>[t.id,attemptLimits.quota(profile.user_id,'certificate',t.id,t.version)])),m24Homologation:m24.canAccess(profile),id:profile.user_id,name:profile.name,email:profile.email,role:profile.role,avatarUrl:ctx.profiles.avatar(profile,profile.user_id),recognitions:ctx.management.recognitions(profile),tracks:profile.tracks,permissions:profile.permissions,certificates:hasPermission(profile,'conquests')?certificates(profile.user_id).filter(c=>hasTrack(profile,c.track_id)):[],attempts:hasPermission(profile,'assessments')?db.prepare('SELECT id,track_id,status,started_at,finished_at,result_json FROM academy_attempt WHERE user_id=? ORDER BY started_at DESC').all(profile.user_id).filter(a=>hasTrack(profile,a.track_id)).map(a=>({...a,result:a.result_json?JSON.parse(a.result_json):null,result_json:undefined})):[],testMode});
   app.get('/api/me',member,(req,res)=>res.json(memberPayload(req.member)));
   app.post('/api/attempts',member,(req,res)=>{
     const track=bank.tracks.find(t=>t.id===req.body.trackId);
     if(!track||!hasTrack(req.member,track.id)||!hasPermission(req.member,'assessments'))return res.status(403).json({message:'Avaliação não liberada para sua conta.'});
     try{ctx.learningFlows.assertAccess(req.member,'certificate',track.id);}catch(error){return res.status(error.status||400).json({message:error.message});}
-    const current=db.prepare("SELECT * FROM academy_attempt WHERE user_id=? AND track_id=? AND version=? AND status='open' ORDER BY started_at DESC LIMIT 1").get(req.member.user_id,track.id,track.version);
-    if(current)return res.json(attemptPayload(current));
-    const id=randomUUID();
-    const questions=shuffle(track.questions).map(q=>({...q,options:shuffle(q.options)}));
-    db.prepare('INSERT INTO academy_attempt(id,user_id,track_id,version,questions_private,started_at) VALUES(?,?,?,?,?,?)').run(id,req.member.user_id,track.id,track.version,JSON.stringify(questions),new Date().toISOString());
-    res.status(201).json(attemptPayload(db.prepare('SELECT * FROM academy_attempt WHERE id=?').get(id)));
+    db.exec('BEGIN IMMEDIATE');
+    try{
+      const current=db.prepare("SELECT * FROM academy_attempt WHERE user_id=? AND track_id=? AND version=? AND status='open' ORDER BY started_at DESC LIMIT 1").get(req.member.user_id,track.id,track.version);
+      if(current){const response=attemptPayload(current);db.exec('COMMIT');return res.json(response);}
+      attemptLimits.assertAvailable(req.member.user_id,'certificate',track.id,track.version);
+      const id=randomUUID(),questions=shuffle(track.questions).map(q=>({...q,options:shuffle(q.options)}));
+      db.prepare('INSERT INTO academy_attempt(id,user_id,track_id,version,questions_private,started_at) VALUES(?,?,?,?,?,?)').run(id,req.member.user_id,track.id,track.version,JSON.stringify(questions),new Date().toISOString());
+      const response=attemptPayload(db.prepare('SELECT * FROM academy_attempt WHERE id=?').get(id));
+      db.exec('COMMIT');res.status(201).json(response);
+    }catch(error){db.exec('ROLLBACK');res.status(error.status||500).json({message:error.status?error.message:'Não foi possível iniciar a avaliação.'});}
   });
+  app.get('/api/attempt-limits/:kind/:id',member,agendaAction((req,res)=>res.json(attemptLimits.status(req.member,req.params.kind,req.params.id))));
+  app.get('/api/attempt-authorizations/blocked',member,team,agendaAction((req,res)=>res.json({items:attemptLimits.blocked(req.member)})));
+  app.post('/api/attempt-authorizations',member,team,agendaAction((req,res)=>res.status(201).json(attemptLimits.grant(req.member,req.body))));
   app.get('/api/attempts/:id',member,(req,res)=>{const attempt=ownedAttempt(req,res);if(attempt)res.json(attemptPayload(attempt));});
   app.put('/api/attempts/:id',member,(req,res)=>{
     const attempt=ownedAttempt(req,res);if(!attempt)return;
