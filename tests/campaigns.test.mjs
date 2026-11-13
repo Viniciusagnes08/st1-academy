@@ -29,7 +29,7 @@ test('campanhas enviam só a contas ativas selecionadas e registram o resultado 
     assert.match(sent[0].html,/ST1 ACADEMY/);
     await assert.rejects(service.send(draft.id),/já foi iniciada/);
     const first=db.prepare("SELECT token FROM academy_campaign_delivery WHERE user_id='a'").get().token;
-    assert.equal(service.mark('click',first),'/#trilhas');service.mark('open',first);
+    const firstClick=service.markDetailed('click',first);assert.equal(firstClick.target,'/#trilhas');assert.equal(firstClick.newlyMarked,true);assert.equal(service.markDetailed('click',first).newlyMarked,false);service.mark('open',first);
     const tracked=service.list().campaigns[0];assert.equal(tracked.metrics.clicked,1);assert.equal(tracked.metrics.opened,1);
     assert.equal(service.optout(first),true);assert.deepEqual(service.list().recipients.map(x=>x.id),['b']);
   }finally{db.close();}

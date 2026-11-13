@@ -25,6 +25,13 @@ import {createWhatsAppReceipts} from './lib/whatsapp-receipts.mjs';
 import {createWhatsAppTemplateService} from './lib/whatsapp-templates.mjs';
 import {createIntegrationService} from './lib/integrations.mjs';
 import {createOnboardingService} from './lib/onboarding.mjs';
+import {createIntegrationOutbox} from './lib/integration-outbox.mjs';
+import {createIntegrationDispatcher} from './lib/integration-dispatcher.mjs';
+import {createIntegrationEvents} from './lib/integration-events.mjs';
+import {createIntegrationHealth} from './lib/integration-health.mjs';
+import {createN8nIntegration} from './lib/n8n-integration.mjs';
+import {createOpenPanelIntegration} from './lib/openpanel-integration.mjs';
+import {createGlitchTipIntegration} from './lib/glitchtip-integration.mjs';
 
 export async function createApp(options={}) {
   const ctx=await createContext(options);
@@ -32,7 +39,8 @@ export async function createApp(options={}) {
   const recoveryLimiter=createPasswordRecoveryLimiter(db,{secret:ctx.integrationKey,clock:options.clock});
   const validateInvitationEmails=emails=>validateEmailAddresses(emails,{checkDomainFn:testMode?async()=> 'unknown':undefined});
   const integrations=createIntegrationService(db,{secret:ctx.integrationKey,env:process.env});
-  const mailEnv=options.mailEnv||integrations.effective(),whatsappEnv=options.whatsappEnv||integrations.effective();
+  const integrationEnv=integrations.effective();
+  const mailEnv=options.mailEnv||integrationEnv,whatsappEnv=options.whatsappEnv||integrationEnv;
   const invitationMailer=options.invitationMailer|| (async invitation=>{const mailer=createInvitationMailer(mailEnv);if(!mailer)throw new Error('SMTP indisponível.');return mailer(invitation);});
   const onboarding=createOnboardingService(db,bank);
   const campaigns=createCampaignService(db,{env:mailEnv,baseURL});
@@ -41,6 +49,13 @@ export async function createApp(options={}) {
   const whatsappTemplates=createWhatsAppTemplateService(db,{env:whatsappEnv});
   const whatsappCampaigns=createWhatsAppCampaignService(db,{env:whatsappEnv,sendTemplate:options.whatsappSender,receipts:whatsappReceipts});
   const whatsappAutomations=createWhatsAppAutomationService(db,{env:whatsappEnv,baseURL,context:ctx,sendTemplate:options.whatsappSender,receipts:whatsappReceipts});
+  const integrationFetch=options.integrationFetch||fetch;
+  const integrationOutbox=createIntegrationOutbox(db,{clock:options.clock});
+  const n8nAdapter={ready:()=>integrations.list().n8n.ready,send:event=>createN8nIntegration({webhookUrl:integrationEnv.N8N_WEBHOOK_URL,secret:integrationEnv.N8N_WEBHOOK_SECRET,fetcher:integrationFetch}).send(event)};
+  const openPanelAdapter={ready:()=>integrations.list().openpanel.ready,send:event=>createOpenPanelIntegration({apiUrl:integrationEnv.OPENPANEL_API_URL,clientId:integrationEnv.OPENPANEL_CLIENT_ID,clientSecret:integrationEnv.OPENPANEL_CLIENT_SECRET,profileSalt:ctx.integrationKey,fetcher:integrationFetch}).send(event)};
+  const integrationDispatcher=createIntegrationDispatcher({outbox:integrationOutbox,adapters:{n8n:n8nAdapter,openpanel:openPanelAdapter}});
+  const integrationEvents=createIntegrationEvents({outbox:integrationOutbox,integrations,dispatcher:integrationDispatcher});
+  const integrationHealth=createIntegrationHealth({integrations,outbox:integrationOutbox,dispatcher:integrationDispatcher});
   const deliverInvitation=async invitation=>{
     if(!options.invitationMailer&&!createInvitationMailer(mailEnv))return {...invitation,delivery:'not_configured'};
     try{await invitationMailer(invitation);return {...invitation,delivery:'sent'};}
@@ -48,9 +63,12 @@ export async function createApp(options={}) {
   };
   const app=express();
   const appVersion=JSON.parse(readFileSync(resolve(projectRoot,'package.json'),'utf8')).version;
+  const glitchtip={ready:()=>integrations.list().glitchtip.ready,capture:(error,context)=>integrations.list().glitchtip.ready?createGlitchTipIntegration({dsn:integrationEnv.GLITCHTIP_DSN,release:appVersion,environment:ctx.runtime.environment,fetcher:integrationFetch}).capture(error,context):Promise.resolve(false)};
   app.disable('x-powered-by');
   app.set('trust proxy',ctx.runtime.proxyHops);
   app.locals.shuttingDown=false;
+  app.locals.runIntegrations=integrationDispatcher.tick;
+  app.locals.integrationEvents=integrationEvents;
   app.use((req,res,next)=>{
     req.headers['x-academy-client-ip']=req.ip||req.socket.remoteAddress||'127.0.0.1';
     res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','no-referrer');
@@ -75,7 +93,7 @@ export async function createApp(options={}) {
   app.all('/api/auth/*splat',toNodeHandler(auth));
   app.use((req,res,next)=>express.json({limit:req.path==='/api/admin/campaigns'?'6mb':'128kb'})(req,res,next));
   app.get('/api/campaigns/open/:token.gif',(req,res)=>{campaigns.mark('open',req.params.token);res.setHeader('Cache-Control','no-store');res.type('image/gif').send(Buffer.from('R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=','base64'));});
-  app.get('/api/campaigns/click/:token',(req,res)=>{const target=campaigns.mark('click',req.params.token);if(!target)return res.sendStatus(404);res.redirect(302,new URL(target,baseURL).href);});
+  app.get('/api/campaigns/click/:token',(req,res)=>{const click=campaigns.markDetailed('click',req.params.token);if(!click?.target)return res.sendStatus(404);if(click.newlyMarked)integrationEvents.emit('academy.campaign.clicked',{entityType:'campaign',entityId:click.campaignId||'email',payload:{userId:click.userId,campaignId:click.campaignId,channel:'email'}});res.redirect(302,new URL(click.target,baseURL).href);});
   app.get('/api/campaigns/preferences/:token',(req,res)=>{const person=campaigns.preference(req.params.token);if(!person)return res.sendStatus(404);res.type('html').send(`<main style="font:16px Arial,sans-serif;max-width:560px;margin:80px auto;padding:24px"><h1>E-mails de incentivo</h1><p>Você pode deixar de receber as campanhas da ST1 Academy.</p><form method="post"><button style="background:#f77716;color:white;border:0;padding:14px 20px;cursor:pointer">Parar de receber</button></form></main>`);});
   app.post('/api/campaigns/preferences/:token',express.urlencoded({extended:false}),(req,res)=>{if(!campaigns.optout(req.params.token))return res.sendStatus(404);res.type('html').send('<main style="font:16px Arial,sans-serif;max-width:560px;margin:80px auto;padding:24px"><h1>Preferência salva</h1><p>Você não receberá novas campanhas de incentivo da ST1 Academy.</p></main>');});
   app.get('/api/email-automations/preferences/:token',(req,res)=>{res.type('html').send(`<main style="font:16px Arial,sans-serif;max-width:560px;margin:80px auto;padding:24px"><h1>Preferências de e-mail</h1><form method="post"><button>Parar de receber e-mails de incentivo</button></form></main>`);});
@@ -202,12 +220,12 @@ export async function createApp(options={}) {
       const id=randomUUID(),questions=shuffle(track.questions).map(q=>({...q,options:shuffle(q.options)}));
       db.prepare('INSERT INTO academy_attempt(id,user_id,track_id,version,questions_private,started_at) VALUES(?,?,?,?,?,?)').run(id,req.member.user_id,track.id,track.version,JSON.stringify(questions),new Date().toISOString());
       const response=attemptPayload(db.prepare('SELECT * FROM academy_attempt WHERE id=?').get(id));
-      db.exec('COMMIT');res.status(201).json(response);
-    }catch(error){db.exec('ROLLBACK');res.status(error.status||500).json({message:error.status?error.message:'Não foi possível iniciar a avaliação.'});}
+      db.exec('COMMIT');integrationEvents.emit('academy.assessment.started',{entityType:'assessment',entityId:id,payload:{userId:req.member.user_id,assessmentKind:'certificate',trackId:track.id,attemptId:id,version:track.version}});res.status(201).json(response);
+    }catch(error){db.exec('ROLLBACK');if(error.status===423)integrationEvents.emit('academy.assessment.blocked',{entityType:'assessment',entityId:track.id,payload:{userId:req.member.user_id,assessmentKind:'certificate',trackId:track.id,version:track.version}});res.status(error.status||500).json({message:error.status?error.message:'Não foi possível iniciar a avaliação.'});}
   });
   app.get('/api/attempt-limits/:kind/:id',member,agendaAction((req,res)=>res.json(attemptLimits.status(req.member,req.params.kind,req.params.id))));
   app.get('/api/attempt-authorizations/blocked',member,team,agendaAction((req,res)=>res.json({items:attemptLimits.blocked(req.member)})));
-  app.post('/api/attempt-authorizations',member,team,agendaAction((req,res)=>res.status(201).json(attemptLimits.grant(req.member,req.body))));
+  app.post('/api/attempt-authorizations',member,team,agendaAction((req,res)=>{const value=attemptLimits.grant(req.member,req.body);integrationEvents.emit('academy.assessment.override_granted',{entityType:'assessment',entityId:value.assessmentId,payload:{userId:value.userId,assessmentKind:value.kind,assessmentId:value.assessmentId,version:value.version}});res.status(201).json(value);}));
   app.get('/api/attempts/:id',member,(req,res)=>{const attempt=ownedAttempt(req,res);if(attempt)res.json(attemptPayload(attempt));});
   app.put('/api/attempts/:id',member,(req,res)=>{
     const attempt=ownedAttempt(req,res);if(!attempt)return;
@@ -224,13 +242,13 @@ export async function createApp(options={}) {
     const questions=JSON.parse(attempt.questions_private);
     let result;
     try{validateAnswers(questions,req.body.answers,true);result=grade(questions,req.body.answers,bank.minimumPercent);}catch(error){return res.status(400).json({message:error.message});}
-    const issuedAt=new Date().toISOString();
+    const issuedAt=new Date().toISOString();let newCertificateId=null;
     db.exec('BEGIN IMMEDIATE');
     try{
       if(result.approved){
         let certificate=db.prepare('SELECT * FROM academy_certificate WHERE user_id=? AND track_id=? AND version=?').get(req.member.user_id,attempt.track_id,attempt.version);
         if(!certificate){
-          const id=randomUUID();
+          const id=randomUUID();newCertificateId=id;
           db.prepare('INSERT INTO academy_certificate(id,user_id,attempt_id,track_id,version,name,score,issued_at) VALUES(?,?,?,?,?,?,?,?)').run(id,req.member.user_id,attempt.id,attempt.track_id,attempt.version,req.member.name,result.score,issuedAt);
           if(attempt.track_id!=='bi'){
             const payload={eventId:randomUUID(),eventType:'academia.trilha.aprovada',academyUserId:req.member.user_id,st1SalesUserId:req.member.external_user_id,trackId:attempt.track_id,version:attempt.version,score:result.score,criticalRulesPassed:true,certificateId:id,approvedAt:issuedAt};
@@ -245,6 +263,9 @@ export async function createApp(options={}) {
       ctx.learningNps.queue({userId:req.member.user_id,sourceType:'certification',sourceId:attempt.id,sourceVersion:String(attempt.version),title:bank.tracks.find(track=>track.id===attempt.track_id)?.name||attempt.track_id,context:'Prova de certificação',trackIds:[attempt.track_id]});
       db.exec('COMMIT');
     }catch(error){db.exec('ROLLBACK');throw error;}
+    integrationEvents.emit('academy.assessment.completed',{entityType:'assessment',entityId:attempt.id,payload:{userId:req.member.user_id,assessmentKind:'certificate',trackId:attempt.track_id,attemptId:attempt.id,version:attempt.version,score:result.score,approved:result.approved}});
+    if(newCertificateId)integrationEvents.emit('academy.trail.completed',{entityType:'trail',entityId:attempt.track_id,payload:{userId:req.member.user_id,trackId:attempt.track_id,score:result.score,version:attempt.version}});
+    if(newCertificateId)integrationEvents.emit('academy.certificate.issued',{entityType:'certificate',entityId:newCertificateId,payload:{userId:req.member.user_id,certificateId:newCertificateId,trackId:attempt.track_id,score:result.score,version:attempt.version}});
     res.json(result);
   });
   app.get('/api/certificates/:id/pdf',member,async(req,res)=>{
@@ -276,14 +297,14 @@ export async function createApp(options={}) {
   app.get('/api/admin/report',member,admin,(req,res)=>res.json(reportFor(req.member)));
   app.get('/api/team/report',member,team,(req,res)=>res.json(reportFor(req.member)));
   app.get('/api/learning-nps/pending',member,agendaAction((req,res)=>res.json({item:ctx.learningNps.pending(req.member.user_id)})));
-  app.post('/api/learning-nps/:id',member,agendaAction((req,res)=>res.json(ctx.learningNps.submit(req.member,req.params.id,req.body))));
+  app.post('/api/learning-nps/:id',member,agendaAction((req,res)=>{const value=ctx.learningNps.submit(req.member,req.params.id,req.body);integrationEvents.emit('academy.nps.submitted',{entityType:'nps',entityId:req.params.id,payload:{userId:req.member.user_id,npsId:req.params.id,score:req.body.score}});res.json(value);}));
   app.get('/api/learning-nps/report',member,admin,agendaAction((req,res)=>res.json(ctx.learningNps.report({period:req.query.period,track:req.query.track}))));
   app.get('/api/admin/access',member,admin,(_,res)=>res.json(access.directory()));
   const contentAction=action=>(req,res)=>{try{const work=()=>action(req,res);if(req.method==='GET'&&/^\/api\/(?:bootstrap|library|contents(?:\/|$)|reading(?:\/|$)|learning-flows(?:\/|$)|(?:game|progress)\/(?:me|knowledge)$)/.test(req.path))withLearningReadBatch(ctx,work);else if(req.method==='GET'&&db.withReadScope)db.withReadScope(work);else work();}catch(error){res.status(error.status||400).json({message:error.message});}};
   app.get('/api/bootstrap',member,contentAction((req,res)=>res.json({user:memberPayload(req.member),catalog:{title:bank.title,version:appVersion,minimumPercent:bank.minimumPercent,criticalRequired:bank.criticalRequired,testMode,environment:ctx.runtime.environment,totalTracks:bank.tracks.length,tracks:bank.tracks.filter(track=>hasTrack(req.member,track.id)).map(track=>trackSummary(track,hasPermission(req.member,'materials')))}})));
   app.get('/api/profile',member,contentAction((req,res)=>{const value=ctx.profiles.detail(req.member);res.json({...value,onboarding:onboarding.read(req.member.user_id),recognitions:ctx.management.recognitions(req.member,value.id)});}));
   app.get('/api/onboarding',member,(req,res)=>{const record=onboarding.read(req.member.user_id);res.json({choices:{...onboarding.choices,squads:db.prepare("SELECT name FROM academy_squad WHERE status='active' ORDER BY name").all().map(s=>s.name)},record,recommendations:onboarding.recommend(req.member,record)});});
-  app.post('/api/onboarding',member,(req,res)=>{try{const record=onboarding.save(req.member.user_id,req.body);res.json({record,recommendations:onboarding.recommend(req.member,record)});}catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/onboarding',member,(req,res)=>{try{const before=onboarding.read(req.member.user_id),record=onboarding.save(req.member.user_id,req.body);if(!before)integrationEvents.emit('academy.onboarding.completed',{entityType:'user',entityId:req.member.user_id,payload:{userId:req.member.user_id,sector:record.answers.sector,role:record.answers.role,squadId:record.answers.squad||undefined}});res.json({record,recommendations:onboarding.recommend(req.member,record)});}catch(error){res.status(400).json({message:error.message});}});
   app.get('/api/admin/onboarding',member,admin,(_,res)=>res.json({items:onboarding.adminList()}));
   app.get('/api/profiles',member,contentAction((req,res)=>res.json({items:ctx.profiles.peers(req.member)})));
   app.get('/api/profiles/:id',member,contentAction((req,res)=>{const value=ctx.profiles.detail(req.member,req.params.id);res.json({...value,recognitions:ctx.management.recognitions(req.member,value.id)});}));
@@ -328,12 +349,13 @@ export async function createApp(options={}) {
   app.post('/api/quizzes/:id/start',member,contentAction((req,res)=>{
     const previous=db.prepare("SELECT a.id FROM academy_quiz_attempt a JOIN academy_quiz q ON q.id=a.quiz_id WHERE a.user_id=? AND a.quiz_id=? AND a.version=q.version AND a.status='open' ORDER BY a.started_at DESC LIMIT 1").get(req.member.user_id,req.params.id);
     const value=ctx.game.quizzes.start(req.member,req.params.id);
+    if(!previous)integrationEvents.emit('academy.assessment.started',{entityType:'assessment',entityId:value.id,payload:{userId:req.member.user_id,assessmentKind:'quiz',quizId:req.params.id,attemptId:value.id,version:value.version}});
     if(previous&&value.id===previous.id&&value.status==='complete')learningNpsForQuiz(req,value,{status:'open'},previous.id);
     res.status(value.status==='complete'?200:201).json(value);
   }));
   app.get('/api/quiz-attempts/:id',member,contentAction((req,res)=>{const before=db.prepare('SELECT status FROM academy_quiz_attempt WHERE id=? AND user_id=?').get(req.params.id,req.member.user_id);const value=ctx.game.quizzes.get(req.member,req.params.id);learningNpsForQuiz(req,value,before);res.json(value);}));
   app.put('/api/quiz-attempts/:id',member,contentAction((req,res)=>{const before=db.prepare('SELECT status FROM academy_quiz_attempt WHERE id=? AND user_id=?').get(req.params.id,req.member.user_id);const value=ctx.game.quizzes.update(req.member,req.params.id,req.body);learningNpsForQuiz(req,value,before);res.json(value);}));
-  app.post('/api/quiz-attempts/:id/finish',member,contentAction((req,res)=>{const before=db.prepare('SELECT status FROM academy_quiz_attempt WHERE id=? AND user_id=?').get(req.params.id,req.member.user_id);const value=ctx.game.quizzes.update(req.member,req.params.id,req.body,true);learningNpsForQuiz(req,value,before);res.json(value);}));
+  app.post('/api/quiz-attempts/:id/finish',member,contentAction((req,res)=>{const before=db.prepare('SELECT status FROM academy_quiz_attempt WHERE id=? AND user_id=?').get(req.params.id,req.member.user_id);const value=ctx.game.quizzes.update(req.member,req.params.id,req.body,true);learningNpsForQuiz(req,value,before);if(before?.status==='open'&&value.status==='complete')integrationEvents.emit('academy.assessment.completed',{entityType:'assessment',entityId:req.params.id,payload:{userId:req.member.user_id,assessmentKind:'quiz',attemptId:req.params.id,quizId:value.quizId||undefined,version:value.version,score:value.score??value.result?.score,approved:value.approved??value.result?.approved}});res.json(value);}));
   app.get('/api/admin/quizzes',member,admin,contentAction((req,res)=>res.json({items:ctx.game.quizzes.adminList()})));
   app.get('/api/admin/quizzes/pool',member,admin,contentAction((req,res)=>res.json({tracks:ctx.game.quizzes.pool()})));
   app.get('/api/admin/quizzes/:id',member,admin,contentAction((req,res)=>res.json(ctx.game.quizzes.adminDetail(req.params.id))));
@@ -372,8 +394,8 @@ export async function createApp(options={}) {
   app.post('/api/contents/:id/progress',member,contentAction((req,res)=>res.json(ctx.readings.save(req.member,req.params.id,req.body))));
   app.post('/api/contents/:id/progress/dismiss',member,contentAction((req,res)=>res.json(ctx.readings.dismiss(req.member,req.params.id))));
   app.get('/api/contents/:id/study',member,contentAction((req,res)=>res.json(ctx.readings.detailStudy(req.member,req.params.id))));
-  app.post('/api/contents/:id/study/start',member,contentAction((req,res)=>res.json(ctx.readings.start(req.member,req.params.id,req.body))));
-  app.post('/api/contents/:id/study',member,contentAction((req,res)=>{const wasCompleted=ctx.readings.detailStudy(req.member,req.params.id).completed;const study=ctx.readings.complete(req.member,req.params.id,req.body);if(!wasCompleted&&study.completed){const item=ctx.contents.detail(req.member,req.params.id);ctx.learningNps.queue({userId:req.member.user_id,sourceType:'material',sourceId:item.id,sourceVersion:study.version+'@'+study.completedAt,title:item.title,context:'Conteúdo concluído',trackIds:item.tracks});}res.json(study);}));
+  app.post('/api/contents/:id/study/start',member,contentAction((req,res)=>{const value=ctx.readings.start(req.member,req.params.id,req.body);integrationEvents.emit('academy.lesson.started',{entityType:'content',entityId:req.params.id,payload:{userId:req.member.user_id,contentId:req.params.id}});res.json(value);}));
+  app.post('/api/contents/:id/study',member,contentAction((req,res)=>{const wasCompleted=ctx.readings.detailStudy(req.member,req.params.id).completed;const study=ctx.readings.complete(req.member,req.params.id,req.body);if(!wasCompleted&&study.completed){const item=ctx.contents.detail(req.member,req.params.id);ctx.learningNps.queue({userId:req.member.user_id,sourceType:'material',sourceId:item.id,sourceVersion:study.version+'@'+study.completedAt,title:item.title,context:'Conteúdo concluído',trackIds:item.tracks});integrationEvents.emit('academy.lesson.completed',{entityType:'content',entityId:item.id,payload:{userId:req.member.user_id,contentId:item.id,trackIds:item.tracks}});}res.json(study);}));
   const libraryItems=viewer=>{const flags=ctx.learningFlows.materialFlags(viewer),visible=ctx.contents.visible(viewer),tags=ctx.management.tagsForMany('contents',visible.map(item=>item.id));return visible.map(item=>({...item,flow:flags.get(item.id)||null,study:ctx.readings.detailStudy(viewer,item.id),tags:tags.get(item.id)||[]}));};
   app.get('/api/contents',member,contentAction((req,res)=>res.json({items:libraryItems(req.member)})));
   app.get('/api/library',member,contentAction((req,res)=>res.json({items:libraryItems(req.member),modules:ctx.modules.visible(req.member),reading:ctx.readings.latest(req.member),recent:ctx.readings.recent(req.member)})));
@@ -486,6 +508,22 @@ export async function createApp(options={}) {
   app.post('/api/admin/whatsapp-automations/:key/enable',member,admin,async(req,res)=>{try{res.json(await whatsappAutomations.activate(req.params.key));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/whatsapp-automations/:key/pause',member,admin,(req,res)=>{try{res.json(whatsappAutomations.pause(req.params.key));}catch(error){res.status(400).json({message:error.message});}});
   app.get('/api/admin/integrations',member,admin,(_,res)=>res.json(integrations.list()));
+  app.get('/api/admin/integrations/health',member,admin,(_,res)=>res.json(integrationHealth.snapshot()));
+  app.get('/api/admin/integrations/deliveries',member,admin,(_,res)=>res.json({items:integrationOutbox.list({limit:100}).map(({payload,...item})=>item)}));
+  app.post('/api/admin/integrations/:type/test',member,admin,async(req,res)=>{try{
+    const type=req.params.type;
+    if(type==='glitchtip'){
+      if(!glitchtip.ready())throw new Error('GlitchTip ainda não está configurado.');
+      const ok=await glitchtip.capture(new Error('ST1 Academy integration test'),{method:'POST',path:'/api/admin/integrations/glitchtip/test',statusCode:500});
+      return res.status(ok?200:502).json({ok,status:ok?'delivered':'failed'});
+    }
+    if(!['n8n','openpanel'].includes(type)||!integrations.list()[type]?.ready)throw new Error('Integração ainda não está configurada.');
+    const event=integrationOutbox.record('academy.integration.test',{entityType:'integration',entityId:type,payload:{source:'admin'}},[type]);
+    await integrationDispatcher.tick();
+    const delivery=integrationOutbox.list({limit:100}).find(item=>item.eventId===event.id&&item.provider===type);
+    res.status(delivery?.status==='delivered'?200:502).json({ok:delivery?.status==='delivered',status:delivery?.status||'unknown'});
+  }catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/integrations/deliveries/:id/retry',member,admin,(req,res)=>{try{const value=integrationOutbox.retry(req.params.id);queueMicrotask(()=>integrationDispatcher.tick().catch(()=>{}));const {payload,...safe}=value;res.json(safe);}catch(error){res.status(400).json({message:error.message});}});
   app.put('/api/admin/integrations/:type',member,admin,(req,res)=>{try{res.json(integrations.save(req.member.user_id,req.params.type,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/integrations/webhooks',member,admin,(req,res)=>{try{res.status(201).json(integrations.addWebhook(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.delete('/api/admin/integrations/webhooks/:id',member,admin,(req,res)=>{try{integrations.removeWebhook(req.params.id);res.sendStatus(204);}catch(error){res.status(400).json({message:error.message});}});
@@ -542,7 +580,7 @@ export async function createApp(options={}) {
     res.sendFile(resolve(projectRoot,'public/index.html'));
   });
   app.use(express.static(resolve(projectRoot,'public'),{index:'index.html',maxAge:0}));
-  app.use((error,req,res,next)=>{console.error('Falha na ST1 Academy:',error.message);if(!res.headersSent)res.status(error.status===413?413:500).json({message:error.status===413?'O arquivo ou conteúdo ultrapassa o limite permitido. Arquivos podem ter até 25 MB; vídeos MP4/WebM, até 40 MB.':'Não foi possível concluir. Suas respostas salvas continuam disponíveis.'});});
+  app.use((error,req,res,next)=>{void glitchtip.capture(error,{method:req.method,path:req.originalUrl,statusCode:error.status||500});console.error('Falha na ST1 Academy:',error.message);if(!res.headersSent)res.status(error.status===413?413:500).json({message:error.status===413?'O arquivo ou conteúdo ultrapassa o limite permitido. Arquivos podem ter até 25 MB; vídeos MP4/WebM, até 40 MB.':'Não foi possível concluir. Suas respostas salvas continuam disponíveis.'});});
   return {app,ctx};
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
@@ -556,9 +594,10 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
     app.locals.runEmailAutomations().catch(error=>console.error('Falha ao verificar automações de e-mail:',error.message));
     app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));
     app.locals.runWhatsAppAutomations().catch(error=>console.error('Falha ao verificar automações WhatsApp:',error.message));
+    app.locals.runIntegrations().catch(error=>console.error('Falha ao processar integrações:',String(error.code||'DELIVERY_FAILED')));
     console.log(`ST1 Academy disponível em ${ctx.baseURL}`);
   });
-  const campaignTimer=setInterval(()=>{app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));app.locals.runEmailAutomations().catch(error=>console.error('Falha ao verificar automações de e-mail:',error.message));app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));app.locals.runWhatsAppAutomations().catch(error=>console.error('Falha ao verificar automações WhatsApp:',error.message));},30000);campaignTimer.unref();
+  const campaignTimer=setInterval(()=>{app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));app.locals.runEmailAutomations().catch(error=>console.error('Falha ao verificar automações de e-mail:',error.message));app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));app.locals.runWhatsAppAutomations().catch(error=>console.error('Falha ao verificar automações WhatsApp:',error.message));app.locals.runIntegrations().catch(error=>console.error('Falha ao processar integrações:',String(error.code||'DELIVERY_FAILED')));},30000);campaignTimer.unref();
   let stopping=false;
   const stop=()=>{
     if(stopping)return;stopping=true;app.locals.shuttingDown=true;clearInterval(campaignTimer);ctx.googleCalendar.stop();backups.stop();
