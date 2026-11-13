@@ -70,6 +70,7 @@ export async function createApp(options={}) {
   app.get('/api/webhooks/whatsapp',(req,res)=>{const challenge=whatsappReceipts.verify(req.query['hub.mode'],req.query['hub.verify_token'],req.query['hub.challenge']);if(challenge===null)return res.sendStatus(403);res.type('text/plain').send(challenge);});
   app.post('/api/webhooks/whatsapp',express.raw({type:'application/json',limit:'256kb'}),(req,res)=>whatsappReceipts.ingest(req.body,req.get('x-hub-signature-256'))?res.sendStatus(200):res.sendStatus(403));
   // Prevent bypassing our per-mailbox and per-IP throttling through native Better Auth aliases.
+  app.use('/api/auth/reset-password',(req,res,next)=>req.method==='POST'&&req.headers.origin!==baseURL?res.status(403).json({message:'Origem de solicitação não autorizada.'}):next());
   app.all(['/api/auth/request-password-reset','/api/auth/forget-password','/api/auth/forgot-password'],(_,res)=>res.sendStatus(404));
   app.all('/api/auth/*splat',toNodeHandler(auth));
   app.use((req,res,next)=>express.json({limit:req.path==='/api/admin/campaigns'?'6mb':'128kb'})(req,res,next));
