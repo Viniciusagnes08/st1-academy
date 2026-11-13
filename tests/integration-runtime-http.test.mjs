@@ -26,5 +26,11 @@ test('Admin configura, testa e inspeciona integrações sem expor segredos',asyn
     const sent=await request('/api/admin/integrations/n8n/test',{method:'POST',body:{}});assert.equal(sent.status,200,JSON.stringify(sent.data));assert.equal(sent.data.ok,true);assert.equal(outbound.length,1);assert.equal(outbound[0].headers['x-academy-secret'],'segredo-de-producao-123456');
     const deliveries=await request('/api/admin/integrations/deliveries');assert.equal(deliveries.status,200);assert.equal(deliveries.data.items.length,1);assert.equal('payload' in deliveries.data.items[0],false);
     assert.equal(JSON.stringify(deliveries.data).includes('segredo-de-producao'),false);
+    const campaignId='campaign-idempotent',tokenClick='click-token-idempotent';
+    ctx.db.prepare("INSERT INTO academy_campaign(id,title,subject,body,cta_label,cta_url,recipient_ids_json,status,created_by,created_at,audience_type) VALUES(?,?,?,?,?,?,?,?,?,?,?)").run(campaignId,'Teste','Teste de clique','Mensagem com CTA','Abrir','/#trilhas',JSON.stringify([signup.data.user.id]),'sent',signup.data.user.id,new Date().toISOString(),'individual');
+    ctx.db.prepare("INSERT INTO academy_campaign_delivery(id,campaign_id,user_id,name,email,token,status,sent_at) VALUES(?,?,?,?,?,?,?,?)").run('delivery-click',campaignId,signup.data.user.id,'Admin Integrações','integrations-admin@example.test',tokenClick,'accepted',new Date().toISOString());
+    await request('/api/campaigns/click/'+tokenClick);await new Promise(resolve=>setImmediate(resolve));
+    await request('/api/campaigns/click/'+tokenClick);await new Promise(resolve=>setImmediate(resolve));
+    assert.equal(outbound.filter(item=>String(item.body||'').includes('academy.campaign.clicked')).length,1);
   }finally{await new Promise(r=>server.close(r));ctx.db.close();await rm(directory,{recursive:true,force:true});}
 });
