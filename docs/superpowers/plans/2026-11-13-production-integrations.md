@@ -114,7 +114,7 @@ openpanel: ['OPENPANEL_API_URL','OPENPANEL_CLIENT_ID','OPENPANEL_CLIENT_SECRET']
 - [x] **Step 2: Activate only when a valid DSN exists**, attach release/environment, strip query strings and redact e-mail/token-like values; no request body, headers or cookies are sent.
 - [x] **Step 3: Register passive capture in the Express error handler** while preserving existing responses and local logging.
 - [x] **Step 4: Fail closed:** timeout/network/GlitchTip failures return `false` and never propagate into the Academy request.
-- [x] **Step 5: Cover envelope shape, redaction and unavailable-provider behavior with focused tests.
+- [x] **Step 5: Cover envelope shape, redaction and unavailable-provider behavior with focused tests.**
 - [x] **Step 6: Keep `GLITCHTIP_TRACES_SAMPLE_RATE` reserved for a later SDK-based performance phase; this release implements error tracking only.
 
 ### Task 5: Wire event recording into Academy flows
