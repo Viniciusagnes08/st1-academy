@@ -6,13 +6,12 @@
 
 **Architecture:** Persist integration events in the Academy database, fan them out into per-provider deliveries, and process them asynchronously with provider-specific timeouts, retries and circuit breakers. GlitchTip is passive observability; n8n and OpenPanel consume server-side events. Existing email, WhatsApp, NPS and authentication remain native.
 
-**Tech Stack:** Node.js 24, Express 5, SQLite/PostgreSQL-compatible repository adapter, native fetch/AbortSignal, @sentry/node, existing AES-256-GCM integration settings, node:test.
+**Tech Stack:** Node.js 24, Express 5, SQLite/PostgreSQL-compatible repository adapter, native fetch/AbortSignal, Sentry-compatible envelope protocol for GlitchTip, existing AES-256-GCM integration settings, node:test.
 
 ---
 
 ## File map
 
-- `instrumentation.mjs`: early GlitchTip/Sentry initialization with safe no-op behavior.
 - `lib/integration-circuit-breaker.mjs`: provider-local circuit state.
 - `lib/integration-outbox.mjs`: event and delivery persistence, retry schedule, dead-letter handling.
 - `lib/integration-dispatcher.mjs`: asynchronous delivery loop and provider isolation.
@@ -25,7 +24,6 @@
 - `tests/integration-outbox.test.mjs`: persistence, retries and provider independence.
 - `tests/integration-providers.test.mjs`: n8n/OpenPanel HTTP contracts and timeout behavior.
 - `tests/integrations.test.mjs`: encrypted setting coverage.
-- `package.json` / `package-lock.json`: add `@sentry/node`.
 
 ### Task 1: Persist integration events and retries
 
@@ -105,20 +103,19 @@ openpanel: ['OPENPANEL_API_URL','OPENPANEL_CLIENT_ID','OPENPANEL_CLIENT_SECRET']
 - [ ] **Step 4: Run** `node --test tests/integrations.test.mjs`; expect PASS.
 - [ ] **Step 5: Commit** `feat: configure production integrations securely`.
 
-### Task 4: Add passive GlitchTip instrumentation
+### Task 4: Add passive GlitchTip reporting
 
 **Files:**
-- Create: `instrumentation.mjs`
-- Modify: `package.json`
-- Modify: `package-lock.json`
+- Create: `lib/glitchtip-integration.mjs`
 - Modify: `server.mjs`
+- Test: `tests/glitchtip-integration.test.mjs`
 
-- [ ] **Step 1: Add `@sentry/node`** and install lockfile update.
-- [ ] **Step 2: Initialize only when DSN exists**, with `sendDefaultPii:false`, `tracesSampleRate` default `0.01`, `environment:'production'`, release from package version, and `beforeSend` removing authorization/cookie/token-like request data.
-- [ ] **Step 3: Register Express error handling** after routes while preserving existing responses.
-- [ ] **Step 4: Flush on shutdown with a short deadline; ignore flush failure.**
-- [ ] **Step 5: Run full tests** `npm test`; expect PASS.
-- [ ] **Step 6: Commit** `feat: add passive GlitchTip observability`.
+- [x] **Step 1: Implement a native Sentry-compatible envelope sender** without adding a package dependency, because the implementation environment could not reach the npm registry safely enough to update the lockfile.
+- [x] **Step 2: Activate only when a valid DSN exists**, attach release/environment, strip query strings and redact e-mail/token-like values; no request body, headers or cookies are sent.
+- [x] **Step 3: Register passive capture in the Express error handler** while preserving existing responses and local logging.
+- [x] **Step 4: Fail closed:** timeout/network/GlitchTip failures return `false` and never propagate into the Academy request.
+- [x] **Step 5: Cover envelope shape, redaction and unavailable-provider behavior with focused tests.
+- [x] **Step 6: Keep `GLITCHTIP_TRACES_SAMPLE_RATE` reserved for a later SDK-based performance phase; this release implements error tracking only.
 
 ### Task 5: Wire event recording into Academy flows
 
