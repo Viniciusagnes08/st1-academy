@@ -71,7 +71,8 @@ export function createWhatsAppTemplatePanel({api,esc,main,toast}){
       editing=null;await load();
     }catch(failure){if(error){error.textContent=failure.message;error.hidden=false;}buttons.forEach(button=>button.disabled=false);}
   }
-  main.addEventListener('input',event=>{
+  document.addEventListener('input',event=>{
+    if(!root()?.contains(event.target))return;
     if(event.target.matches('[data-template-filter="query"]')){filter.query=event.target.value;cards();return;}
     const form=event.target.closest('#wa-template-form');if(!form)return;
     const samples=kind=>[...form.querySelectorAll(`[data-sample="${kind}"]`)].map(input=>input.value);
@@ -79,15 +80,16 @@ export function createWhatsAppTemplatePanel({api,esc,main,toast}){
     if(event.target.name==='bodyText')main.querySelector('#wa-body-samples').innerHTML=sampleInputs(form.elements.bodyText.value,'body',samples('body'));
     updatePreview();
   });
-  main.addEventListener('change',event=>{
+  document.addEventListener('change',event=>{
+    if(!root()?.contains(event.target))return;
     if(event.target.matches('[data-template-filter]')){filter[event.target.dataset.templateFilter]=event.target.value;cards();return;}
     if(event.target.name==='category'){main.querySelectorAll('.wa-category-choice').forEach(choice=>choice.classList.toggle('selected',choice.querySelector('input').checked));}
     const row=event.target.closest('[data-template-button]');if(row&&event.target.matches('[data-button-field="type"]')){const index=Number(row.dataset.templateButton);buttons[index]={type:event.target.value,text:row.querySelector('[data-button-field="text"]')?.value||''};buttonRows();}
     updatePreview();
   });
-  main.addEventListener('submit',event=>{if(event.target.id==='wa-template-form'){event.preventDefault();persist(event.submitter?.value||'submit');}});
-  main.addEventListener('click',async event=>{
-    if(location.hash!=='#campanhas-whatsapp')return;
+  document.addEventListener('submit',event=>{if(root()?.contains(event.target)&&event.target.id==='wa-template-form'){event.preventDefault();persist(event.submitter?.value||'submit');}});
+  document.addEventListener('click',async event=>{
+    if(location.hash!=='#campanhas-whatsapp'||!root()?.contains(event.target))return;
     if(event.target.closest('[data-create-template]')){editing=null;render();main.querySelector('#wa-template-form [name=name]')?.focus();return;}
     if(event.target.closest('[data-close-template-editor]')){editing=null;render();return;}
     if(event.target.closest('[data-save-template-draft]')){persist('draft');return;}
