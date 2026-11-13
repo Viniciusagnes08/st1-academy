@@ -25,6 +25,13 @@ import {createWhatsAppReceipts} from './lib/whatsapp-receipts.mjs';
 import {createWhatsAppTemplateService} from './lib/whatsapp-templates.mjs';
 import {createIntegrationService} from './lib/integrations.mjs';
 import {createOnboardingService} from './lib/onboarding.mjs';
+import {createIntegrationOutbox} from './lib/integration-outbox.mjs';
+import {createIntegrationDispatcher} from './lib/integration-dispatcher.mjs';
+import {createIntegrationEvents} from './lib/integration-events.mjs';
+import {createIntegrationHealth} from './lib/integration-health.mjs';
+import {createN8nIntegration} from './lib/n8n-integration.mjs';
+import {createOpenPanelIntegration} from './lib/openpanel-integration.mjs';
+import {createGlitchTipIntegration} from './lib/glitchtip-integration.mjs';
 
 export async function createApp(options={}) {
   const ctx=await createContext(options);
@@ -32,7 +39,8 @@ export async function createApp(options={}) {
   const recoveryLimiter=createPasswordRecoveryLimiter(db,{secret:ctx.integrationKey,clock:options.clock});
   const validateInvitationEmails=emails=>validateEmailAddresses(emails,{checkDomainFn:testMode?async()=> 'unknown':undefined});
   const integrations=createIntegrationService(db,{secret:ctx.integrationKey,env:process.env});
-  const mailEnv=options.mailEnv||integrations.effective(),whatsappEnv=options.whatsappEnv||integrations.effective();
+  const integrationEnv=integrations.effective();
+  const mailEnv=options.mailEnv||integrationEnv,whatsappEnv=options.whatsappEnv||integrationEnv;
   const invitationMailer=options.invitationMailer|| (async invitation=>{const mailer=createInvitationMailer(mailEnv);if(!mailer)throw new Error('SMTP indisponível.');return mailer(invitation);});
   const onboarding=createOnboardingService(db,bank);
   const campaigns=createCampaignService(db,{env:mailEnv,baseURL});
@@ -41,6 +49,13 @@ export async function createApp(options={}) {
   const whatsappTemplates=createWhatsAppTemplateService(db,{env:whatsappEnv});
   const whatsappCampaigns=createWhatsAppCampaignService(db,{env:whatsappEnv,sendTemplate:options.whatsappSender,receipts:whatsappReceipts});
   const whatsappAutomations=createWhatsAppAutomationService(db,{env:whatsappEnv,baseURL,context:ctx,sendTemplate:options.whatsappSender,receipts:whatsappReceipts});
+  const integrationFetch=options.integrationFetch||fetch;
+  const integrationOutbox=createIntegrationOutbox(db,{clock:options.clock});
+  const n8nAdapter={ready:()=>integrations.list().n8n.ready,send:event=>createN8nIntegration({webhookUrl:integrationEnv.N8N_WEBHOOK_URL,secret:integrationEnv.N8N_WEBHOOK_SECRET,fetcher:integrationFetch}).send(event)};
+  const openPanelAdapter={ready:()=>integrations.list().openpanel.ready,send:event=>createOpenPanelIntegration({apiUrl:integrationEnv.OPENPANEL_API_URL,clientId:integrationEnv.OPENPANEL_CLIENT_ID,clientSecret:integrationEnv.OPENPANEL_CLIENT_SECRET,profileSalt:ctx.integrationKey,fetcher:integrationFetch}).send(event)};
+  const integrationDispatcher=createIntegrationDispatcher({outbox:integrationOutbox,adapters:{n8n:n8nAdapter,openpanel:openPanelAdapter}});
+  const integrationEvents=createIntegrationEvents({outbox:integrationOutbox,integrations,dispatcher:integrationDispatcher});
+  const integrationHealth=createIntegrationHealth({integrations,outbox:integrationOutbox,dispatcher:integrationDispatcher});
   const deliverInvitation=async invitation=>{
     if(!options.invitationMailer&&!createInvitationMailer(mailEnv))return {...invitation,delivery:'not_configured'};
     try{await invitationMailer(invitation);return {...invitation,delivery:'sent'};}
@@ -48,9 +63,12 @@ export async function createApp(options={}) {
   };
   const app=express();
   const appVersion=JSON.parse(readFileSync(resolve(projectRoot,'package.json'),'utf8')).version;
+  const glitchtip={ready:()=>integrations.list().glitchtip.ready,capture:(error,context)=>integrations.list().glitchtip.ready?createGlitchTipIntegration({dsn:integrationEnv.GLITCHTIP_DSN,release:appVersion,environment:ctx.runtime.environment,fetcher:integrationFetch}).capture(error,context):Promise.resolve(false)};
   app.disable('x-powered-by');
   app.set('trust proxy',ctx.runtime.proxyHops);
   app.locals.shuttingDown=false;
+  app.locals.runIntegrations=integrationDispatcher.tick;
+  app.locals.integrationEvents=integrationEvents;
   app.use((req,res,next)=>{
     req.headers['x-academy-client-ip']=req.ip||req.socket.remoteAddress||'127.0.0.1';
     res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','no-referrer');
