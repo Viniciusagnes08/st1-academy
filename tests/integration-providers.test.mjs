@@ -38,6 +38,7 @@ test('OpenPanel usa autenticação server-side e pseudonimiza profileId',async()
     assert.equal(received.headers['openpanel-client-secret'],'client-secret-123456');
     assert.equal(received.body.type,'track');
     assert.equal(received.body.payload.name,'academy.trail.completed');
+    assert.equal(received.body.payload.properties.academyEventId,'evt-1');
     assert.notEqual(received.body.payload.profileId,'user-123');
     assert.equal(received.body.payload.profileId.length,32);
     assert.equal('userId' in received.body.payload.properties,false);
