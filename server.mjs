@@ -92,8 +92,13 @@ export async function createApp(options={}) {
     const started=Date.now(),email=typeof req.body?.email==='string'?req.body.email.trim().toLowerCase():'';
     try{
       if(recoveryLimiter.permit(email,req.ip)){
-        // Never let an untrusted Host or redirectTo field determine where tokens are delivered.
-        await auth.api.requestPasswordReset({body:{email,redirectTo:baseURL+'/redefinir-senha'}});
+        // Google-only accounts must not acquire a local password through recovery.
+        // This check must not change the public success message.
+        const credential=db.prepare("SELECT a.id FROM account a JOIN user u ON u.id=a.\"userId\" JOIN academy_member m ON m.user_id=u.id WHERE u.email=? AND a.\"providerId\"='credential' AND m.enabled=1 LIMIT 1").get(email);
+        if(credential){
+          // Never let an untrusted Host or redirectTo field determine where tokens are delivered.
+          await auth.api.requestPasswordReset({body:{email,redirectTo:baseURL+'/redefinir-senha'}});
+        }
       }
     }catch(error){
       // Generic reply prevents account enumeration and hides SMTP/internal errors.
