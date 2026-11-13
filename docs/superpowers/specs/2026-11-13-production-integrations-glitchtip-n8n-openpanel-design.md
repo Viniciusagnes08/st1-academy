@@ -1,7 +1,7 @@
 # ST1 Academy — Integrações de Produção: GlitchTip, n8n e OpenPanel
 
 Data: 2026-11-13
-Status: desenho aprovado em conversa; aguardando revisão final da especificação antes da implementação.
+Status: desenho aprovado e implementado na branch de integração; aguardando verificação final e merge para produção.
 
 ## 1. Objetivo
 
