@@ -10,6 +10,8 @@ test('diagnóstico preserva acesso e prioriza trilha do setor',()=>{
   const answers={sector:'PAP',role:'Vendedor(a)',goal:'Supervisor(a)',dream:'Liderar uma equipe',challenges:['Abordagem','Objeções'],squad:'Equipe 1'};
   assert.equal(service.read('u'),null);
   assert.throws(()=>service.save('u',{...answers,sector:'Outro canal'}));
+  assert.throws(()=>service.save('u',{...answers,squad:''}),/squad/);
+  assert.equal(service.save('u',{...answers,squad:'Ainda não sei'}).answers.squad,'Ainda não sei');
   service.save('u',answers);
   const viewer={tracks:['pap']},plan=service.recommend(viewer,service.read('u'));
   assert.deepEqual(plan.current.map(t=>t.id),['pap']);

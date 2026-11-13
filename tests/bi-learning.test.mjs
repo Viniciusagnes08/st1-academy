@@ -24,7 +24,7 @@ test('trilha BI oferece materiais, percurso e certificação sem alterar o comer
     const response=await fetch(baseURL+'/api/auth/sign-up/email',{method:'POST',headers:{Origin:baseURL,'Content-Type':'application/json','x-academy-invite':token,Connection:'close'},body:JSON.stringify({name:'QA BI',email:key+'@bi.example',password:randomBytes(24).toString('base64url')})});
     assert.equal(response.status,200);const payload=await response.json();
     const participant={id:payload.user.id,cookie:response.headers.getSetCookie().map(v=>v.split(';')[0]).join('; ')};
-    const onboarding=await fetch(baseURL+'/api/onboarding',{method:'POST',headers:{Origin:baseURL,Connection:'close',Cookie:participant.cookie,'Content-Type':'application/json'},body:JSON.stringify({sector:'Gestão',role:'Vendedor(a)',goal:'Especialista',dream:'Aprender outro canal',challenges:['Organização'],squad:''})});
+    const onboarding=await fetch(baseURL+'/api/onboarding',{method:'POST',headers:{Origin:baseURL,Connection:'close',Cookie:participant.cookie,'Content-Type':'application/json'},body:JSON.stringify({sector:'Gestão',role:'Vendedor(a)',goal:'Especialista',dream:'Aprender outro canal',challenges:['Organização'],squad:'Ainda não sei'})});
     assert.equal(onboarding.status,200);
     return participant;
   };
