@@ -1,0 +1,23 @@
+{
+  "purpose": "Academy Shorts - homologacao visual",
+  "receivedVideos": 3,
+  "expectedVideos": 4,
+  "note": "Arquivos de preview extremamente comprimidos para validacao visual no GitHub. Nao substituem os masters originais e nao devem ser usados como midia final de producao.",
+  "sources": [
+    {
+      "slot": 1,
+      "source": "snapinsta-1794557058803.mp4",
+      "asset": "short-01.mp4"
+    },
+    {
+      "slot": 2,
+      "source": "snapinsta-1794557426682.mp4",
+      "asset": "short-02.mp4"
+    },
+    {
+      "slot": 3,
+      "source": "snapinsta-1794557436363.mp4",
+      "asset": "short-03.mp4"
+    }
+  ]
+}
