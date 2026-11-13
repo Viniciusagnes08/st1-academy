@@ -14,6 +14,7 @@ import {createBackupService} from './lib/storage-backup.mjs';
 import {hostingConfig} from './lib/hosting.mjs';
 import {applyStagedProduction} from './lib/production-transfer.mjs';
 import {withLearningReadBatch} from './lib/learning-read-batch.mjs';
+import {materialVersion} from './lib/readings.mjs';
 import {createInvitationMailer} from './lib/invitation-mail.mjs';
 import {createPasswordRecoveryLimiter} from './lib/password-recovery.mjs';
 import {validateEmailAddresses} from './lib/email-validation.mjs';
@@ -298,6 +299,21 @@ export async function createApp(options={}) {
   };
   app.get('/api/admin/report',member,admin,(req,res)=>res.json(reportFor(req.member)));
   app.get('/api/team/report',member,team,(req,res)=>res.json(reportFor(req.member)));
+  app.get('/api/admin/content-report',member,admin,agendaAction((req,res)=>{
+    const contents=ctx.contents.list().filter(item=>item.status==='published');
+    const published="content_id IN (SELECT id FROM academy_content WHERE status='published' AND deleted_at IS NULL)";
+    const studies=db.prepare(`SELECT content_id,user_id,version_key,completed_at FROM academy_material_study WHERE ${published}`).all();
+    const readings=db.prepare(`SELECT content_id,user_id,asset_id FROM academy_reading WHERE ${published}`).all();
+    const counts=(table,condition='')=>new Map(db.prepare(`SELECT content_id,count(*) AS total FROM ${table} WHERE ${published}${condition} GROUP BY content_id`).all().map(row=>[row.content_id,Number(row.total)]));
+    const saves=counts('academy_content_save'),reactions=counts('academy_content_reaction'),comments=counts('academy_content_comment',' AND deleted_at IS NULL');
+    const items=contents.map(item=>{
+      const detail=ctx.contents.adminRecord(item.id),version=materialVersion(detail);
+      const currentStudies=studies.filter(row=>row.content_id===item.id&&row.version_key===version),currentReads=readings.filter(row=>row.content_id===item.id&&row.asset_id===detail.asset?.id);
+      const started=new Set([...currentStudies.map(row=>row.user_id),...currentReads.map(row=>row.user_id)]),completed=new Set(currentStudies.filter(row=>row.completed_at).map(row=>row.user_id));
+      return {id:item.id,title:item.title,category:item.category,kind:item.kind,tracks:item.tracks,startedPeople:started.size,completedPeople:completed.size,completionRate:started.size?Math.round(completed.size/started.size*100):null,saves:saves.get(item.id)||0,reactions:reactions.get(item.id)||0,comments:comments.get(item.id)||0};
+    }).sort((a,b)=>b.startedPeople-a.startedPeople||b.completedPeople-a.completedPeople||a.title.localeCompare(b.title,'pt-BR'));
+    res.json({items,summary:{published:items.length,startedPeople:items.reduce((sum,item)=>sum+item.startedPeople,0),completedStudies:items.reduce((sum,item)=>sum+item.completedPeople,0),saves:items.reduce((sum,item)=>sum+item.saves,0),reactions:items.reduce((sum,item)=>sum+item.reactions,0),comments:items.reduce((sum,item)=>sum+item.comments,0)}});
+  }));
   app.get('/api/learning-nps/pending',member,agendaAction((req,res)=>res.json({item:ctx.learningNps.pending(req.member.user_id)})));
   app.post('/api/learning-nps/:id',member,agendaAction((req,res)=>{const value=ctx.learningNps.submit(req.member,req.params.id,req.body);integrationEvents.emit('academy.nps.submitted',{entityType:'nps',entityId:req.params.id,payload:{userId:req.member.user_id,npsId:req.params.id,score:req.body.score}});res.json(value);}));
   app.get('/api/learning-nps/report',member,admin,agendaAction((req,res)=>res.json(ctx.learningNps.report({period:req.query.period,track:req.query.track}))));
