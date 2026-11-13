@@ -90,7 +90,6 @@ O dispatcher roda no startup, em intervalo periódico e por kick assíncrono ap�
 
 ## 7. Catálogo inicial de eventos
 
-- academy.user.activated
 - academy.onboarding.completed
 - academy.lesson.started
 - academy.lesson.completed
