@@ -76,3 +76,15 @@ test('circuit breaker abre por provider e volta a permitir tentativa após coold
   breaker.success('n8n');
   assert.equal(breaker.state('n8n').failures,0);
 });
+
+test('outbox aceita clock ISO sem quebrar retry ou recuperação',()=>{
+  const db=new DatabaseSync(':memory:');
+  try{
+    let current='2026-11-13T00:00:00.000Z';const outbox=createIntegrationOutbox(db,{clock:()=>current});
+    outbox.record('academy.integration.test',{entityType:'integration',entityId:'iso',payload:{}},['n8n']);
+    const item=outbox.due()[0];outbox.fail(item.id,'offline');
+    assert.equal(outbox.due().length,0);
+    current='2026-11-13T00:01:00.000Z';
+    assert.equal(outbox.due().length,1);
+  }finally{db.close();}
+});
