@@ -30,6 +30,7 @@ test('recuperação de senha: e-mail, link de uso único, revogação e antienum
         assert.equal(page.status,200);
         assert.match(page.headers.get('cache-control')||'',/no-store/);
         assert.match(page.headers.get('referrer-policy')||'',/no-referrer/);
+        if(path==='/redefinir-senha')assert.ok(page.text.indexOf('id="recovery-feedback"')>page.text.indexOf('</form>'),'Mensagem de sucesso deve permanecer visível após ocultar o formulário.');
       }
       const source=await request(null,'/assets/password-recovery.js');
       assert.equal(source.status,200);
