@@ -261,7 +261,7 @@
       else if(page==='nps')await npsPage();
       else if(page==='campanhas-whatsapp')await whatsappCampaignPage();
       else if(page==='integracoes')await integrationsPage();
-      else if(page==='shorts'){const {createShortsPanel}=await import('/assets/shorts.js?v=20261113-shorts-media');state.shortsPanel??=createShortsPanel({api,esc,main,commitView,user:()=>state.user,toast});await state.shortsPanel.render(id);}
+      else if(page==='shorts'){const {createShortsPanel}=await import('/assets/shorts.js?v=20261113-shorts-homologacao-videos');state.shortsPanel??=createShortsPanel({api,esc,main,commitView,user:()=>state.user,toast});await state.shortsPanel.render(id);}
       else if(page==='salvos'){const {showSavedContents}=await import('/assets/saved-content.js?v=20261112-content-engagement');await showSavedContents({api,esc,main,commitView,toast});}
       else if(page==='conteudos')await (await contentPanel()).library(id==='categoria'?contentId:pageNumber==='categoria'?subCategory:'all',id==='modulo'?contentId:'all');
       else if(page==='dashboard')await (await contentPanel()).dashboard();
