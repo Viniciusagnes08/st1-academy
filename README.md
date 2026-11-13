@@ -289,3 +289,17 @@ Vendedores veem o agregado das pessoas do próprio squad, sem e-mails, respostas
 Meu mapa de conhecimento usa nós e conexões interativas, seleção por clique ou teclado, zoom e navegação pelo mapa. Cada tema mostra acertos/total e fica Validado, Reforçar ou Ainda não avaliado. A evidência mais recente vem das práticas, provas relâmpago ou avaliação final, com identificação da origem. Temas de perguntas próprias aparecem após a avaliação. Um erro crítico mantém o ponto em Reforçar mesmo com nota suficiente. O trecho do material aparece como revisão quando existe referência disponível e autorizada. Visitar uma página não é evidência de domínio.
 
 Os padrões de referência e a adaptação ao HTML/JavaScript do projeto estão documentados em [REFERENCES.md](REFERENCES.md).
+
+## Integrações de produção: GlitchTip, n8n e OpenPanel
+
+A **Central de Integrações** permite ativar serviços externos sem colocá-los no caminho crítico do ST1 Academy. As configurações sensíveis podem ser armazenadas pelo Admin usando a mesma cifragem AES-256-GCM já aplicada aos canais de comunicação.
+
+- **GlitchTip:** recebe erros do backend por protocolo compatível com Sentry. A primeira implantação usa um emissor nativo, sem dependência adicional no pacote, e não envia body de requisição, cookies, query strings ou PII desnecessária. Se o GlitchTip estiver indisponível, o erro continua sendo tratado pelo Academy.
+- **n8n:** recebe eventos por webhook HTTPS autenticado. O Academy persiste o evento antes do envio; indisponibilidade do n8n gera retry com backoff, sem bloquear a ação do usuário.
+- **OpenPanel:** recebe eventos de Product/Learning Analytics pelo backend. O identificador da pessoa é pseudonimizado com HMAC antes do envio; nome e e-mail não são enviados por padrão. O CSP continua com `connect-src 'self'` porque não há SDK externo no navegador nesta fase.
+
+A Outbox usa entregas independentes por provider. As tentativas são refeitas após 1 minuto, 5 minutos, 30 minutos, 2 horas e 12 horas; uma nova falha entra em **dead-letter**. Em **Admin → Integrações → Saúde e fila**, o Admin acompanha pendências e pode reenfileirar uma dead-letter. O circuit breaker abre após cinco falhas consecutivas de um provider e tenta novamente depois de cinco minutos.
+
+Eventos iniciais: onboarding concluído, material iniciado/concluído, avaliação iniciada/concluída/bloqueada, autorização extra de tentativa, trilha concluída, certificado emitido, clique de campanha e NPS enviado. Respostas de prova, senhas, tokens, cookies, documentos e endereços não entram no payload de integração.
+
+As integrações ficam inativas por padrão. Configurar credenciais não exige colocá-las neste repositório; use variáveis privadas da hospedagem ou o painel Admin. Desativar um provider interrompe novas entregas para ele sem alterar login, estudos, provas, certificados, campanhas ou o banco principal.
