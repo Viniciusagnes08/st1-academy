@@ -15,6 +15,7 @@ import {hostingConfig} from './lib/hosting.mjs';
 import {applyStagedProduction} from './lib/production-transfer.mjs';
 import {withLearningReadBatch} from './lib/learning-read-batch.mjs';
 import {createInvitationMailer} from './lib/invitation-mail.mjs';
+import {createPasswordRecoveryLimiter} from './lib/password-recovery.mjs';
 import {validateEmailAddresses} from './lib/email-validation.mjs';
 import {createCampaignService} from './lib/campaigns.mjs';
 import {createEmailAutomationService} from './lib/email-automation-service.mjs';
@@ -28,6 +29,7 @@ import {createOnboardingService} from './lib/onboarding.mjs';
 export async function createApp(options={}) {
   const ctx=await createContext(options);
   const {db,auth,bank,baseURL,testMode,access,attemptLimits}=ctx;
+  const recoveryLimiter=createPasswordRecoveryLimiter(db,{secret:ctx.integrationKey,clock:options.clock});
   const validateInvitationEmails=emails=>validateEmailAddresses(emails,{checkDomainFn:testMode?async()=> 'unknown':undefined});
   const integrations=createIntegrationService(db,{secret:ctx.integrationKey,env:process.env});
   const mailEnv=options.mailEnv||integrations.effective(),whatsappEnv=options.whatsappEnv||integrations.effective();
@@ -53,6 +55,7 @@ export async function createApp(options={}) {
     req.headers['x-academy-client-ip']=req.ip||req.socket.remoteAddress||'127.0.0.1';
     res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','no-referrer');
     res.setHeader('X-Frame-Options','SAMEORIGIN');
+    if(ctx.runtime.production)res.setHeader('Strict-Transport-Security','max-age=31536000; includeSubDomains');
     res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data: blob:; connect-src 'self'; worker-src 'self' blob:; frame-ancestors 'self'; base-uri 'none'; form-action 'self'");
     if(req.path.startsWith('/api/'))res.setHeader('Cache-Control','no-store');
     next();
@@ -66,6 +69,9 @@ export async function createApp(options={}) {
   app.use((req,res,next)=>ready()?next():res.status(503).set('Retry-After','30').json({message:'A ST1 Academy está sendo preparada. Tente novamente em alguns instantes.'}));
   app.get('/api/webhooks/whatsapp',(req,res)=>{const challenge=whatsappReceipts.verify(req.query['hub.mode'],req.query['hub.verify_token'],req.query['hub.challenge']);if(challenge===null)return res.sendStatus(403);res.type('text/plain').send(challenge);});
   app.post('/api/webhooks/whatsapp',express.raw({type:'application/json',limit:'256kb'}),(req,res)=>whatsappReceipts.ingest(req.body,req.get('x-hub-signature-256'))?res.sendStatus(200):res.sendStatus(403));
+  // Prevent bypassing our per-mailbox and per-IP throttling through native Better Auth aliases.
+  app.use('/api/auth/reset-password',(req,res,next)=>req.method==='POST'&&req.headers.origin!==baseURL?res.status(403).json({message:'Origem de solicitação não autorizada.'}):next());
+  app.all(['/api/auth/request-password-reset','/api/auth/forget-password','/api/auth/forgot-password'],(_,res)=>res.sendStatus(404));
   app.all('/api/auth/*splat',toNodeHandler(auth));
   app.use((req,res,next)=>express.json({limit:req.path==='/api/admin/campaigns'?'6mb':'128kb'})(req,res,next));
   app.get('/api/campaigns/open/:token.gif',(req,res)=>{campaigns.mark('open',req.params.token);res.setHeader('Cache-Control','no-store');res.type('image/gif').send(Buffer.from('R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=','base64'));});
@@ -77,8 +83,30 @@ export async function createApp(options={}) {
   app.get('/api/email-automations/feedback/:token',(req,res)=>{const html=emailAutomations.npsFeedbackPage(req.params.token);if(!html)return res.sendStatus(404);res.type('html').send(html);});
   app.post('/api/email-automations/feedback/:token',express.urlencoded({extended:false}),(req,res)=>{if(req.headers.origin!==baseURL)return res.sendStatus(403);try{emailAutomations.submitFeedback(req.params.token,req.body);res.type('html').send('<main style="font:16px Arial,sans-serif;max-width:640px;margin:60px auto;padding:28px"><h1>Obrigado pelo seu feedback.</h1><p>As suas respostas foram registradas de forma privada e vão ajudar a melhorar a ST1 Academy.</p></main>');}catch(error){res.status(400).type('html').send(`<main style="font:16px Arial,sans-serif;max-width:640px;margin:60px auto;padding:28px"><h1>Não foi possível registrar.</h1><p>${String(error.message).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]))}</p></main>`);}});
   app.use('/api',(req,res,next)=>{
+
     if(['POST','PUT','PATCH','DELETE'].includes(req.method)&&req.headers.origin!==baseURL)return res.status(403).json({message:'Solicitação de outra origem não permitida.'});
     next();
+  });
+  const recoveryMessage='Se o e-mail estiver cadastrado e habilitado para login por senha, você receberá instruções para redefinição. Verifique a caixa de entrada e o spam.';
+  app.post('/api/password-recovery/request',async(req,res)=>{
+    const started=Date.now(),email=typeof req.body?.email==='string'?req.body.email.trim().toLowerCase():'';
+    try{
+      if(recoveryLimiter.permit(email,req.ip)){
+        // Google-only accounts must not acquire a local password through recovery.
+        // This check must not change the public success message.
+        const credential=db.prepare("SELECT a.id FROM account a JOIN user u ON u.id=a.\"userId\" JOIN academy_member m ON m.user_id=u.id WHERE lower(u.email)=? AND a.\"providerId\"='credential' AND m.enabled=1 LIMIT 1").get(email);
+        if(credential){
+          // Never let an untrusted Host or redirectTo field determine where tokens are delivered.
+          await auth.api.requestPasswordReset({body:{email,redirectTo:baseURL+'/redefinir-senha'}});
+        }
+      }
+    }catch(error){
+      // Generic reply prevents account enumeration and hides SMTP/internal errors.
+      console.error('Falha controlada na solicitação de redefinição:',String(error.code||'RECOVERY_REQUEST_FAILED').slice(0,50));
+    }
+    const minimum=350-(Date.now()-started);
+    if(minimum>0)await new Promise(resolve=>setTimeout(resolve,minimum));
+    res.status(202).json({message:recoveryMessage});
   });
   const member=async(req,res,next)=>{
     if(req.member)return next();
@@ -501,6 +529,8 @@ export async function createApp(options={}) {
   };
   app.get('/api/admin/report.csv',member,admin,reportCsv);
   app.get('/api/team/report.csv',member,team,reportCsv);
+  app.get('/esqueci-senha',(_,res)=>res.setHeader('Cache-Control','no-store').sendFile(resolve(projectRoot,'public/forgot-password.html')));
+  app.get('/redefinir-senha',(_,res)=>res.setHeader('Cache-Control','no-store').sendFile(resolve(projectRoot,'public/reset-password.html')));
   app.get('/login',(_,res)=>res.setHeader('Cache-Control','no-store').sendFile(resolve(projectRoot,'public/login.html')));
   app.get('/login.html',(req,res)=>res.redirect(302,'/login'+(req.url.includes('?')?req.url.slice(req.url.indexOf('?')):'')));
   app.get(['/','/index.html'],async(req,res)=>{
