@@ -62,6 +62,12 @@ test('Acessos são aplicados no servidor e Supervisor faz provas próprias enqua
     await enroll(clients.supervisor,{name:'Supervisor de teste',email:'access-supervisor@example.test',...supervisorAccess});
     await enroll(clients.seller,{name:'Vendedor da equipe',email:'access-seller@example.test',...sellerAccess,supervisorIds:[clients.supervisor.id]});
     await enroll(clients.other,{name:'Vendedor de outra equipe',email:'access-other@example.test',role:'seller'});
+    await t.test('a lista de acessos inclui as fotos dos perfis',async()=>{
+      ctx.db.prepare('UPDATE user SET image=? WHERE id=?').run('https://lh3.googleusercontent.com/a/test-avatar',clients.seller.id);
+      const directory=await request(clients.admin,'/api/admin/access');
+      assert.equal(directory.status,200);
+      assert.equal(directory.data.users.find(person=>person.id===clients.seller.id).avatarUrl,'https://lh3.googleusercontent.com/a/test-avatar');
+    });
     await t.test('convite envia e-mail e reenvio troca o link anterior',async()=>{
       const created=await request(clients.admin,'/api/admin/invitations',{method:'POST',body:{name:'Pessoa convidada',email:'access-mail@example.test',role:'seller'}});
       assert.equal(created.status,201);assert.equal(created.data.delivery,'sent');assert.equal(sentInvitations.at(-1).email,'access-mail@example.test');

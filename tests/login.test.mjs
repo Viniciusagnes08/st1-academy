@@ -53,6 +53,8 @@ test('Login e primeiro acesso funcionam com sessões persistentes opcionais e ma
         const register=await request(clients[key],'/api/auth/sign-up/email',{body:{name:'Nome adulterado',email,password:passwords[key],rememberMe,role:'admin'},headers:{'x-academy-invite':token}});assert.equal(register.status,200);
         const sessionCookie=register.cookies.find(c=>c.includes('.session_token='));assert.ok(sessionCookie);assert.equal(/Max-Age=\d+/.test(sessionCookie),rememberMe);
         const profile=(await request(clients[key],'/api/me')).data;assert.equal(profile.role,key==='remembered'?'supervisor':'seller');assert.equal(profile.name,'Participante de teste '+key);
+        const googleReturn=await request(clients[key],'/google/connected?first=1');assert.equal(googleReturn.status,302);assert.ok(googleReturn.location?.startsWith('/'));
+        assert.equal((await request(clients[key],'/api/profile')).status,403);
         assert.equal((await request(clients[key],'/')).status,200);
         await request(clients[key],'/api/auth/sign-out',{body:{}});
         const signin=await request(clients[key],'/api/auth/sign-in/email',{body:{email,password:passwords[key],rememberMe}});assert.equal(signin.status,200);

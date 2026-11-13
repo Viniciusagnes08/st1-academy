@@ -66,7 +66,6 @@
     const avatarElement=document.querySelector('#profile-avatar');avatarElement.innerHTML=state.user?.avatarUrl?'<img src="'+esc(state.user.avatarUrl)+'" alt="">':esc((state.user?.name||'ST1').split(' ').filter(Boolean).slice(0,2).map(word=>word[0]).join('').toUpperCase());
     document.querySelector('#admin-nav').hidden=!['admin','supervisor'].includes(role)||!hasAccess('team_results');
     document.querySelector('#admin-nav-label').textContent='Resultados e ranking';
-    const m24Nav=document.querySelector('#m24-nav');if(m24Nav)m24Nav.hidden=state.user?.m24Homologation!==true;
     document.querySelector('#management-nav').hidden=role!=='admin';document.querySelector('#access-nav').hidden=role!=='admin';document.querySelector('#campaign-nav').hidden=role!=='admin';document.querySelector('#nps-nav').hidden=role!=='admin';document.querySelector('#whatsapp-campaign-nav').hidden=role!=='admin';document.querySelector('#integrations-nav').hidden=role!=='admin';
     document.querySelector('#management-navigation').hidden=role!=='admin'&&(role!=='supervisor'||!hasAccess('team_results'));
     document.querySelector('#reports-navigation').hidden=role!=='admin'&&(role!=='supervisor'||!hasAccess('team_results'));document.querySelector('#report-content-nav').hidden=role!=='admin';
@@ -160,9 +159,8 @@
   }
   async function accessPage(){
     if(state.user?.role!=='admin')return restricted('Acessos são gerenciados pelo Admin.','Vendedores e Supervisores usam somente as áreas liberadas para suas contas.',!state.user);
-    if(!state.accessPanel){const {createAccessPanel}=await import('/assets/access.js?v=20261112-email-domain-click-status');state.accessPanel=createAccessPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,refreshUser,toast});}
+    if(!state.accessPanel){const {createAccessPanel}=await import('/assets/access.js?v=20261113-access-avatars');state.accessPanel=createAccessPanel({api,esc,icon,main,commitView,tracks:()=>state.catalog.tracks,user:()=>state.user,refreshUser,toast});}
     await state.accessPanel.render();
-    try{const {items}=await api('/api/admin/onboarding');if(location.hash==='#acessos'){main.insertAdjacentHTML('beforeend',`<section class="wrap onboarding-admin"><span class="overline muted">DIAGNÓSTICO DE DESENVOLVIMENTO</span><h2>O que o time contou sobre seu percurso.</h2><p>Use estas respostas para revisar trilhas e permissões. Elas não alteram acessos automaticamente.</p><div class="onboarding-admin-grid">${items.map(item=>`<article><h3>${esc(item.name)}</h3><small>${esc(item.email)}</small><p><strong>Hoje:</strong> ${esc(item.answers.sector)} · ${esc(item.answers.role)}</p><p><strong>Próxima cadeira:</strong> ${esc(item.answers.goal)}</p><p><strong>Dificuldades:</strong> ${item.answers.challenges.map(esc).join(', ')}</p><p><strong>Squad informado:</strong> ${esc(item.answers.squad||'Não informado')}</p></article>`).join('')||'<p>Ninguém concluiu o diagnóstico ainda.</p>'}</div></section>`);}}catch(error){console.warn('Diagnóstico indisponível:',error.message);}
   }
   async function campaignPage(){
     if(state.user?.role!=='admin')return restricted('Campanhas são gerenciadas pelo Admin.','Esta área é exclusiva da gestão da ST1 Academy.',!state.user);

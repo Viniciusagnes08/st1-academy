@@ -75,7 +75,7 @@ export async function createApp(options={}) {
     res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','no-referrer');
     res.setHeader('X-Frame-Options','SAMEORIGIN');
     if(ctx.runtime.production)res.setHeader('Strict-Transport-Security','max-age=31536000; includeSubDomains');
-    res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data: blob:; connect-src 'self'; worker-src 'self' blob:; frame-ancestors 'self'; base-uri 'none'; form-action 'self'");
+    res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob: https://*.googleusercontent.com; media-src 'self' blob:; font-src 'self' data: blob:; connect-src 'self'; worker-src 'self' blob:; frame-ancestors 'self'; base-uri 'none'; form-action 'self'");
     if(req.path.startsWith('/api/'))res.setHeader('Cache-Control','no-store');
     next();
   });
@@ -134,7 +134,7 @@ export async function createApp(options={}) {
     const profile=readProfile(db,session.user.id);
     if(!profile||profile.enabled!==1)return res.status(403).json({message:'Seu acesso está bloqueado. Procure o Admin da ST1 Academy.'});
     req.member=profile;
-    if(!onboarding.read(profile.user_id)&&!['/api/onboarding','/api/bootstrap','/api/me'].includes(req.path))return res.status(403).json({code:'ONBOARDING_REQUIRED',message:'Conclua seu primeiro acesso antes de usar a Academy.'});
+    if(!onboarding.read(profile.user_id)&&!['/api/onboarding','/api/bootstrap','/api/me','/google/connected'].includes(req.path))return res.status(403).json({code:'ONBOARDING_REQUIRED',message:'Conclua seu primeiro acesso antes de usar a Academy.'});
     next();
   };
   const admin=(req,res,next)=>req.member.role==='admin'?next():res.status(403).json({message:'Acesso exclusivo de Admin.'});
@@ -317,7 +317,7 @@ export async function createApp(options={}) {
   app.get('/api/learning-nps/pending',member,agendaAction((req,res)=>res.json({item:ctx.learningNps.pending(req.member.user_id)})));
   app.post('/api/learning-nps/:id',member,agendaAction((req,res)=>{const value=ctx.learningNps.submit(req.member,req.params.id,req.body);integrationEvents.emit('academy.nps.submitted',{entityType:'nps',entityId:req.params.id,payload:{userId:req.member.user_id,npsId:req.params.id,score:req.body.score}});res.json(value);}));
   app.get('/api/learning-nps/report',member,admin,agendaAction((req,res)=>res.json(ctx.learningNps.report({period:req.query.period,track:req.query.track}))));
-  app.get('/api/admin/access',member,admin,(_,res)=>res.json(access.directory()));
+  app.get('/api/admin/access',member,admin,(req,res)=>{const directory=access.directory();res.json({...directory,users:directory.users.map(person=>({...person,avatarUrl:ctx.profiles.avatar(req.member,person.id)}))});});
   const contentAction=action=>(req,res)=>{try{const work=()=>action(req,res);if(req.method==='GET'&&/^\/api\/(?:bootstrap|library|contents(?:\/|$)|reading(?:\/|$)|learning-flows(?:\/|$)|(?:game|progress)\/(?:me|knowledge)$)/.test(req.path))withLearningReadBatch(ctx,work);else if(req.method==='GET'&&db.withReadScope)db.withReadScope(work);else work();}catch(error){res.status(error.status||400).json({message:error.message});}};
   app.get('/api/bootstrap',member,contentAction((req,res)=>res.json({user:memberPayload(req.member),catalog:{title:bank.title,version:appVersion,minimumPercent:bank.minimumPercent,criticalRequired:bank.criticalRequired,testMode,environment:ctx.runtime.environment,totalTracks:bank.tracks.length,tracks:bank.tracks.filter(track=>hasTrack(req.member,track.id)).map(track=>trackSummary(track,hasPermission(req.member,'materials')))}})));
   app.get('/api/profile',member,contentAction((req,res)=>{const value=ctx.profiles.detail(req.member);res.json({...value,onboarding:onboarding.read(req.member.user_id),recognitions:ctx.management.recognitions(req.member,value.id)});}));

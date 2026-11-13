@@ -2,3 +2,4 @@
 .access-person-select:focus-within,.access-select-page:focus-within,.access-pagination button:focus-visible,.access-clear-selection:focus-visible,.button-danger-outline:focus-visible{outline:2px solid #f77716;outline-offset:3px}
 .access-bulkbar [disabled]{opacity:.5;cursor:not-allowed}.access-bulk-access-summary{padding:14px 16px;border:1px solid #f0d6c0;border-left:4px solid #f77716;border-radius:8px;background:#fff8f1;font-size:13px;font-weight:700;line-height:1.6}.access-bulk-access-footer .button-danger-outline{color:#963b31}
 @media(max-width:650px){.access-bulk-access-footer{flex-wrap:wrap}.access-bulk-access-footer .button:first-child{flex:1 1 100%}.access-bulk-access-footer .button:not(:first-child){flex:1 1 calc(50% - 10px)}}
+.access-avatar img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}
