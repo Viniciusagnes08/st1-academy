@@ -14,14 +14,14 @@ test('GlitchTip envia envelope Sentry sem PII e nunca inclui query string',async
   try{
     const dsn=s.url.replace('http://','http://public-key@')+'/1';
     const integration=createGlitchTipIntegration({dsn,release:'2.6.3',environment:'production',allowHttpForTests:true});
-    const ok=await integration.capture(new Error('falhou para pessoa@example.com token=segredo-123 Bearer eyJhbGciOiJIUzI1NiJ9.payload.signature'),{method:'POST',path:'/api/quiz?token=abc',statusCode:500});
+    const ok=await integration.capture(new Error('falhou para pessoa@example.com token=segredo-123 Bearer synthetic-token.value.signature'),{method:'POST',path:'/api/quiz?token=abc',statusCode:500});
     assert.equal(ok,true);
     assert.equal(received.url,'/api/1/envelope/');
     assert.match(received.headers['x-sentry-auth'],/sentry_key=public-key/);
     assert.equal(received.headers['content-type'],'application/x-sentry-envelope');
     assert.doesNotMatch(received.body,/pessoa@example\.com/);
     assert.doesNotMatch(received.body,/segredo-123/);
-    assert.doesNotMatch(received.body,/eyJhbGciOiJIUzI1NiJ9/);
+    assert.doesNotMatch(received.body,/synthetic-token/);
     assert.match(received.body,/Bearer \[REDACTED\]/);
     assert.doesNotMatch(received.body,/token=abc/);
     assert.match(received.body,/\[REDACTED_EMAIL\]/);
