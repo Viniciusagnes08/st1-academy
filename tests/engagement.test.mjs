@@ -40,7 +40,12 @@ test('Etapas, XP, squads e quizzes usam evidências reais e preservam a governan
       assert.equal(edit.status,200);assert.equal(edit.data.version,current.version);
       const republished=await request(people.admin,'/api/admin/quizzes/'+flash.id,{method:'PATCH',body:{...current,revision:edit.data.revision,status:'published',durationSeconds:30}});
       assert.equal(republished.data.version,current.version);
-      assert.equal((await answerPractice(people.seller,flash.id)).result.pointsAwarded,0);
+      assert.equal((await request(people.seller,'/api/quizzes/'+flash.id+'/start',{method:'POST',body:{}})).status,423);
+       const blocked=(await request(people.admin,'/api/attempt-authorizations/blocked')).data.items;
+       assert.ok(blocked.some(item=>item.userId===people.seller.id&&item.kind==='quiz'&&item.assessmentId===flash.id));
+       const grant=await request(people.admin,'/api/attempt-authorizations',{method:'POST',body:{userId:people.seller.id,kind:'quiz',id:flash.id,reason:'Revisão supervisionada concluída com a equipe.'}});
+       assert.equal(grant.status,201,JSON.stringify(grant.data));
+       assert.equal((await answerPractice(people.seller,flash.id)).result.pointsAwarded,0);
       assert.equal((await request(people.seller,'/api/game/me')).data.xp,75);
     });
     await t.test('perguntas próprias mantêm IDs e versão ao editar a explicação, e mudam versão ao alterar o conhecimento avaliado',async()=>{
