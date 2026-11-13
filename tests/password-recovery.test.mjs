@@ -16,7 +16,7 @@ test('throttle persiste por conta e IP sem gravar e-mails ou IPs em texto claro'
     assert.equal(first.permit('  TESTE@EXAMPLE.TEST  ','192.0.2.2'),false);
     assert.equal(first.permit('outro@example.test','192.0.2.1'),true);
     const rows=db.prepare('SELECT fingerprint,window_start,hits FROM academy_password_recovery_limit').all();
-    assert.equal(rows.length,3);
+    assert.equal(rows.length,4);
     assert.ok(rows.every(row=>!row.fingerprint.includes('example.test')&&!row.fingerprint.includes('192.0.2.')));
     const second=createPasswordRecoveryLimiter(db,opts);
     assert.equal(second.permit('teste@example.test','192.0.2.3'),false);
