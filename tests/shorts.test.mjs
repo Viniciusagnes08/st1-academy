@@ -43,6 +43,10 @@ test('Academy Shorts valida duração e mantém feed, vídeo e interações priv
     assert.equal((await request('/api/shorts/'+id+'/share',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})).status,200);
     const comment=await request('/api/shorts/'+id+'/comments',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({body:'Boa dica!'})});assert.equal(comment.status,201);
     const saved=await (await request('/api/shorts?saved=1')).json();assert.equal(saved.items[0].likes,1);assert.equal(saved.items[0].comments,1);assert.equal(saved.items[0].views,1);assert.equal(saved.items[0].shares,1);
+    const imageDraft=await request('/api/shorts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({description:'Imagem sem campos extras',cover:Buffer.from([137,80,78,71,13,10,26,10]).toString('base64')})});assert.equal(imageDraft.status,201);const imageId=(await imageDraft.json()).id;
+    const imageUpload=await request('/api/shorts/'+imageId+'/video',{method:'POST',headers:{'Content-Type':'application/octet-stream','x-file-name':'foto.png'},body:Buffer.from([137,80,78,71,13,10,26,10])});assert.equal(imageUpload.status,201);
+    assert.equal((await (await request('/api/shorts/'+imageId)).json()).mediaKind,'image');
+    assert.match((await request('/api/shorts/'+imageId+'/video')).headers.get('content-type'),/image\/png/);
     assert.equal((await request('/api/shorts/'+id,{method:'DELETE'})).status,200);
     assert.equal((await request('/api/shorts/'+id+'/video')).status,404);
   }finally{await new Promise(resolve=>server.close(resolve));ctx.db.close();await rm(directory,{recursive:true,force:true});}

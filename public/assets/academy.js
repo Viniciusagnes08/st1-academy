@@ -58,7 +58,7 @@
     return '<nav class="page-context-actions" aria-label="Ações desta página">'+links.map(([href,label,symbol])=>'<a class="button button-secondary button-small" href="'+href+'">'+icon(symbol)+label+'</a>').join('')+'</nav>';
   }
   function commitView(html){
-    closeNavigation(false);state.contentPanel?.disposeReader();state.engagementPanel?.dispose();state.profilePanel?.dispose();main.innerHTML=html;if(!html.includes('data-retry-connection')){const actions=contextualActions(),slot=main.querySelector('[data-page-actions]')||main.querySelector('h1')?.parentElement;if(actions)slot?.insertAdjacentHTML?.('beforeend',actions);}main.focus({preventScroll:true});window.scrollTo({top:0});
+    closeNavigation(false);state.contentPanel?.disposeReader();state.engagementPanel?.dispose();state.profilePanel?.dispose();state.shortsPanel?.dispose();main.innerHTML=html;if(!html.includes('data-retry-connection')){const actions=contextualActions(),slot=main.querySelector('[data-page-actions]')||main.querySelector('h1')?.parentElement;if(actions)slot?.insertAdjacentHTML?.('beforeend',actions);}main.focus({preventScroll:true});window.scrollTo({top:0});
     const role=state.user?.role,label={seller:'Vendedor',supervisor:'Supervisor',admin:'Admin'}[role]||'Participante';
     document.querySelector('#account-button').textContent=state.user||state.blocked?'Sair da conta':'Entrar';
     document.querySelector('#profile-name').textContent=state.user?.name||'Sua conta';
@@ -261,7 +261,7 @@
       else if(page==='nps')await npsPage();
       else if(page==='campanhas-whatsapp')await whatsappCampaignPage();
       else if(page==='integracoes')await integrationsPage();
-      else if(page==='shorts'){const {createShortsPanel}=await import('/assets/shorts.js?v=20261113-shorts');state.shortsPanel??=createShortsPanel({api,esc,main,commitView,user:()=>state.user,toast});await state.shortsPanel.render(id);}
+      else if(page==='shorts'){const {createShortsPanel}=await import('/assets/shorts.js?v=20261113-shorts-media');state.shortsPanel??=createShortsPanel({api,esc,main,commitView,user:()=>state.user,toast});await state.shortsPanel.render(id);}
       else if(page==='salvos'){const {showSavedContents}=await import('/assets/saved-content.js?v=20261112-content-engagement');await showSavedContents({api,esc,main,commitView,toast});}
       else if(page==='conteudos')await (await contentPanel()).library(id==='categoria'?contentId:pageNumber==='categoria'?subCategory:'all',id==='modulo'?contentId:'all');
       else if(page==='dashboard')await (await contentPanel()).dashboard();
