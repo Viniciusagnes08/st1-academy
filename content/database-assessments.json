@@ -1,0 +1,1517 @@
+{
+  "schemaVersion": 1,
+  "integrationStatus": "PACOTE PRIVADO; MAPEAMENTO DE ESCOPO E SUPORTE DE AVALIAÇÃO REQUEREM REVISÃO DA VERSÃO ATUAL DA ACADEMY",
+  "course": "st1-banco-de-dados-tech",
+  "assessmentPolicyProposal": "Múltipla escolha; 4 opções; 1 correta; aprovação sugerida 80%; não configurada na Academy.",
+  "forms": [
+    {
+      "id": "AV-DB-ETAPA-01",
+      "title": "Banco de dados · Do dado ao banco de dados",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-01-Q01",
+        "DB-01-Q02",
+        "DB-01-Q03",
+        "DB-01-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-01-Q01",
+          "stem": "Qual frase diferencia corretamente SQL de MySQL?",
+          "options": [
+            "SQL é o mecanismo de armazenamento e MySQL é uma consulta.",
+            "SQL é a linguagem; MySQL é um sistema de gerenciamento de banco de dados.",
+            "SQL é uma tabela e MySQL é uma coluna.",
+            "Os termos significam exatamente o mesmo produto."
+          ],
+          "correctIndex": 1,
+          "explanation": "SQL descreve comandos; MySQL é um SGBD que aceita um dialeto SQL.",
+          "critical": true,
+          "topic": "Do dado ao banco de dados"
+        },
+        {
+          "id": "DB-01-Q02",
+          "stem": "Em uma tabela de clientes, o que uma linha normalmente representa?",
+          "options": [
+            "Uma ocorrência de cliente conforme o grão definido.",
+            "Uma regra global do servidor.",
+            "Uma consulta salva.",
+            "Um tipo de dado."
+          ],
+          "correctIndex": 0,
+          "explanation": "O grão descreve a ocorrência representada por linha.",
+          "critical": false,
+          "topic": "Do dado ao banco de dados"
+        },
+        {
+          "id": "DB-01-Q03",
+          "stem": "Qual componente valida permissões e executa a consulta no servidor?",
+          "options": [
+            "O alias da coluna.",
+            "O arquivo CSV.",
+            "O SGBD.",
+            "O índice sozinho."
+          ],
+          "correctIndex": 2,
+          "explanation": "O servidor SGBD valida objetos e permissões e escolhe como executar.",
+          "critical": true,
+          "topic": "Do dado ao banco de dados"
+        },
+        {
+          "id": "DB-01-Q04",
+          "stem": "O que retorna SELECT 1 + 1 sem tabela de origem?",
+          "options": [
+            "Um erro obrigatório em todo dialeto.",
+            "Uma linha com o resultado da expressão.",
+            "Todas as tabelas.",
+            "Uma transação aberta."
+          ],
+          "correctIndex": 1,
+          "explanation": "MySQL permite avaliar uma expressão sem FROM.",
+          "critical": false,
+          "topic": "Do dado ao banco de dados"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-02",
+      "title": "Banco de dados · Modelagem relacional e chaves",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-02-Q01",
+        "DB-02-Q02",
+        "DB-02-Q03",
+        "DB-02-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-02-Q01",
+          "stem": "Qual propriedade se espera de uma chave primária?",
+          "options": [
+            "Pode repetir se a descrição for igual.",
+            "Identifica uma linha sem duplicidade e sem NULL.",
+            "É sempre um campo de texto.",
+            "Precisa armazenar o nome da tabela."
+          ],
+          "correctIndex": 1,
+          "explanation": "Uma PK identifica cada linha e não aceita valores nulos.",
+          "critical": true,
+          "topic": "Modelagem relacional e chaves"
+        },
+        {
+          "id": "DB-02-Q02",
+          "stem": "Para que serve uma chave estrangeira?",
+          "options": [
+            "Ordenar automaticamente a saída.",
+            "Armazenar um índice fora da tabela.",
+            "Restringir referências a linhas válidas em outra tabela.",
+            "Substituir o tipo de dado."
+          ],
+          "correctIndex": 2,
+          "explanation": "A FK protege a relação entre linha filha e chave referenciada.",
+          "critical": true,
+          "topic": "Modelagem relacional e chaves"
+        },
+        {
+          "id": "DB-02-Q03",
+          "stem": "Um cliente possui vários contratos. Qual cardinalidade descreve a relação?",
+          "options": [
+            "N:N sem tabela intermediária sempre.",
+            "1:N de cliente para contrato.",
+            "1:1 em qualquer sistema.",
+            "N:1 de cliente para o conjunto inteiro."
+          ],
+          "correctIndex": 1,
+          "explanation": "Um cliente pode relacionar-se a muitos contratos.",
+          "critical": false,
+          "topic": "Modelagem relacional e chaves"
+        },
+        {
+          "id": "DB-02-Q04",
+          "stem": "Onde normalmente fica a FK em uma relação 1:N?",
+          "options": [
+            "Na tabela do lado N.",
+            "Na tabela do lado 1, sem exceção.",
+            "Somente no relatório.",
+            "No nome da coluna."
+          ],
+          "correctIndex": 0,
+          "explanation": "A tabela do lado N guarda a chave do registro pai.",
+          "critical": false,
+          "topic": "Modelagem relacional e chaves"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-03",
+      "title": "Banco de dados · Estrutura, tipos e mudanças controladas",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-03-Q01",
+        "DB-03-Q02",
+        "DB-03-Q03",
+        "DB-03-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-03-Q01",
+          "stem": "Qual comando pertence principalmente a DDL?",
+          "options": [
+            "UPDATE",
+            "INSERT",
+            "CREATE TABLE",
+            "SELECT"
+          ],
+          "correctIndex": 2,
+          "explanation": "CREATE TABLE define uma estrutura.",
+          "critical": true,
+          "topic": "Estrutura, tipos e mudanças controladas"
+        },
+        {
+          "id": "DB-03-Q02",
+          "stem": "Por que revisar um SELECT com o mesmo filtro antes de UPDATE?",
+          "options": [
+            "Para garantir que a população afetada é a pretendida.",
+            "Para criar uma chave primária.",
+            "Para acelerar o servidor sem medir.",
+            "Para substituir a transação."
+          ],
+          "correctIndex": 0,
+          "explanation": "O SELECT torna observável a população alvo antes da alteração.",
+          "critical": true,
+          "topic": "Estrutura, tipos e mudanças controladas"
+        },
+        {
+          "id": "DB-03-Q03",
+          "stem": "Qual tipo é mais adequado para preço exato com centavos?",
+          "options": [
+            "FLOAT sem regra.",
+            "DECIMAL com precisão definida.",
+            "BOOLEAN.",
+            "DATE."
+          ],
+          "correctIndex": 1,
+          "explanation": "DECIMAL representa valores numéricos exatos para preço.",
+          "critical": false,
+          "topic": "Estrutura, tipos e mudanças controladas"
+        },
+        {
+          "id": "DB-03-Q04",
+          "stem": "O que a restrição UNIQUE protege?",
+          "options": [
+            "Que uma coluna tenha apenas texto.",
+            "Que a expressão rode em ordem.",
+            "Que valores da chave não se repitam.",
+            "Que o banco aceite qualquer dado."
+          ],
+          "correctIndex": 2,
+          "explanation": "UNIQUE impõe unicidade nos valores cobertos pela restrição.",
+          "critical": false,
+          "topic": "Estrutura, tipos e mudanças controladas"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-04",
+      "title": "Banco de dados · SELECT, filtros e ordenação",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-04-Q01",
+        "DB-04-Q02",
+        "DB-04-Q03",
+        "DB-04-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-04-Q01",
+          "stem": "Qual expressão filtra linhas cujo encerramento está ausente?",
+          "options": [
+            "ended_on = NULL",
+            "ended_on IS NULL",
+            "ended_on LIKE NULL",
+            "ended_on = ''"
+          ],
+          "correctIndex": 1,
+          "explanation": "NULL é testado com IS NULL.",
+          "critical": true,
+          "topic": "SELECT, filtros e ordenação"
+        },
+        {
+          "id": "DB-04-Q02",
+          "stem": "Por que usar activated_on < '2026-02-01' para janeiro?",
+          "options": [
+            "Inclui timestamps de janeiro sem depender de hora final artificial.",
+            "Exclui janeiro inteiro.",
+            "Converte a coluna em texto.",
+            "Ordena o resultado."
+          ],
+          "correctIndex": 0,
+          "explanation": "Início incluso e próximo início exclusivo cobrem o mês sem lacuna de horário.",
+          "critical": true,
+          "topic": "SELECT, filtros e ordenação"
+        },
+        {
+          "id": "DB-04-Q03",
+          "stem": "O que ORDER BY faz?",
+          "options": [
+            "Filtra linhas antes de WHERE.",
+            "Define a ordenação da saída.",
+            "Cria um índice permanentemente.",
+            "Agrupa linhas automaticamente."
+          ],
+          "correctIndex": 1,
+          "explanation": "ORDER BY estabelece a ordem solicitada.",
+          "critical": false,
+          "topic": "SELECT, filtros e ordenação"
+        },
+        {
+          "id": "DB-04-Q04",
+          "stem": "Por que LIMIT precisa de uma ordem estável quando se quer top 20?",
+          "options": [
+            "Para impedir qualquer índice.",
+            "Para fazer a consulta escrever dados.",
+            "Para tornar previsível quais linhas serão escolhidas.",
+            "Para substituir WHERE."
+          ],
+          "correctIndex": 2,
+          "explanation": "Sem ordem determinística, a seleção das primeiras linhas pode variar.",
+          "critical": false,
+          "topic": "SELECT, filtros e ordenação"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-05",
+      "title": "Banco de dados · JOINs e leitura de relações",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-05-Q01",
+        "DB-05-Q02",
+        "DB-05-Q03",
+        "DB-05-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-05-Q01",
+          "stem": "O que INNER JOIN retorna?",
+          "options": [
+            "Todas as linhas da esquerda sempre.",
+            "Pares que encontram correspondência nos dois lados.",
+            "Somente chaves nulas.",
+            "Uma linha por tabela, mesmo sem relação."
+          ],
+          "correctIndex": 1,
+          "explanation": "INNER JOIN conserva combinações correspondentes.",
+          "critical": true,
+          "topic": "JOINs e leitura de relações"
+        },
+        {
+          "id": "DB-05-Q02",
+          "stem": "Como encontrar clientes sem contrato ativo preservando todos os clientes?",
+          "options": [
+            "INNER JOIN e WHERE contrato = NULL.",
+            "LEFT JOIN com o filtro ativo na relação e teste de ausência na FK.",
+            "CROSS JOIN.",
+            "RIGHT JOIN sem condição."
+          ],
+          "correctIndex": 1,
+          "explanation": "LEFT JOIN preserva clientes; a ausência aparece como NULL no lado relacionado.",
+          "critical": true,
+          "topic": "JOINs e leitura de relações"
+        },
+        {
+          "id": "DB-05-Q03",
+          "stem": "O que pode ocorrer ao juntar clientes a várias faturas?",
+          "options": [
+            "Uma linha por cliente garantidamente.",
+            "A multiplicação de linhas por causa da relação 1:N.",
+            "A remoção de todas as chaves.",
+            "A alteração das faturas."
+          ],
+          "correctIndex": 1,
+          "explanation": "Cada fatura pode gerar uma linha para o mesmo cliente.",
+          "critical": false,
+          "topic": "JOINs e leitura de relações"
+        },
+        {
+          "id": "DB-05-Q04",
+          "stem": "Qual condição expressa a relação contratual de forma verificável?",
+          "options": [
+            "ON ct.customer_id = cu.customer_id",
+            "ON cu.customer_code = 'ativo'",
+            "ON 1 = 1",
+            "ON ct.status"
+          ],
+          "correctIndex": 0,
+          "explanation": "A chave estrangeira do contrato corresponde à PK do cliente.",
+          "critical": false,
+          "topic": "JOINs e leitura de relações"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-06",
+      "title": "Banco de dados · Agregações e métricas consistentes",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-06-Q01",
+        "DB-06-Q02",
+        "DB-06-Q03",
+        "DB-06-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-06-Q01",
+          "stem": "O que COUNT(*) conta?",
+          "options": [
+            "Somente valores não nulos de uma coluna.",
+            "Linhas do conjunto após filtros e junções.",
+            "Somente chaves distintas.",
+            "A quantidade de grupos possíveis."
+          ],
+          "correctIndex": 1,
+          "explanation": "COUNT(*) conta linhas presentes no conjunto.",
+          "critical": true,
+          "topic": "Agregações e métricas consistentes"
+        },
+        {
+          "id": "DB-06-Q02",
+          "stem": "Qual cláusula filtra grupos depois do GROUP BY?",
+          "options": [
+            "WHERE",
+            "ORDER BY",
+            "HAVING",
+            "FROM"
+          ],
+          "correctIndex": 2,
+          "explanation": "HAVING atua sobre condições de grupos agregados.",
+          "critical": true,
+          "topic": "Agregações e métricas consistentes"
+        },
+        {
+          "id": "DB-06-Q03",
+          "stem": "Por que COUNT(DISTINCT customer_id) pode ser necessário após JOIN com faturas?",
+          "options": [
+            "Para contar clientes distintos sem repetir um cliente por fatura.",
+            "Para ordenar as faturas.",
+            "Para incluir linhas sem cliente.",
+            "Para somar valores."
+          ],
+          "correctIndex": 0,
+          "explanation": "Um cliente pode aparecer em várias faturas; DISTINCT evita contar cada ocorrência.",
+          "critical": false,
+          "topic": "Agregações e métricas consistentes"
+        },
+        {
+          "id": "DB-06-Q04",
+          "stem": "Qual deve ser declarado antes de apresentar um total agregado?",
+          "options": [
+            "A cor do gráfico.",
+            "O grão e a definição da métrica.",
+            "O tamanho da tela.",
+            "A ordem das colunas no CSV."
+          ],
+          "correctIndex": 1,
+          "explanation": "Grão e definição dizem o que cada linha e total representam.",
+          "critical": false,
+          "topic": "Agregações e métricas consistentes"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-07",
+      "title": "Banco de dados · Subconsultas, CTEs e funções de janela",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-07-Q01",
+        "DB-07-Q02",
+        "DB-07-Q03",
+        "DB-07-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-07-Q01",
+          "stem": "Para que serve uma CTE iniciada por WITH?",
+          "options": [
+            "Criar uma tabela permanente automaticamente.",
+            "Nomear uma etapa de consulta para organizar o SELECT.",
+            "Substituir o usuário do banco.",
+            "Fazer backup."
+          ],
+          "correctIndex": 1,
+          "explanation": "Uma CTE nomeia um conjunto usado pela consulta principal.",
+          "critical": true,
+          "topic": "Subconsultas, CTEs e funções de janela"
+        },
+        {
+          "id": "DB-07-Q02",
+          "stem": "O que ROW_NUMBER() OVER (...) produz?",
+          "options": [
+            "Um número de sequência dentro da janela definida.",
+            "Uma soma permanente na tabela.",
+            "Uma chave estrangeira.",
+            "Uma transação."
+          ],
+          "correctIndex": 0,
+          "explanation": "ROW_NUMBER numera linhas segundo a partição e ordenação.",
+          "critical": true,
+          "topic": "Subconsultas, CTEs e funções de janela"
+        },
+        {
+          "id": "DB-07-Q03",
+          "stem": "Qual diferença descreve GROUP BY versus uma janela?",
+          "options": [
+            "GROUP BY pode reduzir várias linhas; a janela normalmente mantém as linhas da consulta.",
+            "Ambos removem todas as linhas.",
+            "A janela só funciona com INSERT.",
+            "GROUP BY sempre preserva o grão original."
+          ],
+          "correctIndex": 0,
+          "explanation": "Agregação por grupo resume; a função de janela calcula mantendo cada linha.",
+          "critical": false,
+          "topic": "Subconsultas, CTEs e funções de janela"
+        },
+        {
+          "id": "DB-07-Q04",
+          "stem": "O que o primeiro mês recebe de LAG quando não existe período anterior?",
+          "options": [
+            "Sempre zero.",
+            "NULL, indicando falta de linha anterior.",
+            "A própria soma duplicada.",
+            "Um erro de chave."
+          ],
+          "correctIndex": 1,
+          "explanation": "LAG retorna NULL se não há linha anterior elegível.",
+          "critical": false,
+          "topic": "Subconsultas, CTEs e funções de janela"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-08",
+      "title": "Banco de dados · Normalização e histórico de dados",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-08-Q01",
+        "DB-08-Q02",
+        "DB-08-Q03",
+        "DB-08-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-08-Q01",
+          "stem": "Qual prática é coerente com primeira forma normal?",
+          "options": [
+            "Guardar uma lista de valores em uma célula para vários usos.",
+            "Separar um grupo repetido em ocorrências atômicas adequadas ao domínio.",
+            "Eliminar todas as PKs.",
+            "Transformar datas em textos livres."
+          ],
+          "correctIndex": 1,
+          "explanation": "Valores atômicos facilitam validação, filtragem e relacionamento.",
+          "critical": true,
+          "topic": "Normalização e histórico de dados"
+        },
+        {
+          "id": "DB-08-Q02",
+          "stem": "Por que normalizar uma tabela de planos?",
+          "options": [
+            "Para repetir o nome do plano em toda fatura.",
+            "Para manter uma definição de plano consistente e reduzir anomalias.",
+            "Para remover as chaves.",
+            "Para impedir leitura."
+          ],
+          "correctIndex": 1,
+          "explanation": "Uma tabela de referência evita versões conflitantes do mesmo atributo.",
+          "critical": true,
+          "topic": "Normalização e histórico de dados"
+        },
+        {
+          "id": "DB-08-Q03",
+          "stem": "O que uma tabela SCD2 precisa para reconstruir o estado passado?",
+          "options": [
+            "Uma única linha sobrescrita.",
+            "Intervalos de vigência e regra sem lacuna nem sobreposição.",
+            "Somente um nome amigável.",
+            "Uma ordenação de tela."
+          ],
+          "correctIndex": 1,
+          "explanation": "As datas de início e fim definem a versão aplicável ao fato.",
+          "critical": false,
+          "topic": "Normalização e histórico de dados"
+        },
+        {
+          "id": "DB-08-Q04",
+          "stem": "Qual diferença existe entre modelo operacional e analítico?",
+          "options": [
+            "Não pode haver diferença.",
+            "Podem otimizar padrões de gravação e consulta distintos, preservando a semântica.",
+            "O modelo analítico deve apagar as restrições.",
+            "O operacional é sempre arquivo CSV."
+          ],
+          "correctIndex": 1,
+          "explanation": "Os modelos atendem padrões diferentes, com definição de dados consistente.",
+          "critical": false,
+          "topic": "Normalização e histórico de dados"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-09",
+      "title": "Banco de dados · Transações, consistência e concorrência",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-09-Q01",
+        "DB-09-Q02",
+        "DB-09-Q03",
+        "DB-09-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-09-Q01",
+          "stem": "O que ROLLBACK faz na transação de laboratório?",
+          "options": [
+            "Confirma as mudanças.",
+            "Tenta desfazer as mudanças ainda não confirmadas.",
+            "Apaga o banco inteiro.",
+            "Cria uma réplica."
+          ],
+          "correctIndex": 1,
+          "explanation": "ROLLBACK desfaz as alterações não confirmadas da transação.",
+          "critical": true,
+          "topic": "Transações, consistência e concorrência"
+        },
+        {
+          "id": "DB-09-Q02",
+          "stem": "Para que ROW_COUNT() foi colocado após UPDATE?",
+          "options": [
+            "Observar quantas linhas foram alteradas.",
+            "Mostrar o plano.",
+            "Listar usuários.",
+            "Fazer o commit."
+          ],
+          "correctIndex": 0,
+          "explanation": "A contagem ajuda a detectar filtro incorreto ou quantidade inesperada.",
+          "critical": true,
+          "topic": "Transações, consistência e concorrência"
+        },
+        {
+          "id": "DB-09-Q03",
+          "stem": "O que uma transação representa?",
+          "options": [
+            "Uma unidade de trabalho que pode ser confirmada ou desfeita.",
+            "Um índice composto.",
+            "Uma consulta salva.",
+            "Uma cópia de backup."
+          ],
+          "correctIndex": 0,
+          "explanation": "A transação agrupa operações sob uma decisão de commit/rollback.",
+          "critical": false,
+          "topic": "Transações, consistência e concorrência"
+        },
+        {
+          "id": "DB-09-Q04",
+          "stem": "Por que manter transações curtas pode ajudar?",
+          "options": [
+            "Reduz o tempo de locks e o risco de conflito prolongado.",
+            "Elimina a necessidade de permissão.",
+            "Garante que todo deadlock desapareça.",
+            "Substitui o backup."
+          ],
+          "correctIndex": 0,
+          "explanation": "Menos tempo segurando recursos tende a reduzir interferência concorrente.",
+          "critical": false,
+          "topic": "Transações, consistência e concorrência"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-10",
+      "title": "Banco de dados · Índices e planos de execução",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-10-Q01",
+        "DB-10-Q02",
+        "DB-10-Q03",
+        "DB-10-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-10-Q01",
+          "stem": "Qual é um custo possível de adicionar um índice?",
+          "options": [
+            "Reduz espaço usado a zero.",
+            "Aumenta armazenamento e custo de escrita.",
+            "Remove necessidade de estatísticas.",
+            "Garante plano idêntico em toda versão."
+          ],
+          "correctIndex": 1,
+          "explanation": "O índice ocupa espaço e precisa ser mantido ao alterar linhas.",
+          "critical": true,
+          "topic": "Índices e planos de execução"
+        },
+        {
+          "id": "DB-10-Q02",
+          "stem": "O que EXPLAIN ajuda a examinar?",
+          "options": [
+            "O plano escolhido para processar uma consulta.",
+            "A senha de cada usuário.",
+            "O significado do negócio sozinho.",
+            "A política de backup."
+          ],
+          "correctIndex": 0,
+          "explanation": "EXPLAIN expõe aspectos do plano de execução.",
+          "critical": true,
+          "topic": "Índices e planos de execução"
+        },
+        {
+          "id": "DB-10-Q03",
+          "stem": "Por que a ordem de colunas em índice composto importa?",
+          "options": [
+            "Porque pode determinar quais prefixos de filtro são aproveitáveis.",
+            "Porque muda o nome da tabela.",
+            "Porque faz o índice virar uma chave estrangeira.",
+            "Porque os dados deixam de ter tipo."
+          ],
+          "correctIndex": 0,
+          "explanation": "Um índice composto tende a ser mais útil começando pelas colunas compatíveis com o predicado.",
+          "critical": false,
+          "topic": "Índices e planos de execução"
+        },
+        {
+          "id": "DB-10-Q04",
+          "stem": "Qual é o procedimento melhor antes de criar um índice?",
+          "options": [
+            "Criar muitos índices ao mesmo tempo.",
+            "Medir a consulta, ler o plano e comparar depois.",
+            "Apagar estatísticas.",
+            "Escolher pelo nome da coluna."
+          ],
+          "correctIndex": 1,
+          "explanation": "Uma decisão precisa de plano, medição e cenário de escrita.",
+          "critical": false,
+          "topic": "Índices e planos de execução"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-11",
+      "title": "Banco de dados · Views, rotinas e limites de responsabilidade",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-11-Q01",
+        "DB-11-Q02",
+        "DB-11-Q03",
+        "DB-11-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-11-Q01",
+          "stem": "Qual uso de VIEW é comum?",
+          "options": [
+            "Dar um nome reutilizável a uma consulta.",
+            "Substituir autenticação do servidor.",
+            "Criar dados sem tabela.",
+            "Fazer backup automático."
+          ],
+          "correctIndex": 0,
+          "explanation": "Uma view nomeia uma consulta e oferece uma interface de leitura.",
+          "critical": true,
+          "topic": "Views, rotinas e limites de responsabilidade"
+        },
+        {
+          "id": "DB-11-Q02",
+          "stem": "Qual risco costuma acompanhar triggers?",
+          "options": [
+            "Efeitos laterais menos visíveis ao consumidor da operação.",
+            "Ausência de qualquer execução automática.",
+            "Obrigação de remover as PKs.",
+            "Ordenação incorreta de SELECT."
+          ],
+          "correctIndex": 0,
+          "explanation": "Triggers executam em resposta a eventos e precisam ser documentadas.",
+          "critical": true,
+          "topic": "Views, rotinas e limites de responsabilidade"
+        },
+        {
+          "id": "DB-11-Q03",
+          "stem": "O que um procedimento deve ter?",
+          "options": [
+            "Contrato de parâmetros e erros definidos.",
+            "Senha fixa no código.",
+            "Sem qualquer regra de acesso.",
+            "Uma tabela de saída obrigatória."
+          ],
+          "correctIndex": 0,
+          "explanation": "O chamador precisa conhecer entradas, efeitos e falhas esperadas.",
+          "critical": false,
+          "topic": "Views, rotinas e limites de responsabilidade"
+        },
+        {
+          "id": "DB-11-Q04",
+          "stem": "Para que a lógica não fique duplicada em aplicação e trigger?",
+          "options": [
+            "Definir um ponto de manutenção e documentar efeitos.",
+            "Criar duas implementações sem revisão.",
+            "Remover testes.",
+            "Evitar transações."
+          ],
+          "correctIndex": 0,
+          "explanation": "Uma regra precisa de fonte de verdade e de dependências conhecidas.",
+          "critical": false,
+          "topic": "Views, rotinas e limites de responsabilidade"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-12",
+      "title": "Banco de dados · Segurança, usuários e privilégio mínimo",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-12-Q01",
+        "DB-12-Q02",
+        "DB-12-Q03",
+        "DB-12-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-12-Q01",
+          "stem": "Qual privilégio faz sentido para um leitor de BI que só consulta faturas?",
+          "options": [
+            "ALL PRIVILEGES no servidor.",
+            "SELECT apenas nos objetos aprovados.",
+            "DROP no banco inteiro.",
+            "CREATE USER e FILE."
+          ],
+          "correctIndex": 1,
+          "explanation": "O acesso deve ser limitado à leitura necessária.",
+          "critical": true,
+          "topic": "Segurança, usuários e privilégio mínimo"
+        },
+        {
+          "id": "DB-12-Q02",
+          "stem": "Onde uma credencial real deve ficar?",
+          "options": [
+            "Em SQL versionado.",
+            "Em captura de tela.",
+            "Em um gestor de segredos aprovado, fora dos arquivos de treino.",
+            "No nome do usuário."
+          ],
+          "correctIndex": 2,
+          "explanation": "Segredos reais não devem ser publicados em código ou materiais.",
+          "critical": true,
+          "topic": "Segurança, usuários e privilégio mínimo"
+        },
+        {
+          "id": "DB-12-Q03",
+          "stem": "Por que separar conta de aplicação e conta administrativa?",
+          "options": [
+            "Para limitar impacto e conceder apenas permissões necessárias a cada função.",
+            "Para dobrar a mesma permissão global.",
+            "Porque SQL exige duas contas sempre.",
+            "Para pular auditoria."
+          ],
+          "correctIndex": 0,
+          "explanation": "Perfis diferentes reduzem o escopo de acesso e de erro.",
+          "critical": false,
+          "topic": "Segurança, usuários e privilégio mínimo"
+        },
+        {
+          "id": "DB-12-Q04",
+          "stem": "Qual comando revisa permissões concedidas no MySQL?",
+          "options": [
+            "SHOW GRANTS",
+            "SHOW COLUMNS",
+            "EXPLAIN",
+            "DESCRIBE SELECT"
+          ],
+          "correctIndex": 0,
+          "explanation": "SHOW GRANTS exibe as concessões da conta.",
+          "critical": false,
+          "topic": "Segurança, usuários e privilégio mínimo"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-13",
+      "title": "Banco de dados · Backup, recuperação e continuidade",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-13-Q01",
+        "DB-13-Q02",
+        "DB-13-Q03",
+        "DB-13-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-13-Q01",
+          "stem": "O que RPO mede?",
+          "options": [
+            "Tempo para reativar o serviço.",
+            "Perda máxima de dados aceitável medida no tempo.",
+            "Quantidade de índices.",
+            "Tempo de execução de uma consulta."
+          ],
+          "correctIndex": 1,
+          "explanation": "RPO define a perda de dados aceitável.",
+          "critical": true,
+          "topic": "Backup, recuperação e continuidade"
+        },
+        {
+          "id": "DB-13-Q02",
+          "stem": "O que prova um restore testado?",
+          "options": [
+            "Que a cópia pode ser recuperada e validada no cenário exercitado.",
+            "Que não existe risco de falha.",
+            "Que réplica substitui backup.",
+            "Que toda cópia é segura."
+          ],
+          "correctIndex": 0,
+          "explanation": "A restauração demonstra recuperação dentro do escopo testado.",
+          "critical": true,
+          "topic": "Backup, recuperação e continuidade"
+        },
+        {
+          "id": "DB-13-Q03",
+          "stem": "Por que replicação não substitui backup?",
+          "options": [
+            "Erros e exclusões podem ser replicados para a réplica.",
+            "Réplicas não podem conter dados.",
+            "Replication funciona apenas em arquivo.",
+            "O termo é igual a restore."
+          ],
+          "correctIndex": 0,
+          "explanation": "Uma réplica pode refletir mudanças indesejadas do servidor de origem.",
+          "critical": false,
+          "topic": "Backup, recuperação e continuidade"
+        },
+        {
+          "id": "DB-13-Q04",
+          "stem": "O que RTO descreve?",
+          "options": [
+            "Tempo-alvo para recuperação do serviço.",
+            "Retenção de uma linha.",
+            "Quantidade de tabelas.",
+            "Valor máximo de uma fatura."
+          ],
+          "correctIndex": 0,
+          "explanation": "RTO é a meta de tempo para restabelecer o serviço.",
+          "critical": false,
+          "topic": "Backup, recuperação e continuidade"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-14",
+      "title": "Banco de dados · Migrações e evolução do esquema",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-14-Q01",
+        "DB-14-Q02",
+        "DB-14-Q03",
+        "DB-14-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-14-Q01",
+          "stem": "O que é migração versionada?",
+          "options": [
+            "Arquivo de mudança ordenado, revisável e rastreável.",
+            "Um SELECT sem banco.",
+            "Uma cópia de credenciais.",
+            "Um relatório visual."
+          ],
+          "correctIndex": 0,
+          "explanation": "Migrações registram alterações de estrutura e evolução.",
+          "critical": true,
+          "topic": "Migrações e evolução do esquema"
+        },
+        {
+          "id": "DB-14-Q02",
+          "stem": "Por que usar expand-migrate-contract?",
+          "options": [
+            "Permite convivência temporária entre estruturas antiga e nova.",
+            "Apaga as duas estruturas antes do deploy.",
+            "Dispensa compatibilidade.",
+            "Garante ausência de teste."
+          ],
+          "correctIndex": 0,
+          "explanation": "A sequência aditiva reduz a quebra durante implantação em etapas.",
+          "critical": true,
+          "topic": "Migrações e evolução do esquema"
+        },
+        {
+          "id": "DB-14-Q03",
+          "stem": "O que rollback de schema não reverte necessariamente?",
+          "options": [
+            "A mudança de dados já persistida.",
+            "O nome de um arquivo.",
+            "Um desenho de ER.",
+            "A cor do relatório."
+          ],
+          "correctIndex": 0,
+          "explanation": "Estrutura e conteúdo têm efeitos distintos e planos de reversão próprios.",
+          "critical": false,
+          "topic": "Migrações e evolução do esquema"
+        },
+        {
+          "id": "DB-14-Q04",
+          "stem": "Quando remover uma coluna antiga?",
+          "options": [
+            "Antes de migrar consumidores.",
+            "Depois de confirmar que consumidores e dados usam o novo contrato.",
+            "Assim que a coluna nova é criada.",
+            "Sem inventário de dependências."
+          ],
+          "correctIndex": 1,
+          "explanation": "A remoção vem depois da migração e da validação de dependências.",
+          "critical": false,
+          "topic": "Migrações e evolução do esquema"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-15",
+      "title": "Banco de dados · Integração com aplicações e BI",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-15-Q01",
+        "DB-15-Q02",
+        "DB-15-Q03",
+        "DB-15-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-15-Q01",
+          "stem": "Qual é a proteção principal de uma consulta parametrizada?",
+          "options": [
+            "Separa valores de dados do texto SQL em vez de concatenar entrada.",
+            "Cria usuários administrativos.",
+            "Impede todo erro de negócio.",
+            "Substitui as permissões."
+          ],
+          "correctIndex": 0,
+          "explanation": "Parâmetros tipados ajudam a evitar a construção insegura da instrução.",
+          "critical": true,
+          "topic": "Integração com aplicações e BI"
+        },
+        {
+          "id": "DB-15-Q02",
+          "stem": "Um placeholder de parâmetro normalmente substitui:",
+          "options": [
+            "Valores de dados.",
+            "Qualquer nome de tabela.",
+            "Palavras-chave SQL.",
+            "Um arquivo inteiro."
+          ],
+          "correctIndex": 0,
+          "explanation": "Placeholders são para valores, não identificadores ou palavras-chave.",
+          "critical": true,
+          "topic": "Integração com aplicações e BI"
+        },
+        {
+          "id": "DB-15-Q03",
+          "stem": "Qual fator participa da escolha entre Import e consulta direta?",
+          "options": [
+            "Frescor, volume, concorrência e carga da fonte.",
+            "Apenas a cor do visual.",
+            "Sempre escolher consulta direta.",
+            "Somente o nome do usuário."
+          ],
+          "correctIndex": 0,
+          "explanation": "Os modos trocam comportamento de atualização e carga de consulta.",
+          "critical": false,
+          "topic": "Integração com aplicações e BI"
+        },
+        {
+          "id": "DB-15-Q04",
+          "stem": "O que query folding busca fazer?",
+          "options": [
+            "Delegar transformações compatíveis à fonte de dados.",
+            "Copiar credenciais para o relatório.",
+            "Mudar o grão automaticamente.",
+            "Criar uma chave primária."
+          ],
+          "correctIndex": 0,
+          "explanation": "Folding tenta traduzir etapas para a fonte, quando suportado.",
+          "critical": false,
+          "topic": "Integração com aplicações e BI"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-16",
+      "title": "Banco de dados · Dialetos SQL e arquitetura de dados",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-16-Q01",
+        "DB-16-Q02",
+        "DB-16-Q03",
+        "DB-16-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-16-Q01",
+          "stem": "Qual dialeto usa LIMIT para limitar linhas no exemplo?",
+          "options": [
+            "MySQL",
+            "T-SQL",
+            "DAX",
+            "M"
+          ],
+          "correctIndex": 0,
+          "explanation": "O exemplo principal usa a sintaxe LIMIT do MySQL.",
+          "critical": true,
+          "topic": "Dialetos SQL e arquitetura de dados"
+        },
+        {
+          "id": "DB-16-Q02",
+          "stem": "Qual condição é comum ao usar TOP em T-SQL com saída previsível?",
+          "options": [
+            "ORDER BY",
+            "GROUP BY sem chave",
+            "WHERE NULL",
+            "TRIGGER"
+          ],
+          "correctIndex": 0,
+          "explanation": "Microsoft recomenda ORDER BY junto com TOP para identificar quais linhas serão retornadas.",
+          "critical": true,
+          "topic": "Dialetos SQL e arquitetura de dados"
+        },
+        {
+          "id": "DB-16-Q03",
+          "stem": "O que deve guiar a escolha relacional ou documento?",
+          "options": [
+            "Padrão de acesso, integridade, consistência e operação.",
+            "A preferência pelo formato do arquivo.",
+            "O nome mais moderno.",
+            "A remoção das regras."
+          ],
+          "correctIndex": 0,
+          "explanation": "A decisão deve atender acesso, integridade e capacidade operacional.",
+          "critical": false,
+          "topic": "Dialetos SQL e arquitetura de dados"
+        },
+        {
+          "id": "DB-16-Q04",
+          "stem": "O que demonstra um intervalo semiaberto de vigência?",
+          "options": [
+            "valid_from <= data e data < valid_to",
+            "data = NULL sempre",
+            "data > início e data > fim",
+            "ORDER BY sem condição"
+          ],
+          "correctIndex": 0,
+          "explanation": "Início incluso e fim exclusivo evitam sobreposição no limite.",
+          "critical": false,
+          "topic": "Dialetos SQL e arquitetura de dados"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-ETAPA-17",
+      "title": "Banco de dados · Projeto final: serviço de dados confiável",
+      "kind": "modulo",
+      "durationSeconds": 600,
+      "questionIds": [
+        "DB-17-Q01",
+        "DB-17-Q02",
+        "DB-17-Q03",
+        "DB-17-Q04"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Proposta para revisão interna; quatro opções e uma correta por questão.",
+      "questions": [
+        {
+          "id": "DB-17-Q01",
+          "stem": "Qual entrega ajuda a tornar o esquema reproduzível?",
+          "options": [
+            "DDL versionado, dicionário e dados sintéticos.",
+            "Somente uma captura de tela.",
+            "Credenciais de produção.",
+            "Uma planilha sem identificadores."
+          ],
+          "correctIndex": 0,
+          "explanation": "Scripts e dicionário permitem reconstruir e entender o modelo.",
+          "critical": true,
+          "topic": "Projeto final: serviço de dados confiável"
+        },
+        {
+          "id": "DB-17-Q02",
+          "stem": "Qual declaração é necessária antes de agregar faturas?",
+          "options": [
+            "O grão e a definição do valor.",
+            "A cor do gráfico.",
+            "O nome do cliente real.",
+            "O tamanho da tela."
+          ],
+          "correctIndex": 0,
+          "explanation": "A pergunta precisa definir população, grão e métrica.",
+          "critical": true,
+          "topic": "Projeto final: serviço de dados confiável"
+        },
+        {
+          "id": "DB-17-Q03",
+          "stem": "Qual evidência integra a revisão de performance?",
+          "options": [
+            "Plano EXPLAIN e justificativa de índice.",
+            "Mais índices sem comparação.",
+            "Senha salva no README.",
+            "Um título de consulta."
+          ],
+          "correctIndex": 0,
+          "explanation": "O plano ajuda a justificar o acesso e a estrutura escolhidos.",
+          "critical": false,
+          "topic": "Projeto final: serviço de dados confiável"
+        },
+        {
+          "id": "DB-17-Q04",
+          "stem": "Por que a entrega final deve conter restore isolado?",
+          "options": [
+            "Para provar recuperação sem sobrescrever a base original.",
+            "Para mover produção para o notebook.",
+            "Para remover a necessidade de backup.",
+            "Para ocultar alterações."
+          ],
+          "correctIndex": 0,
+          "explanation": "Um restore isolado permite validar a recuperação com segurança.",
+          "critical": false,
+          "topic": "Projeto final: serviço de dados confiável"
+        }
+      ]
+    },
+    {
+      "id": "AV-DB-INTEGRADORA",
+      "title": "Integradora · Banco de dados na prática",
+      "kind": "integrador",
+      "durationSeconds": 1500,
+      "questionIds": [
+        "DB-01-Q01",
+        "DB-02-Q01",
+        "DB-03-Q01",
+        "DB-04-Q01",
+        "DB-05-Q01",
+        "DB-06-Q01",
+        "DB-07-Q01",
+        "DB-08-Q01",
+        "DB-09-Q01",
+        "DB-10-Q01",
+        "DB-11-Q01",
+        "DB-12-Q01",
+        "DB-13-Q01",
+        "DB-14-Q01",
+        "DB-15-Q01",
+        "DB-16-Q01",
+        "DB-17-Q01"
+      ],
+      "status": "draft",
+      "requiredScope": "tech-a-confirmar-na-academy",
+      "approval": "Critério proposto: 80% e projeto aprovado; validar com governança antes de configurar.",
+      "questions": [
+        {
+          "id": "DB-01-Q01",
+          "stem": "Qual frase diferencia corretamente SQL de MySQL?",
+          "options": [
+            "SQL é o mecanismo de armazenamento e MySQL é uma consulta.",
+            "SQL é a linguagem; MySQL é um sistema de gerenciamento de banco de dados.",
+            "SQL é uma tabela e MySQL é uma coluna.",
+            "Os termos significam exatamente o mesmo produto."
+          ],
+          "correctIndex": 1,
+          "explanation": "SQL descreve comandos; MySQL é um SGBD que aceita um dialeto SQL.",
+          "critical": true,
+          "topic": "Do dado ao banco de dados"
+        },
+        {
+          "id": "DB-02-Q01",
+          "stem": "Qual propriedade se espera de uma chave primária?",
+          "options": [
+            "Pode repetir se a descrição for igual.",
+            "Identifica uma linha sem duplicidade e sem NULL.",
+            "É sempre um campo de texto.",
+            "Precisa armazenar o nome da tabela."
+          ],
+          "correctIndex": 1,
+          "explanation": "Uma PK identifica cada linha e não aceita valores nulos.",
+          "critical": true,
+          "topic": "Modelagem relacional e chaves"
+        },
+        {
+          "id": "DB-03-Q01",
+          "stem": "Qual comando pertence principalmente a DDL?",
+          "options": [
+            "UPDATE",
+            "INSERT",
+            "CREATE TABLE",
+            "SELECT"
+          ],
+          "correctIndex": 2,
+          "explanation": "CREATE TABLE define uma estrutura.",
+          "critical": true,
+          "topic": "Estrutura, tipos e mudanças controladas"
+        },
+        {
+          "id": "DB-04-Q01",
+          "stem": "Qual expressão filtra linhas cujo encerramento está ausente?",
+          "options": [
+            "ended_on = NULL",
+            "ended_on IS NULL",
+            "ended_on LIKE NULL",
+            "ended_on = ''"
+          ],
+          "correctIndex": 1,
+          "explanation": "NULL é testado com IS NULL.",
+          "critical": true,
+          "topic": "SELECT, filtros e ordenação"
+        },
+        {
+          "id": "DB-05-Q01",
+          "stem": "O que INNER JOIN retorna?",
+          "options": [
+            "Todas as linhas da esquerda sempre.",
+            "Pares que encontram correspondência nos dois lados.",
+            "Somente chaves nulas.",
+            "Uma linha por tabela, mesmo sem relação."
+          ],
+          "correctIndex": 1,
+          "explanation": "INNER JOIN conserva combinações correspondentes.",
+          "critical": true,
+          "topic": "JOINs e leitura de relações"
+        },
+        {
+          "id": "DB-06-Q01",
+          "stem": "O que COUNT(*) conta?",
+          "options": [
+            "Somente valores não nulos de uma coluna.",
+            "Linhas do conjunto após filtros e junções.",
+            "Somente chaves distintas.",
+            "A quantidade de grupos possíveis."
+          ],
+          "correctIndex": 1,
+          "explanation": "COUNT(*) conta linhas presentes no conjunto.",
+          "critical": true,
+          "topic": "Agregações e métricas consistentes"
+        },
+        {
+          "id": "DB-07-Q01",
+          "stem": "Para que serve uma CTE iniciada por WITH?",
+          "options": [
+            "Criar uma tabela permanente automaticamente.",
+            "Nomear uma etapa de consulta para organizar o SELECT.",
+            "Substituir o usuário do banco.",
+            "Fazer backup."
+          ],
+          "correctIndex": 1,
+          "explanation": "Uma CTE nomeia um conjunto usado pela consulta principal.",
+          "critical": true,
+          "topic": "Subconsultas, CTEs e funções de janela"
+        },
+        {
+          "id": "DB-08-Q01",
+          "stem": "Qual prática é coerente com primeira forma normal?",
+          "options": [
+            "Guardar uma lista de valores em uma célula para vários usos.",
+            "Separar um grupo repetido em ocorrências atômicas adequadas ao domínio.",
+            "Eliminar todas as PKs.",
+            "Transformar datas em textos livres."
+          ],
+          "correctIndex": 1,
+          "explanation": "Valores atômicos facilitam validação, filtragem e relacionamento.",
+          "critical": true,
+          "topic": "Normalização e histórico de dados"
+        },
+        {
+          "id": "DB-09-Q01",
+          "stem": "O que ROLLBACK faz na transação de laboratório?",
+          "options": [
+            "Confirma as mudanças.",
+            "Tenta desfazer as mudanças ainda não confirmadas.",
+            "Apaga o banco inteiro.",
+            "Cria uma réplica."
+          ],
+          "correctIndex": 1,
+          "explanation": "ROLLBACK desfaz as alterações não confirmadas da transação.",
+          "critical": true,
+          "topic": "Transações, consistência e concorrência"
+        },
+        {
+          "id": "DB-10-Q01",
+          "stem": "Qual é um custo possível de adicionar um índice?",
+          "options": [
+            "Reduz espaço usado a zero.",
+            "Aumenta armazenamento e custo de escrita.",
+            "Remove necessidade de estatísticas.",
+            "Garante plano idêntico em toda versão."
+          ],
+          "correctIndex": 1,
+          "explanation": "O índice ocupa espaço e precisa ser mantido ao alterar linhas.",
+          "critical": true,
+          "topic": "Índices e planos de execução"
+        },
+        {
+          "id": "DB-11-Q01",
+          "stem": "Qual uso de VIEW é comum?",
+          "options": [
+            "Dar um nome reutilizável a uma consulta.",
+            "Substituir autenticação do servidor.",
+            "Criar dados sem tabela.",
+            "Fazer backup automático."
+          ],
+          "correctIndex": 0,
+          "explanation": "Uma view nomeia uma consulta e oferece uma interface de leitura.",
+          "critical": true,
+          "topic": "Views, rotinas e limites de responsabilidade"
+        },
+        {
+          "id": "DB-12-Q01",
+          "stem": "Qual privilégio faz sentido para um leitor de BI que só consulta faturas?",
+          "options": [
+            "ALL PRIVILEGES no servidor.",
+            "SELECT apenas nos objetos aprovados.",
+            "DROP no banco inteiro.",
+            "CREATE USER e FILE."
+          ],
+          "correctIndex": 1,
+          "explanation": "O acesso deve ser limitado à leitura necessária.",
+          "critical": true,
+          "topic": "Segurança, usuários e privilégio mínimo"
+        },
+        {
+          "id": "DB-13-Q01",
+          "stem": "O que RPO mede?",
+          "options": [
+            "Tempo para reativar o serviço.",
+            "Perda máxima de dados aceitável medida no tempo.",
+            "Quantidade de índices.",
+            "Tempo de execução de uma consulta."
+          ],
+          "correctIndex": 1,
+          "explanation": "RPO define a perda de dados aceitável.",
+          "critical": true,
+          "topic": "Backup, recuperação e continuidade"
+        },
+        {
+          "id": "DB-14-Q01",
+          "stem": "O que é migração versionada?",
+          "options": [
+            "Arquivo de mudança ordenado, revisável e rastreável.",
+            "Um SELECT sem banco.",
+            "Uma cópia de credenciais.",
+            "Um relatório visual."
+          ],
+          "correctIndex": 0,
+          "explanation": "Migrações registram alterações de estrutura e evolução.",
+          "critical": true,
+          "topic": "Migrações e evolução do esquema"
+        },
+        {
+          "id": "DB-15-Q01",
+          "stem": "Qual é a proteção principal de uma consulta parametrizada?",
+          "options": [
+            "Separa valores de dados do texto SQL em vez de concatenar entrada.",
+            "Cria usuários administrativos.",
+            "Impede todo erro de negócio.",
+            "Substitui as permissões."
+          ],
+          "correctIndex": 0,
+          "explanation": "Parâmetros tipados ajudam a evitar a construção insegura da instrução.",
+          "critical": true,
+          "topic": "Integração com aplicações e BI"
+        },
+        {
+          "id": "DB-16-Q01",
+          "stem": "Qual dialeto usa LIMIT para limitar linhas no exemplo?",
+          "options": [
+            "MySQL",
+            "T-SQL",
+            "DAX",
+            "M"
+          ],
+          "correctIndex": 0,
+          "explanation": "O exemplo principal usa a sintaxe LIMIT do MySQL.",
+          "critical": true,
+          "topic": "Dialetos SQL e arquitetura de dados"
+        },
+        {
+          "id": "DB-17-Q01",
+          "stem": "Qual entrega ajuda a tornar o esquema reproduzível?",
+          "options": [
+            "DDL versionado, dicionário e dados sintéticos.",
+            "Somente uma captura de tela.",
+            "Credenciais de produção.",
+            "Uma planilha sem identificadores."
+          ],
+          "correctIndex": 0,
+          "explanation": "Scripts e dicionário permitem reconstruir e entender o modelo.",
+          "critical": true,
+          "topic": "Projeto final: serviço de dados confiável"
+        }
+      ]
+    }
+  ]
+}

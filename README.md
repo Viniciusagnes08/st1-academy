@@ -11,9 +11,11 @@ O mapa de conhecimento apresenta o percurso completo de cada canal ou função, 
 
 As referências fornecidas pela gestão foram adaptadas em 16 aulas originais, incluindo cinco situações práticas por canal. Comercial e Gestão têm seus próprios conteúdos. Pesquisa de Mercado fica na área **Estratégia (BI)** e exige liberação específica em Acessos; vendedores e Supervisores comerciais não recebem essa permissão por padrão. [BASES_FORMACAO.md](BASES_FORMACAO.md) registra fontes, adaptações e limites.
 
+A formação **Tech · Banco de Dados** foi adicionada como trilha de estudo própria, independente de BI, aos cinco volumes visuais existentes. Os PDFs são importados para o armazenamento privado da Academy e o acesso depende da liberação explícita da trilha Tech pelo Admin. O percurso encadeia os cinco volumes; o banco de avaliações foi importado como rascunho privado do instrutor. Avaliações e certificação permanecem bloqueadas até a revisão e publicação acadêmica. Os papéis de gestão existentes (Vendedor, Supervisor e Admin) não foram alterados.
+
 ## O que funciona
 
-- 100 questões práticas, 20 por trilha, baseadas nos cinco catálogos e nos processos PAP e Digital aprovados.
+- 100 questões práticas nas cinco trilhas comerciais; a formação Tech está em modo de estudo, e suas avaliações seguem em rascunho privado para revisão.
 - Conta pessoal por convite ou cadastro com uma conta Google de e-mail verificado. No cadastro aberto por Google, a pessoa começa como Vendedor sem trilhas ou áreas liberadas; o Admin configura seu acesso.
 - Perguntas e alternativas embaralhadas, com uma resposta por pergunta.
 - Respostas salvas no servidor, com retomada da tentativa.
@@ -230,9 +232,9 @@ Catálogos, processos, livros e demais conteúdos usam a mesma estrutura de card
 
 Em **Conteúdos**, a busca fica visível e **Filtros** abre uma gaveta para combinar módulo, tipo de conteúdo e trilha. A quantidade encontrada acompanha as escolhas. Os filtros ativos aparecem fora da gaveta e podem ser retirados individualmente ou limpos em conjunto. O título e a descrição do módulo selecionado continuam visíveis na biblioteca.
 
-A seção Conteúdos reúne Processos, Produtos, Livros, Cursos e Treinamentos. Os sete PDFs aprovados são incorporados automaticamente ao banco privado quando existe um Admin ativo, ou quando o primeiro Admin ativa a conta. A importação confere SHA-256, não duplica materiais e preserva edições e arquivamentos. Os arquivos originais de distribuição ficam fora da pasta pública, em content/library; o acesso exige sessão e permissões de materiais, perfil e trilha. As capas seguem a mesma autorização.
+A seção Conteúdos reúne Processos, Produtos, Livros, Cursos e Treinamentos. Os PDFs aprovados são incorporados automaticamente ao banco privado quando existe um Admin ativo, ou quando o primeiro Admin ativa a conta. A importação confere SHA-256, não duplica materiais e preserva edições e arquivamentos. Os arquivos originais de distribuição ficam fora da pasta pública, em content/library; o acesso exige sessão e permissões de materiais, perfil e trilha. As capas seguem a mesma autorização.
 
-O leitor interno oferece índice por assunto, escolha de página, zoom, texto selecionável, links do documento e retomada da página no navegador da própria conta. As referências das avaliações levam à página correspondente do material dentro da Academy. Os PDFs preservam as ofertas e a restrição de 2.000 Mega ao condomínio DAHMAS. Livros, cursos e treinamentos ficam disponíveis como categorias de cadastro; o projeto não adiciona obras ou cursos que não foram fornecidos.
+O leitor interno oferece índice por assunto, escolha de página, zoom, texto selecionável, links do documento e retomada da página no navegador da própria conta. As referências das avaliações levam à página correspondente do material dentro da Academy. Os PDFs preservam as ofertas e a restrição de 2.000 Mega ao condomínio DAHMAS. Livros, cursos e treinamentos ficam disponíveis como categorias de cadastro; o curso de Banco de Dados foi incluído a partir do material fornecido e da trilha preparada para a ST1 Academy.
 
 O Dashboard apresenta dados pessoais reais de trilhas liberadas, avaliações concluídas, melhor nota e conquistas. As novas categorias de material não geram perguntas ou certificados automaticamente; as avaliações já aprovadas mantêm suas regras.
 

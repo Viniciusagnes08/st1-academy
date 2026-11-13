@@ -3395,5 +3395,198 @@
       "plans": 3,
       "theme": "bi"
     }
+  },
+  {
+    "id": "st1-db-volume-01",
+    "file": "database-volume-01.pdf",
+    "title": "Banco de Dados · Fundamentos, modelagem e estrutura",
+    "summary": "Estude os fundamentos de banco relacional, modelagem, chaves, tipos e estrutura controlada. Formação Tech ST1, com exemplos sintéticos em MySQL 8.4.",
+    "category": "cursos",
+    "tracks": [
+      "tech"
+    ],
+    "modules": [
+      "st1-db-m01"
+    ],
+    "pages": 13,
+    "sha256": "ebfd6b9b74641e981ed8794b1f59c35a17da7655ba2b088d9d6e98785a4f9f5e",
+    "sections": [
+      {
+        "title": "Capa do volume",
+        "page": 1
+      },
+      {
+        "title": "Etapa 01 · Do dado ao banco de dados",
+        "page": 2
+      },
+      {
+        "title": "Etapa 02 · Modelagem relacional e chaves",
+        "page": 6
+      },
+      {
+        "title": "Etapa 03 · Estrutura, tipos e mudanças controladas",
+        "page": 10
+      }
+    ],
+    "dahmas": false,
+    "search": "Banco de Dados Tech MySQL SQL ST1 Academy Banco de Dados · Fundamentos, modelagem e estrutura Estude os fundamentos de banco relacional, modelagem, chaves, tipos e estrutura controlada. Formação Tech ST1, com exemplos sintéticos em MySQL 8.4.",
+    "cover": "covers/database-volume-01.png",
+    "scope": "general"
+  },
+  {
+    "id": "st1-db-volume-02",
+    "file": "database-volume-02.pdf",
+    "title": "Banco de Dados · Consultas SQL e análise",
+    "summary": "Pratique SELECT, filtros, JOIN, agregações, subconsultas, CTEs e funções de janela. Formação Tech ST1, com exemplos sintéticos em MySQL 8.4.",
+    "category": "cursos",
+    "tracks": [
+      "tech"
+    ],
+    "modules": [
+      "st1-db-m02"
+    ],
+    "pages": 17,
+    "sha256": "39bd7774a91334fc276952631f17bba56a8de7005e5f6d8315335a11eba55374",
+    "sections": [
+      {
+        "title": "Capa do volume",
+        "page": 1
+      },
+      {
+        "title": "Etapa 04 · SELECT, filtros e ordenação",
+        "page": 2
+      },
+      {
+        "title": "Etapa 05 · JOINs e leitura de relações",
+        "page": 6
+      },
+      {
+        "title": "Etapa 06 · Agregações e métricas consistentes",
+        "page": 10
+      },
+      {
+        "title": "Etapa 07 · Subconsultas, CTEs e funções de janela",
+        "page": 14
+      }
+    ],
+    "dahmas": false,
+    "search": "Banco de Dados Tech MySQL SQL ST1 Academy Banco de Dados · Consultas SQL e análise Pratique SELECT, filtros, JOIN, agregações, subconsultas, CTEs e funções de janela. Formação Tech ST1, com exemplos sintéticos em MySQL 8.4.",
+    "cover": "covers/database-volume-02.png",
+    "scope": "general"
+  },
+  {
+    "id": "st1-db-volume-03",
+    "file": "database-volume-03.pdf",
+    "title": "Banco de Dados · Histórico, transações e desempenho",
+    "summary": "Aprofunde histórico de dados, transações, concorrência, índices e leitura de planos de execução. Formação Tech ST1, com exemplos sintéticos em MySQL 8.4.",
+    "category": "cursos",
+    "tracks": [
+      "tech"
+    ],
+    "modules": [
+      "st1-db-m03"
+    ],
+    "pages": 13,
+    "sha256": "8450da977a66ee10c671313ebc389c4077da7747d32da11f526fedb396ec5f41",
+    "sections": [
+      {
+        "title": "Capa do volume",
+        "page": 1
+      },
+      {
+        "title": "Etapa 08 · Normalização e histórico de dados",
+        "page": 2
+      },
+      {
+        "title": "Etapa 09 · Transações, consistência e concorrência",
+        "page": 6
+      },
+      {
+        "title": "Etapa 10 · Índices e planos de execução",
+        "page": 10
+      }
+    ],
+    "dahmas": false,
+    "search": "Banco de Dados Tech MySQL SQL ST1 Academy Banco de Dados · Histórico, transações e desempenho Aprofunde histórico de dados, transações, concorrência, índices e leitura de planos de execução. Formação Tech ST1, com exemplos sintéticos em MySQL 8.4.",
+    "cover": "covers/database-volume-03.png",
+    "scope": "general"
+  },
+  {
+    "id": "st1-db-volume-04",
+    "file": "database-volume-04.pdf",
+    "title": "Banco de Dados · Views, segurança e continuidade",
+    "summary": "Aprenda a organizar acesso e lógica com views e privilégios mínimos, além de backup, recuperação e continuidade. Formação Tech ST1, com exemplos sintéticos em MySQL 8.4.",
+    "category": "cursos",
+    "tracks": [
+      "tech"
+    ],
+    "modules": [
+      "st1-db-m04"
+    ],
+    "pages": 13,
+    "sha256": "988b71f1e3540e7ec956cc3d305cc709ffd4cae9b2b90259717ef7861ab07c89",
+    "sections": [
+      {
+        "title": "Capa do volume",
+        "page": 1
+      },
+      {
+        "title": "Etapa 11 · Views, rotinas e limites de responsabilidade",
+        "page": 2
+      },
+      {
+        "title": "Etapa 12 · Segurança, usuários e privilégio mínimo",
+        "page": 6
+      },
+      {
+        "title": "Etapa 13 · Backup, recuperação e continuidade",
+        "page": 10
+      }
+    ],
+    "dahmas": false,
+    "search": "Banco de Dados Tech MySQL SQL ST1 Academy Banco de Dados · Views, segurança e continuidade Aprenda a organizar acesso e lógica com views e privilégios mínimos, além de backup, recuperação e continuidade. Formação Tech ST1, com exemplos sintéticos em MySQL 8.4.",
+    "cover": "covers/database-volume-04.png",
+    "scope": "general"
+  },
+  {
+    "id": "st1-db-volume-05",
+    "file": "database-volume-05.pdf",
+    "title": "Banco de Dados · Migrações, integração e projeto aplicado",
+    "summary": "Conecte aplicações e BI, evolua esquemas, compare dialetos e consolide a trilha em um projeto aplicado. Formação Tech ST1, com exemplos sintéticos em MySQL 8.4.",
+    "category": "cursos",
+    "tracks": [
+      "tech"
+    ],
+    "modules": [
+      "st1-db-m05"
+    ],
+    "pages": 17,
+    "sha256": "81f7082512ac932c5c7e6f684d8d3cd07d2a37daa68e25f87f779084701b5910",
+    "sections": [
+      {
+        "title": "Capa do volume",
+        "page": 1
+      },
+      {
+        "title": "Etapa 14 · Migrações e evolução do esquema",
+        "page": 2
+      },
+      {
+        "title": "Etapa 15 · Integração com aplicações e BI",
+        "page": 6
+      },
+      {
+        "title": "Etapa 16 · Dialetos SQL e arquitetura de dados",
+        "page": 10
+      },
+      {
+        "title": "Etapa 17 · Projeto final: serviço de dados confiável",
+        "page": 14
+      }
+    ],
+    "dahmas": false,
+    "search": "Banco de Dados Tech MySQL SQL ST1 Academy Banco de Dados · Migrações, integração e projeto aplicado Conecte aplicações e BI, evolua esquemas, compare dialetos e consolide a trilha em um projeto aplicado. Formação Tech ST1, com exemplos sintéticos em MySQL 8.4.",
+    "cover": "covers/database-volume-05.png",
+    "scope": "general"
   }
 ]

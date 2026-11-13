@@ -1,0 +1,48 @@
+// Materiais visuais da formação de Banco de Dados para a trilha Tech.
+export const databaseModules = [
+  {
+    id: "st1-db-m01",
+    title: "Banco de Dados · Fundamentos, modelagem e estrutura",
+    description: "Volume 1 da formação Tech. Conceitos relacionais, modelagem, chaves e estrutura controlada.",
+    tracks: ["tech"],
+    audience: ["seller", "supervisor"],
+    status: "published",
+    scope: "general",
+  },
+  {
+    id: "st1-db-m02",
+    title: "Banco de Dados · Consultas SQL e análise",
+    description: "Volume 2 da formação Tech. SELECT, JOIN, agregações, subconsultas, CTEs e funções de janela.",
+    tracks: ["tech"],
+    audience: ["seller", "supervisor"],
+    status: "published",
+    scope: "general",
+  },
+  {
+    id: "st1-db-m03",
+    title: "Banco de Dados · Histórico, transações e desempenho",
+    description: "Volume 3 da formação Tech. Histórico, consistência, concorrência, índices e planos de execução.",
+    tracks: ["tech"],
+    audience: ["seller", "supervisor"],
+    status: "published",
+    scope: "general",
+  },
+  {
+    id: "st1-db-m04",
+    title: "Banco de Dados · Views, segurança e continuidade",
+    description: "Volume 4 da formação Tech. Views, privilégios, backup, recuperação e continuidade.",
+    tracks: ["tech"],
+    audience: ["seller", "supervisor"],
+    status: "published",
+    scope: "general",
+  },
+  {
+    id: "st1-db-m05",
+    title: "Banco de Dados · Migrações, integração e projeto aplicado",
+    description: "Volume 5 da formação Tech. Migrações, integração com BI, dialetos e projeto final.",
+    tracks: ["tech"],
+    audience: ["seller", "supervisor"],
+    status: "published",
+    scope: "general",
+  },
+];

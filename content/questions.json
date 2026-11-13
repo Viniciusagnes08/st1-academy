@@ -3704,6 +3704,19 @@
           "answer": "bi-final-20-2"
         }
       ]
+    },
+    {
+      "id": "tech",
+      "name": "Tech · Banco de Dados",
+      "badge": "Fundamentos Tech ST1",
+      "color": "#ff7700",
+      "description": "Do dado à estrutura relacional, SQL, integridade, desempenho, segurança e integração com BI.",
+      "version": "1.0",
+      "estimatedMinutes": 0,
+      "materials": [],
+      "assessmentStatus": "draft",
+      "trainingOnly": true,
+      "questions": []
     }
   ],
   "sourceRevision": "central-1e01a357",

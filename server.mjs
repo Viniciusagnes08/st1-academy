@@ -175,7 +175,7 @@ export async function createApp(options={}) {
     try{await ctx.googleCalendar.connect(req.member);res.redirect('/'+(req.query.first==='1'?'#perfil/editar/boas-vindas':'#agenda'));}
     catch{res.redirect('/?google=permission#agenda');}
   });
-  const trackSummary=(track,includeMaterials=false)=>({id:track.id,name:track.name,badge:track.badge,color:track.color,description:track.description,version:track.version,estimatedMinutes:track.estimatedMinutes,questionCount:track.questions.length,criticalCount:track.questions.filter(q=>q.critical).length,materials:includeMaterials?track.materials:[]});
+  const trackSummary=(track,includeMaterials=false)=>({id:track.id,name:track.name,badge:track.badge,color:track.color,description:track.description,version:track.version,estimatedMinutes:track.estimatedMinutes,questionCount:track.questions.length,criticalCount:track.questions.filter(q=>q.critical).length,trainingOnly:!!track.trainingOnly,assessmentStatus:track.trainingOnly?'draft':track.assessmentStatus||'published',materials:includeMaterials?track.materials:[]});
   const certificates=userId=>db.prepare('SELECT id,track_id,version,score,issued_at FROM academy_certificate WHERE user_id=? ORDER BY issued_at').all(userId);
   const ownedAttempt=(req,res)=>{
     const attempt=db.prepare('SELECT * FROM academy_attempt WHERE id=? AND user_id=?').get(req.params.id,req.member.user_id);
@@ -210,6 +210,7 @@ export async function createApp(options={}) {
   app.post('/api/attempts',member,(req,res)=>{
     const track=bank.tracks.find(t=>t.id===req.body.trackId);
     if(!track||!hasTrack(req.member,track.id)||!hasPermission(req.member,'assessments'))return res.status(403).json({message:'Avaliação não liberada para sua conta.'});
+    if(track.trainingOnly||track.assessmentStatus&&track.assessmentStatus!=='published')return res.status(423).json({message:'A avaliação desta trilha continua em revisão interna.'});
     try{ctx.learningFlows.assertAccess(req.member,'certificate',track.id);}catch(error){return res.status(error.status||400).json({message:error.message});}
     db.exec('BEGIN IMMEDIATE');
     try{
@@ -237,6 +238,7 @@ export async function createApp(options={}) {
   });
   app.post('/api/attempts/:id/finish',member,(req,res)=>{
     const attempt=ownedAttempt(req,res);if(!attempt)return;
+    const track=bank.tracks.find(item=>item.id===attempt.track_id);if(track?.trainingOnly||track?.assessmentStatus&&track.assessmentStatus!=='published')return res.status(423).json({message:'A avaliação e a certificação desta trilha continuam em revisão interna.'});
     if(attempt.status==='complete')return res.json(JSON.parse(attempt.result_json));
     if(req.body.revision!==attempt.revision)return res.status(409).json({message:'Reabra a tentativa para recuperar as respostas atuais.'});
     const questions=JSON.parse(attempt.questions_private);

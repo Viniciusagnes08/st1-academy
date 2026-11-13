@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 144" fill="none">
+  <path d="M60 4 108 22v41c0 34-20 58-48 75C32 121 12 97 12 63V22L60 4Z" fill="#171719" stroke="#F77716" stroke-width="4"/>
+  <path d="M60 17 96 30v32c0 25-14 44-36 58C38 106 24 87 24 62V30l36-13Z" stroke="#fff" stroke-opacity=".24" stroke-width="2"/>
+  <path d="M40 48h40M40 61h40M40 74h25" stroke="#fff" stroke-linecap="round" stroke-width="5"/>
+  <circle cx="79" cy="74" r="6" fill="#F77716"/>
+  <text x="60" y="101" fill="#F77716" font-family="Arial,sans-serif" font-size="15" font-weight="700" text-anchor="middle">TECH</text>
+  <text x="60" y="118" fill="#fff" font-family="Arial,sans-serif" font-size="8" letter-spacing="1" text-anchor="middle">ST1 ACADEMY</text>
+</svg>
