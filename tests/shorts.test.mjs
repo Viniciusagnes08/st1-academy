@@ -47,7 +47,10 @@ test('Academy Shorts valida duração e mantém feed, vídeo e interações priv
     const imageUpload=await request('/api/shorts/'+imageId+'/video',{method:'POST',headers:{'Content-Type':'application/octet-stream','x-file-name':'foto.png'},body:Buffer.from([137,80,78,71,13,10,26,10])});assert.equal(imageUpload.status,201);
     assert.equal((await (await request('/api/shorts/'+imageId)).json()).mediaKind,'image');
     assert.match((await request('/api/shorts/'+imageId+'/video')).headers.get('content-type'),/image\/png/);
+    const personalized=await (await request('/api/shorts?session=feed-entrada-aleatoria')).json();assert.equal(personalized.session,'feed-entrada-aleatoria');assert.equal(new Set(personalized.items.map(item=>item.id)).size,personalized.items.length);
+    const changedStart=await (await request('/api/shorts?session=feed-outra-entrada&avoid='+id)).json();assert.notEqual(changedStart.items[0].id,id);
     assert.equal((await request('/api/shorts/'+id,{method:'DELETE'})).status,200);
     assert.equal((await request('/api/shorts/'+id+'/video')).status,404);
   }finally{await new Promise(resolve=>server.close(resolve));ctx.db.close();await rm(directory,{recursive:true,force:true});}
 });
+
