@@ -161,7 +161,7 @@
   }
   async function npsPage(){
     if(state.user?.role!=='admin')return restricted('Painel de NPS exclusivo para Admin.','Os resultados de satisfação são exibidos somente na área de gestão da ST1 Academy.',!state.user);
-    if(!state.npsPanel){const {createNpsPanel}=await import('/assets/nps.js?v=20261112-nps-dashboard');state.npsPanel=createNpsPanel({api,esc,main,commitView,toast});}
+    if(!state.npsPanel){const {createNpsPanel}=await import('/assets/nps.js?v=20261112-nps-dashboard-learning');state.npsPanel=createNpsPanel({api,esc,main,commitView,toast});}
     await state.npsPanel.render();
   }
   async function whatsappCampaignPage(){

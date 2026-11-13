@@ -28,6 +28,7 @@ import {createOnboardingService} from './lib/onboarding.mjs';
 export async function createApp(options={}) {
   const ctx=await createContext(options);
   const {db,auth,bank,baseURL,testMode,access,attemptLimits}=ctx;
+  const validateInvitationEmails=emails=>validateEmailAddresses(emails,{checkDomainFn:testMode?async()=> 'unknown':undefined});
   const integrations=createIntegrationService(db,{secret:ctx.integrationKey,env:process.env});
   const mailEnv=options.mailEnv||integrations.effective(),whatsappEnv=options.whatsappEnv||integrations.effective();
   const invitationMailer=options.invitationMailer|| (async invitation=>{const mailer=createInvitationMailer(mailEnv);if(!mailer)throw new Error('SMTP indisponível.');return mailer(invitation);});
@@ -213,7 +214,7 @@ export async function createApp(options={}) {
         result.certificate={id:certificate.id,trackId:certificate.track_id,score:certificate.score,issuedAt:certificate.issued_at};
       }
       db.prepare("UPDATE academy_attempt SET answers_json=?,result_json=?,status='complete',finished_at=?,revision=revision+1 WHERE id=? AND status='open'").run(JSON.stringify(req.body.answers),JSON.stringify(result),issuedAt,attempt.id);
-      ctx.learningNps.queue({userId:req.member.user_id,sourceType:'certification',sourceId:attempt.id,sourceVersion:String(attempt.version),title:bank.tracks.find(track=>track.id===attempt.track_id)?.name||attempt.track_id,context:'Prova de certificação'});
+      ctx.learningNps.queue({userId:req.member.user_id,sourceType:'certification',sourceId:attempt.id,sourceVersion:String(attempt.version),title:bank.tracks.find(track=>track.id===attempt.track_id)?.name||attempt.track_id,context:'Prova de certificação',trackIds:[attempt.track_id]});
       db.exec('COMMIT');
     }catch(error){db.exec('ROLLBACK');throw error;}
     res.json(result);
@@ -248,7 +249,7 @@ export async function createApp(options={}) {
   app.get('/api/team/report',member,team,(req,res)=>res.json(reportFor(req.member)));
   app.get('/api/learning-nps/pending',member,agendaAction((req,res)=>res.json({item:ctx.learningNps.pending(req.member.user_id)})));
   app.post('/api/learning-nps/:id',member,agendaAction((req,res)=>res.json(ctx.learningNps.submit(req.member,req.params.id,req.body))));
-  app.get('/api/learning-nps/report',member,admin,agendaAction((req,res)=>res.json(ctx.learningNps.report())));
+  app.get('/api/learning-nps/report',member,admin,agendaAction((req,res)=>res.json(ctx.learningNps.report({period:req.query.period,track:req.query.track}))));
   app.get('/api/admin/access',member,admin,(_,res)=>res.json(access.directory()));
   const contentAction=action=>(req,res)=>{try{const work=()=>action(req,res);if(req.method==='GET'&&/^\/api\/(?:bootstrap|library|contents(?:\/|$)|reading(?:\/|$)|learning-flows(?:\/|$)|(?:game|progress)\/(?:me|knowledge)$)/.test(req.path))withLearningReadBatch(ctx,work);else if(req.method==='GET'&&db.withReadScope)db.withReadScope(work);else work();}catch(error){res.status(error.status||400).json({message:error.message});}};
   app.get('/api/bootstrap',member,contentAction((req,res)=>res.json({user:memberPayload(req.member),catalog:{title:bank.title,version:appVersion,minimumPercent:bank.minimumPercent,criticalRequired:bank.criticalRequired,testMode,environment:ctx.runtime.environment,totalTracks:bank.tracks.length,tracks:bank.tracks.filter(track=>hasTrack(req.member,track.id)).map(track=>trackSummary(track,hasPermission(req.member,'materials')))}})));
@@ -294,7 +295,7 @@ export async function createApp(options={}) {
   app.get('/api/quizzes/:id',member,contentAction((req,res)=>res.json(ctx.game.quizzes.detail(req.member,req.params.id))));
   const learningNpsForQuiz=(req,value,before,attemptId=req.params.id)=>{
     if(before?.status!=='open'||value.status!=='complete')return;
-    ctx.learningNps.queue({userId:req.member.user_id,sourceType:'quiz',sourceId:attemptId,sourceVersion:String(value.version),title:value.title,context:value.type==='checkpoint'?'Prova de etapa':'Prova relâmpago'});
+    ctx.learningNps.queue({userId:req.member.user_id,sourceType:'quiz',sourceId:attemptId,sourceVersion:String(value.version),title:value.title,context:value.type==='checkpoint'?'Prova de etapa':'Prova relâmpago',trackIds:value.tracks});
   };
   app.post('/api/quizzes/:id/start',member,contentAction((req,res)=>{
     const previous=db.prepare("SELECT a.id FROM academy_quiz_attempt a JOIN academy_quiz q ON q.id=a.quiz_id WHERE a.user_id=? AND a.quiz_id=? AND a.version=q.version AND a.status='open' ORDER BY a.started_at DESC LIMIT 1").get(req.member.user_id,req.params.id);
@@ -344,7 +345,7 @@ export async function createApp(options={}) {
   app.post('/api/contents/:id/progress/dismiss',member,contentAction((req,res)=>res.json(ctx.readings.dismiss(req.member,req.params.id))));
   app.get('/api/contents/:id/study',member,contentAction((req,res)=>res.json(ctx.readings.detailStudy(req.member,req.params.id))));
   app.post('/api/contents/:id/study/start',member,contentAction((req,res)=>res.json(ctx.readings.start(req.member,req.params.id,req.body))));
-  app.post('/api/contents/:id/study',member,contentAction((req,res)=>{const wasCompleted=ctx.readings.detailStudy(req.member,req.params.id).completed;const study=ctx.readings.complete(req.member,req.params.id,req.body);if(!wasCompleted&&study.completed){const item=ctx.contents.detail(req.member,req.params.id);ctx.learningNps.queue({userId:req.member.user_id,sourceType:'material',sourceId:item.id,sourceVersion:study.version+'@'+study.completedAt,title:item.title,context:'Conteúdo concluído'});}res.json(study);}));
+  app.post('/api/contents/:id/study',member,contentAction((req,res)=>{const wasCompleted=ctx.readings.detailStudy(req.member,req.params.id).completed;const study=ctx.readings.complete(req.member,req.params.id,req.body);if(!wasCompleted&&study.completed){const item=ctx.contents.detail(req.member,req.params.id);ctx.learningNps.queue({userId:req.member.user_id,sourceType:'material',sourceId:item.id,sourceVersion:study.version+'@'+study.completedAt,title:item.title,context:'Conteúdo concluído',trackIds:item.tracks});}res.json(study);}));
   const libraryItems=viewer=>{const flags=ctx.learningFlows.materialFlags(viewer),visible=ctx.contents.visible(viewer),tags=ctx.management.tagsForMany('contents',visible.map(item=>item.id));return visible.map(item=>({...item,flow:flags.get(item.id)||null,study:ctx.readings.detailStudy(viewer,item.id),tags:tags.get(item.id)||[]}));};
   app.get('/api/contents',member,contentAction((req,res)=>res.json({items:libraryItems(req.member)})));
   app.get('/api/library',member,contentAction((req,res)=>res.json({items:libraryItems(req.member),modules:ctx.modules.visible(req.member),reading:ctx.readings.latest(req.member),recent:ctx.readings.recent(req.member)})));
@@ -374,13 +375,13 @@ export async function createApp(options={}) {
   app.post('/api/admin/contents/:id/file',member,admin,express.raw({type:'application/octet-stream',limit:'40mb'}),contentAction((req,res)=>res.status(201).json(ctx.contents.upload(req.member.user_id,req.params.id,Number(req.headers['x-content-revision']),req.headers['x-file-name'],req.body))));
   app.post('/api/admin/invitations/validate',member,admin,async(req,res)=>{
     try{
-      const items=await validateEmailAddresses(req.body?.emails);
+      const items=await validateInvitationEmails(req.body?.emails);
       res.json({items:items.map((item,index)=>({...item,index}))});
     }catch(error){res.status(400).json({message:error.message});}
   });
   app.post('/api/admin/invitations',member,admin,async(req,res)=>{
     try{
-      const emailCheck=(await validateEmailAddresses([req.body?.email]))[0];
+      const emailCheck=(await validateInvitationEmails([req.body?.email]))[0];
       if(emailCheck.status==='invalid')throw new Error(emailCheck.message);
       const invitation=ctx.createInvitation({name:req.body.name,email:req.body.email,role:req.body.role??'seller',tracks:req.body.tracks,permissions:req.body.permissions,supervisorIds:req.body.supervisorIds,sellerIds:req.body.sellerIds,externalUserId:req.body.externalUserId,actorId:req.member.user_id});
       res.status(201).json(await deliverInvitation({...invitation,name:req.body.name,email:emailCheck.email,emailDomainStatus:emailCheck.status,emailDomainMessage:emailCheck.message}));
@@ -390,7 +391,7 @@ export async function createApp(options={}) {
     try{
       const input=req.body?.items;
       if(!Array.isArray(input))throw new Error('Importe entre 1 e 100 pessoas por arquivo.');
-      const emailChecks=await validateEmailAddresses(input.map(item=>item?.email));
+      const emailChecks=await validateInvitationEmails(input.map(item=>item?.email));
       const invalidIndexes=emailChecks.map((item,index)=>item.status==='invalid'?index:-1).filter(index=>index>=0);
       if(invalidIndexes.length)throw new Error(`Corrija os endereços de e-mail nas linhas ${invalidIndexes.map(index=>Number.isSafeInteger(input[index]?.rowNumber)?input[index].rowNumber:index+2).join(', ')} antes de criar os convites.`);
       const invitations=ctx.createInvitations(input,req.member.user_id),items=[];
@@ -406,7 +407,7 @@ export async function createApp(options={}) {
     try{
       const current=db.prepare('SELECT email FROM academy_invitation WHERE id=? AND used_by IS NULL AND revoked_at IS NULL').get(req.params.id);
       if(!current)throw new Error('Convite indisponível para reenvio.');
-      const emailCheck=(await validateEmailAddresses([current.email]))[0];
+      const emailCheck=(await validateInvitationEmails([current.email]))[0];
       if(emailCheck.status==='invalid')throw new Error(emailCheck.message);
       const invitation=ctx.renewInvitation(req.params.id,req.member.user_id);
       res.json(await deliverInvitation({...invitation,emailDomainStatus:emailCheck.status,emailDomainMessage:emailCheck.message}));
@@ -417,7 +418,22 @@ export async function createApp(options={}) {
   app.get('/api/admin/campaigns/automations/editorial',member,admin,(_,res)=>res.json(emailAutomations.editorialCatalog()));
   app.post('/api/admin/campaigns/automations/editorial',member,admin,(req,res)=>{try{res.status(201).json(emailAutomations.createEditorialEvent(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.get('/api/admin/campaigns/automations/feedback',member,admin,(_,res)=>res.json(emailAutomations.feedbackResults()));
-  app.get('/api/admin/nps',member,admin,(req,res)=>res.json(emailAutomations.npsDashboard({period:req.query.period,track:req.query.track})));
+  app.get('/api/admin/nps',member,admin,(req,res)=>{
+    const email=emailAutomations.npsDashboard({period:req.query.period,track:req.query.track});
+    const learning=ctx.learningNps.report({period:req.query.period,track:req.query.track});
+    const distribution=email.distribution.map(item=>({...item,count:item.count+(learning.distribution.find(row=>row.score===item.score)?.count||0)}));
+    const totals={responses:0,promoters:0,passives:0,detractors:0};
+    for(const item of distribution){totals.responses+=item.count;if(item.score>=9)totals.promoters+=item.count;else if(item.score>=7)totals.passives+=item.count;else totals.detractors+=item.count;}
+    const percentage=count=>totals.responses?Math.round(count/totals.responses*1000)/10:0;
+    const trendMap=new Map([...email.trend,...learning.trend].map(item=>[item.month,{month:item.month,total:0,promoters:0,detractors:0}]));
+    for(const source of [email.trend,learning.trend])for(const item of source){const target=trendMap.get(item.month);target.total+=item.total;target.promoters+=item.promoters;target.detractors+=item.detractors;}
+    const trackMap=new Map();
+    for(const item of [...email.trackBreakdown,...learning.trackBreakdown]){const target=trackMap.get(item.trackId)||{trackId:item.trackId,track:item.track,total:0,promoters:0,passives:0,detractors:0};target.total+=item.total;target.promoters+=item.promoters;target.passives+=item.passives;target.detractors+=item.detractors;trackMap.set(item.trackId,target);}
+    const trackBreakdown=[...trackMap.values()].map(item=>({...item,nps:Math.round((item.promoters-item.detractors)/item.total*100)})).sort((a,b)=>b.total-a.total);
+    const trackOptions=[...new Map([...email.trackOptions,...learning.trackOptions].map(item=>[item.id,item])).values()].sort((a,b)=>a.title.localeCompare(b.title,'pt-BR'));
+    const responseRate=email.summary.responseRate;
+    res.json({...email,summary:{...email.summary,...totals,nps:totals.responses?Math.round((totals.promoters-totals.detractors)/totals.responses*100):null,promotersPct:percentage(totals.promoters),passivesPct:percentage(totals.passives),detractorsPct:percentage(totals.detractors),responseRate},distribution,trend:[...trendMap.values()].map(item=>({...item,nps:Math.round((item.promoters-item.detractors)/item.total*100)})).sort((a,b)=>a.month.localeCompare(b.month)),trackOptions,trackBreakdown,totalResponsesEver:email.totalResponsesEver+learning.totalResponsesEver,sources:{email:email.summary.responses,learning:learning.summary.total},learningFeedback:learning});
+  });
   app.post('/api/admin/campaigns/automations/enable-available',member,admin,(req,res)=>{try{res.json(emailAutomations.activateAvailable());}catch(error){res.status(400).json({message:error.message});}});
   app.put('/api/admin/campaigns/automations/:key',member,admin,(req,res)=>{try{res.json(emailAutomations.save(req.member.user_id,req.params.key,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.delete('/api/admin/campaigns/automations/:key',member,admin,(req,res)=>{try{res.json(emailAutomations.restore(req.params.key));}catch(error){res.status(400).json({message:error.message});}});
