@@ -321,7 +321,7 @@ export async function createApp(options={}) {
   app.get('/api/learning-nps/report',member,admin,agendaAction((req,res)=>res.json(ctx.learningNps.report({period:req.query.period,track:req.query.track}))));
   app.get('/api/admin/access',member,admin,(req,res)=>{const directory=access.directory();res.json({...directory,users:directory.users.map(person=>({...person,avatarUrl:ctx.profiles.avatar(req.member,person.id)}))});});
   const shortsAction=handler=>(req,res)=>{try{handler(req,res);}catch(error){res.status(error.status||400).json({message:error.message});}};
-  app.get('/api/shorts',member,shortsAction((req,res)=>res.json(shorts.feed(req.member.user_id,req.query.saved==='1',req.query.offset))));
+  app.get('/api/shorts',member,shortsAction((req,res)=>res.json(shorts.feed(req.member.user_id,req.query.saved==='1',req.query.offset,req.query.session,req.query.avoid))));
   app.get('/api/shorts/:id',member,shortsAction((req,res)=>res.json(shorts.one(req.member.user_id,req.params.id))));
   app.post('/api/shorts',member,shortsAction((req,res)=>res.status(201).json(shorts.create(req.member,req.body))));
   app.post('/api/shorts/:id/video',member,express.raw({type:'application/octet-stream',limit:'40mb'}),shortsAction((req,res)=>res.status(201).json(shorts.publish(req.member,req.params.id,req.headers['x-file-name'],req.body))));
@@ -643,4 +643,5 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
   };
   process.on('SIGTERM',stop);process.on('SIGINT',stop);
 }
+
 
