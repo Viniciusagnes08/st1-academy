@@ -1,5 +1,6 @@
 body.learning-nps-active{background:#f6f4f1}
 body.learning-nps-active .academy-shell{grid-template-columns:minmax(0,1fr)}
+body.learning-nps-active .academy-workspace{margin-left:0}
 body.learning-nps-active .academy-sidebar,body.learning-nps-active .academy-topbar,body.learning-nps-active .site-footer{display:none}
 body.learning-nps-active #main{min-height:100svh;padding:0;background:radial-gradient(ellipse at 50% -12%,#ffe8d1 0,transparent 48%),#f6f4f1}
 .learning-nps-page{min-height:100svh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;padding:42px 22px}
