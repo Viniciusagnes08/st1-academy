@@ -57,7 +57,6 @@ GlitchTip <--- observabilidade passiva do processo Node/Express
 
 Manter o padrão atual de módulos planos dentro de lib/:
 
-- instrumentation.mjs
 - lib/integration-events.mjs
 - lib/integration-outbox.mjs
 - lib/integration-dispatcher.mjs
@@ -108,22 +107,19 @@ Todos usam schema_version 1. Payloads não podem conter senha, token, cookie, se
 
 ## 8. GlitchTip
 
-Função: error tracking, performance e observabilidade do backend Express.
+Função desta fase: error tracking passivo do backend Express. Performance tracing fica reservada para uma fase posterior.
 
 Implantação: serviço separado no VPS. Criar organização ST1 e projeto ST1 Academy Production.
 
 Código:
-- adicionar @sentry/node;
-- carregar instrumentation.mjs antes do Express no comando de produção;
-- DSN configurável;
-- environment=production;
-- release igual à versão do package.json;
-- tracesSampleRate=0.01 inicialmente;
-- autoSessionTracking=false;
-- sendDefaultPii=false;
-- sanitizar authorization, cookie, tokens, secrets e dados pessoais desnecessários;
-- registrar o error handler no ponto correto do Express sem substituir o tratamento atual;
-- no shutdown, tentar flush/close com prazo curto.
+- usar o protocolo de envelope Sentry-compatible aceito pelo GlitchTip, sem adicionar dependência nesta fase;
+- DSN configurável e cifrado;
+- environment e release incluídos no evento;
+- remover query string e não enviar body, cookies ou headers da requisição;
+- redigir e-mail e valores com aparência de token/secret/password do texto do erro;
+- registrar captura passiva no error handler sem substituir o tratamento atual;
+- timeout curto e falha fechada: qualquer erro de observabilidade é ignorado pelo fluxo principal;
+- manter `GLITCHTIP_TRACES_SAMPLE_RATE` reservado para futura migração ao SDK oficial e performance tracing.
 
 Fallback: sem DSN ou com GlitchTip indisponível, o Academy continua operando e mantém logging local.
 
