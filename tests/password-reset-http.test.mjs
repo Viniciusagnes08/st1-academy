@@ -74,6 +74,20 @@ test('recuperação de senha: e-mail, link de uso único, revogação e antienum
       assert.equal((await request(null,'/api/auth/sign-in/email',{body:{email,password:newPassword}})).status,200);
       assert.ok((await request(null,'/api/auth/reset-password',{body:{token:resetToken,newPassword:'OutraSenhaSegura!2026'}})).status>=400);
     });
+    await t.test('conta sem credencial de senha não recebe link e mantém login Google como único método',async()=>{
+      const email='oauth-only@example.test',name='Pessoa Google';
+      const invite=ctx.createInvitation({name,email,role:'seller',tracks:['pap']});
+      const token=new URL(invite.url).searchParams.get('convite');
+      const created=await request(null,'/api/auth/sign-up/email',{body:{name,email,password:oldPassword},headers:{'x-academy-invite':token}});
+      assert.equal(created.status,200);
+      const userId=created.data.user.id;
+      ctx.db.prepare('DELETE FROM account WHERE "userId"=? AND "providerId"=?').run(userId,'credential');
+      const before=messages.length;
+      const recovery=await request(null,'/api/password-recovery/request',{body:{email}});
+      assert.equal(recovery.status,202);
+      await new Promise(resolve=>setTimeout(resolve,40));
+      assert.equal(messages.length,before);
+    });
     await t.test('após três solicitações na mesma hora, não dispara outra mensagem',async()=>{
       const email='recuperacao-st1@example.test';
       // The preceding test already used the first request in this rolling hour.
