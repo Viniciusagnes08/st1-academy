@@ -15,6 +15,7 @@ import {hostingConfig} from './lib/hosting.mjs';
 import {applyStagedProduction} from './lib/production-transfer.mjs';
 import {withLearningReadBatch} from './lib/learning-read-batch.mjs';
 import {createInvitationMailer} from './lib/invitation-mail.mjs';
+import {validateEmailAddresses} from './lib/email-validation.mjs';
 import {createCampaignService} from './lib/campaigns.mjs';
 import {createEmailAutomationService} from './lib/email-automation-service.mjs';
 import {createWhatsAppCampaignService} from './lib/whatsapp-campaigns.mjs';
@@ -154,6 +155,7 @@ export async function createApp(options={}) {
   app.get('/api/invitation/:token',(req,res)=>{
     const invite=ctx.getInvitation(req.params.token);
     if(!invite)return res.status(404).json({message:'Convite inválido, utilizado ou vencido. Peça outro ao gestor.'});
+    ctx.markInvitationAccessed(invite.id);
     res.json({name:invite.name,email:invite.email,role:invite.role,expiresAt:invite.expires_at});
   });
   const memberPayload=profile=>({attemptLimits:Object.fromEntries(bank.tracks.filter(t=>hasTrack(profile,t.id)).map(t=>[t.id,attemptLimits.quota(profile.user_id,'certificate',t.id,t.version)])),m24Homologation:m24.canAccess(profile),id:profile.user_id,name:profile.name,email:profile.email,role:profile.role,avatarUrl:ctx.profiles.avatar(profile,profile.user_id),recognitions:ctx.management.recognitions(profile),tracks:profile.tracks,permissions:profile.permissions,certificates:hasPermission(profile,'conquests')?certificates(profile.user_id).filter(c=>hasTrack(profile,c.track_id)):[],attempts:hasPermission(profile,'assessments')?db.prepare('SELECT id,track_id,status,started_at,finished_at,result_json FROM academy_attempt WHERE user_id=? ORDER BY started_at DESC').all(profile.user_id).filter(a=>hasTrack(profile,a.track_id)).map(a=>({...a,result:a.result_json?JSON.parse(a.result_json):null,result_json:undefined})):[],testMode});
@@ -370,19 +372,45 @@ export async function createApp(options={}) {
   app.post('/api/admin/contents',member,admin,contentAction((req,res)=>res.status(201).json(ctx.contents.create(req.member.user_id,req.body))));
   app.patch('/api/admin/contents/:id',member,admin,contentAction((req,res)=>res.json(ctx.contents.update(req.member.user_id,req.params.id,req.body))));
   app.post('/api/admin/contents/:id/file',member,admin,express.raw({type:'application/octet-stream',limit:'40mb'}),contentAction((req,res)=>res.status(201).json(ctx.contents.upload(req.member.user_id,req.params.id,Number(req.headers['x-content-revision']),req.headers['x-file-name'],req.body))));
+  app.post('/api/admin/invitations/validate',member,admin,async(req,res)=>{
+    try{
+      const items=await validateEmailAddresses(req.body?.emails);
+      res.json({items:items.map((item,index)=>({...item,index}))});
+    }catch(error){res.status(400).json({message:error.message});}
+  });
   app.post('/api/admin/invitations',member,admin,async(req,res)=>{
-    try{const invitation=ctx.createInvitation({name:req.body.name,email:req.body.email,role:req.body.role??'seller',tracks:req.body.tracks,permissions:req.body.permissions,supervisorIds:req.body.supervisorIds,sellerIds:req.body.sellerIds,externalUserId:req.body.externalUserId,actorId:req.member.user_id});res.status(201).json(await deliverInvitation({...invitation,name:req.body.name,email:req.body.email}));}catch(error){res.status(400).json({message:error.message});}
+    try{
+      const emailCheck=(await validateEmailAddresses([req.body?.email]))[0];
+      if(emailCheck.status==='invalid')throw new Error(emailCheck.message);
+      const invitation=ctx.createInvitation({name:req.body.name,email:req.body.email,role:req.body.role??'seller',tracks:req.body.tracks,permissions:req.body.permissions,supervisorIds:req.body.supervisorIds,sellerIds:req.body.sellerIds,externalUserId:req.body.externalUserId,actorId:req.member.user_id});
+      res.status(201).json(await deliverInvitation({...invitation,name:req.body.name,email:emailCheck.email,emailDomainStatus:emailCheck.status,emailDomainMessage:emailCheck.message}));
+    }catch(error){res.status(400).json({message:error.message});}
   });
   app.post('/api/admin/invitations/bulk',member,admin,async(req,res)=>{
     try{
-      const invitations=ctx.createInvitations(req.body?.items,req.member.user_id),items=[];
-      for(let index=0;index<invitations.length;index+=5)items.push(...await Promise.all(invitations.slice(index,index+5).map(deliverInvitation)));
+      const input=req.body?.items;
+      if(!Array.isArray(input))throw new Error('Importe entre 1 e 100 pessoas por arquivo.');
+      const emailChecks=await validateEmailAddresses(input.map(item=>item?.email));
+      const invalidIndexes=emailChecks.map((item,index)=>item.status==='invalid'?index:-1).filter(index=>index>=0);
+      if(invalidIndexes.length)throw new Error(`Corrija os endereços de e-mail nas linhas ${invalidIndexes.map(index=>Number.isSafeInteger(input[index]?.rowNumber)?input[index].rowNumber:index+2).join(', ')} antes de criar os convites.`);
+      const invitations=ctx.createInvitations(input,req.member.user_id),items=[];
+      for(let index=0;index<invitations.length;index+=5){
+        const batch=invitations.slice(index,index+5);
+        items.push(...await Promise.all(batch.map((invitation,offset)=>deliverInvitation({...invitation,emailDomainStatus:emailChecks[index+offset].status,emailDomainMessage:emailChecks[index+offset].message}))));
+      }
       res.status(201).json({created:items.length,sent:items.filter(item=>item.delivery==='sent').length,notSent:items.filter(item=>item.delivery!=='sent').length,items});
     }catch(error){res.status(400).json({message:error.message});}
   });
   app.post('/api/admin/invitations/:id/resend',member,admin,async(req,res)=>{
     if(!invitationMailer)return res.status(503).json({message:'O envio de e-mail ainda não foi configurado no servidor.'});
-    try{res.json(await deliverInvitation(ctx.renewInvitation(req.params.id,req.member.user_id)));}catch(error){res.status(400).json({message:error.message});}
+    try{
+      const current=db.prepare('SELECT email FROM academy_invitation WHERE id=? AND used_by IS NULL AND revoked_at IS NULL').get(req.params.id);
+      if(!current)throw new Error('Convite indisponível para reenvio.');
+      const emailCheck=(await validateEmailAddresses([current.email]))[0];
+      if(emailCheck.status==='invalid')throw new Error(emailCheck.message);
+      const invitation=ctx.renewInvitation(req.params.id,req.member.user_id);
+      res.json(await deliverInvitation({...invitation,emailDomainStatus:emailCheck.status,emailDomainMessage:emailCheck.message}));
+    }catch(error){res.status(400).json({message:error.message});}
   });
   app.get('/api/admin/campaigns',member,admin,(_,res)=>res.json(campaigns.list()));
   app.get('/api/admin/campaigns/automations',member,admin,(_,res)=>res.json(emailAutomations.list()));
