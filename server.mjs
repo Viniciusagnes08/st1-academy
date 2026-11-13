@@ -94,7 +94,7 @@ export async function createApp(options={}) {
       if(recoveryLimiter.permit(email,req.ip)){
         // Google-only accounts must not acquire a local password through recovery.
         // This check must not change the public success message.
-        const credential=db.prepare("SELECT a.id FROM account a JOIN user u ON u.id=a.\"userId\" JOIN academy_member m ON m.user_id=u.id WHERE u.email=? AND a.\"providerId\"='credential' AND m.enabled=1 LIMIT 1").get(email);
+        const credential=db.prepare("SELECT a.id FROM account a JOIN user u ON u.id=a.\"userId\" JOIN academy_member m ON m.user_id=u.id WHERE lower(u.email)=? AND a.\"providerId\"='credential' AND m.enabled=1 LIMIT 1").get(email);
         if(credential){
           // Never let an untrusted Host or redirectTo field determine where tokens are delivered.
           await auth.api.requestPasswordReset({body:{email,redirectTo:baseURL+'/redefinir-senha'}});
