@@ -504,6 +504,22 @@ export async function createApp(options={}) {
   app.post('/api/admin/whatsapp-automations/:key/enable',member,admin,async(req,res)=>{try{res.json(await whatsappAutomations.activate(req.params.key));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/whatsapp-automations/:key/pause',member,admin,(req,res)=>{try{res.json(whatsappAutomations.pause(req.params.key));}catch(error){res.status(400).json({message:error.message});}});
   app.get('/api/admin/integrations',member,admin,(_,res)=>res.json(integrations.list()));
+  app.get('/api/admin/integrations/health',member,admin,(_,res)=>res.json(integrationHealth.snapshot()));
+  app.get('/api/admin/integrations/deliveries',member,admin,(_,res)=>res.json({items:integrationOutbox.list({limit:100}).map(({payload,...item})=>item)}));
+  app.post('/api/admin/integrations/:type/test',member,admin,async(req,res)=>{try{
+    const type=req.params.type;
+    if(type==='glitchtip'){
+      if(!glitchtip.ready())throw new Error('GlitchTip ainda não está configurado.');
+      const ok=await glitchtip.capture(new Error('ST1 Academy integration test'),{method:'POST',path:'/api/admin/integrations/glitchtip/test',statusCode:500});
+      return res.status(ok?200:502).json({ok,status:ok?'delivered':'failed'});
+    }
+    if(!['n8n','openpanel'].includes(type)||!integrations.list()[type]?.ready)throw new Error('Integração ainda não está configurada.');
+    const event=integrationOutbox.record('academy.integration.test',{entityType:'integration',entityId:type,payload:{source:'admin'}},[type]);
+    await integrationDispatcher.tick();
+    const delivery=integrationOutbox.list({limit:100}).find(item=>item.eventId===event.id&&item.provider===type);
+    res.status(delivery?.status==='delivered'?200:502).json({ok:delivery?.status==='delivered',status:delivery?.status||'unknown'});
+  }catch(error){res.status(400).json({message:error.message});}});
+  app.post('/api/admin/integrations/deliveries/:id/retry',member,admin,(req,res)=>{try{const value=integrationOutbox.retry(req.params.id);queueMicrotask(()=>integrationDispatcher.tick().catch(()=>{}));const {payload,...safe}=value;res.json(safe);}catch(error){res.status(400).json({message:error.message});}});
   app.put('/api/admin/integrations/:type',member,admin,(req,res)=>{try{res.json(integrations.save(req.member.user_id,req.params.type,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.post('/api/admin/integrations/webhooks',member,admin,(req,res)=>{try{res.status(201).json(integrations.addWebhook(req.member.user_id,req.body));}catch(error){res.status(400).json({message:error.message});}});
   app.delete('/api/admin/integrations/webhooks/:id',member,admin,(req,res)=>{try{integrations.removeWebhook(req.params.id);res.sendStatus(204);}catch(error){res.status(400).json({message:error.message});}});
@@ -560,7 +576,7 @@ export async function createApp(options={}) {
     res.sendFile(resolve(projectRoot,'public/index.html'));
   });
   app.use(express.static(resolve(projectRoot,'public'),{index:'index.html',maxAge:0}));
-  app.use((error,req,res,next)=>{console.error('Falha na ST1 Academy:',error.message);if(!res.headersSent)res.status(error.status===413?413:500).json({message:error.status===413?'O arquivo ou conteúdo ultrapassa o limite permitido. Arquivos podem ter até 25 MB; vídeos MP4/WebM, até 40 MB.':'Não foi possível concluir. Suas respostas salvas continuam disponíveis.'});});
+  app.use((error,req,res,next)=>{void glitchtip.capture(error,{method:req.method,path:req.originalUrl,statusCode:error.status||500});console.error('Falha na ST1 Academy:',error.message);if(!res.headersSent)res.status(error.status===413?413:500).json({message:error.status===413?'O arquivo ou conteúdo ultrapassa o limite permitido. Arquivos podem ter até 25 MB; vídeos MP4/WebM, até 40 MB.':'Não foi possível concluir. Suas respostas salvas continuam disponíveis.'});});
   return {app,ctx};
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
@@ -574,9 +590,10 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
     app.locals.runEmailAutomations().catch(error=>console.error('Falha ao verificar automações de e-mail:',error.message));
     app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));
     app.locals.runWhatsAppAutomations().catch(error=>console.error('Falha ao verificar automações WhatsApp:',error.message));
+    app.locals.runIntegrations().catch(error=>console.error('Falha ao processar integrações:',String(error.code||'DELIVERY_FAILED')));
     console.log(`ST1 Academy disponível em ${ctx.baseURL}`);
   });
-  const campaignTimer=setInterval(()=>{app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));app.locals.runEmailAutomations().catch(error=>console.error('Falha ao verificar automações de e-mail:',error.message));app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));app.locals.runWhatsAppAutomations().catch(error=>console.error('Falha ao verificar automações WhatsApp:',error.message));},30000);campaignTimer.unref();
+  const campaignTimer=setInterval(()=>{app.locals.runDueCampaigns().catch(error=>console.error('Falha ao verificar campanhas agendadas:',error.message));app.locals.runEmailAutomations().catch(error=>console.error('Falha ao verificar automações de e-mail:',error.message));app.locals.runDueWhatsAppCampaigns().catch(error=>console.error('Falha ao verificar campanhas WhatsApp agendadas:',error.message));app.locals.runWhatsAppAutomations().catch(error=>console.error('Falha ao verificar automações WhatsApp:',error.message));app.locals.runIntegrations().catch(error=>console.error('Falha ao processar integrações:',String(error.code||'DELIVERY_FAILED')));},30000);campaignTimer.unref();
   let stopping=false;
   const stop=()=>{
     if(stopping)return;stopping=true;app.locals.shuttingDown=true;clearInterval(campaignTimer);ctx.googleCalendar.stop();backups.stop();
