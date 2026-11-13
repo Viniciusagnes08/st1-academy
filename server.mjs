@@ -9,6 +9,7 @@ import {createContext,projectRoot} from './lib/context.mjs';
 import {grade,publicQuestion,shuffle} from './lib/grading.mjs';
 import {certificatePdf} from './lib/certificate.mjs';
 import {readProfile,hasPermission,hasTrack} from './lib/access.mjs';
+import {organizationalAreas} from './content/organizational-areas.mjs';
 import {sendChatMedia} from './lib/chat-media.mjs';
 import {createBackupService} from './lib/storage-backup.mjs';
 import {hostingConfig} from './lib/hosting.mjs';
@@ -302,6 +303,7 @@ export async function createApp(options={}) {
   app.post('/api/learning-nps/:id',member,agendaAction((req,res)=>{const value=ctx.learningNps.submit(req.member,req.params.id,req.body);integrationEvents.emit('academy.nps.submitted',{entityType:'nps',entityId:req.params.id,payload:{userId:req.member.user_id,npsId:req.params.id,score:req.body.score}});res.json(value);}));
   app.get('/api/learning-nps/report',member,admin,agendaAction((req,res)=>res.json(ctx.learningNps.report({period:req.query.period,track:req.query.track}))));
   app.get('/api/admin/access',member,admin,(_,res)=>res.json(access.directory()));
+  app.get('/api/admin/organizational-areas',member,admin,(_,res)=>res.json({areas:organizationalAreas}));
   const contentAction=action=>(req,res)=>{try{const work=()=>action(req,res);if(req.method==='GET'&&/^\/api\/(?:bootstrap|library|contents(?:\/|$)|reading(?:\/|$)|learning-flows(?:\/|$)|(?:game|progress)\/(?:me|knowledge)$)/.test(req.path))withLearningReadBatch(ctx,work);else if(req.method==='GET'&&db.withReadScope)db.withReadScope(work);else work();}catch(error){res.status(error.status||400).json({message:error.message});}};
   app.get('/api/bootstrap',member,contentAction((req,res)=>res.json({user:memberPayload(req.member),catalog:{title:bank.title,version:appVersion,minimumPercent:bank.minimumPercent,criticalRequired:bank.criticalRequired,testMode,environment:ctx.runtime.environment,totalTracks:bank.tracks.length,tracks:bank.tracks.filter(track=>hasTrack(req.member,track.id)).map(track=>trackSummary(track,hasPermission(req.member,'materials')))}})));
   app.get('/api/profile',member,contentAction((req,res)=>{const value=ctx.profiles.detail(req.member);res.json({...value,onboarding:onboarding.read(req.member.user_id),recognitions:ctx.management.recognitions(req.member,value.id)});}));
