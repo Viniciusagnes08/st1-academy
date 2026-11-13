@@ -31,6 +31,9 @@ test('integrações de produção rejeitam HTTP inseguro, sample rate inválido 
   try{
     const service=createIntegrationService(db,{secret:'segredo-estavel-com-mais-de-32-caracteres',env:{}});
     assert.throws(()=>service.save('admin','n8n',{N8N_ENABLED:'1',N8N_WEBHOOK_URL:'http://example.com/hook',N8N_WEBHOOK_SECRET:'segredo-n8n-123456789'}),/HTTPS|n8n/i);
+    assert.throws(()=>service.save('admin','n8n',{N8N_ENABLED:'1',N8N_WEBHOOK_URL:'https://127.0.0.1/hook',N8N_WEBHOOK_SECRET:'segredo-n8n-123456789'}),/HTTPS|n8n/i);
+    assert.throws(()=>service.save('admin','n8n',{N8N_ENABLED:'1',N8N_WEBHOOK_URL:'https://169.254.169.254/hook',N8N_WEBHOOK_SECRET:'segredo-n8n-123456789'}),/HTTPS|n8n/i);
+    assert.throws(()=>service.save('admin','openpanel',{OPENPANEL_ENABLED:'1',OPENPANEL_API_URL:'https://10.0.0.1',OPENPANEL_CLIENT_ID:'550e8400-e29b-41d4-a716-446655440000',OPENPANEL_CLIENT_SECRET:'segredo-openpanel-123456'}),/OpenPanel/i);
     assert.throws(()=>service.save('admin','glitchtip',{GLITCHTIP_ENABLED:'1',GLITCHTIP_DSN:'https://abc@example.com/1',GLITCHTIP_TRACES_SAMPLE_RATE:'2'}),/sample|GlitchTip/i);
     assert.throws(()=>service.save('admin','openpanel',{OPENPANEL_ENABLED:'1',OPENPANEL_API_URL:'https://analytics.example.com',OPENPANEL_CLIENT_ID:'id',OPENPANEL_CLIENT_SECRET:'curto'}),/OpenPanel/i);
   }finally{db.close();}
