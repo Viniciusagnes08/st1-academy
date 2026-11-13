@@ -1,5 +1,5 @@
 import {createWhatsAppAutomationPanel} from './whatsapp-automations.js?v=20261112-campaign-metrics';
-import {createWhatsAppTemplatePanel} from './whatsapp-templates.js?v=20261113-whatsapp-live';
+import {createWhatsAppTemplatePanel} from './whatsapp-templates.js?v=20261113-whatsapp-events';
 import {filterCampaigns,hasCampaignFilters,paginateCampaigns,summarizeWhatsAppCampaignMetrics} from './campaign-history-filters.js?v=20261112-campaign-metrics';
 
 export function createWhatsAppCampaignPanel({api,esc,main,commitView,toast}){
